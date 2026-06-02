@@ -4,7 +4,7 @@
     <h1 style="margin-bottom: 1rem;"><%= @post.title %></h1>
 
     <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
-      <p><strong>👤 Posted by:</strong> <%= @post.user.username %></p>
+      <p><strong>👤 Posted by:</strong> <%= @post.user.username.presence || @post.user.email %></p>
       <p><strong>🎮 Game:</strong> <%= @post.game %></p>
       <p><strong>🖥️ Platform:</strong> <%= @post.platform %></p>
       <p><strong>🌐 Language:</strong> <%= @post.language %></p>
@@ -13,10 +13,14 @@
       <p style="color: #999; font-size: 0.9rem;"><strong>📅 Created:</strong> <%= @post.created_at.strftime("%b %d, %Y") %></p>
     </div>
 
-    <% if user_signed_in? && current_user == @post.user %>
+    <% if policy(@post).edit? || policy(@post).destroy? %>
       <div style="display: flex; gap: 0.5rem;">
-        <%= link_to "Edit", "#edit-post", class: "btn btn-secondary" %>
-        <%= link_to "Delete", "#delete-post", method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        <% if policy(@post).edit? %>
+          <%= link_to "Edit", posts_edit_path(id: @post.id), class: "btn btn-secondary" %>
+        <% end %>
+        <% if policy(@post).destroy? %>
+          <%= link_to "Delete", "#delete-post", method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        <% end %>
       </div>
     <% end %>
   </div>

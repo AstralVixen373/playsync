@@ -26,6 +26,8 @@
       nav h1 { color: #333; font-size: 1.5rem; }
       nav a { color: #666; text-decoration: none; margin-left: 1.5rem; }
       nav a:hover { color: #000; }
+      .navbar-brand { display: inline-flex; align-items: center; gap: 0.5rem; color: #333; text-decoration: none; margin-left: 0; }
+      .navbar-logo { width: 36px; height: 36px; object-fit: contain; border-radius: 4px; }
 
       .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
       .alert { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
@@ -43,11 +45,16 @@
 
   <body>
     <nav>
-      <h1><%= link_to "🎮 Playsync", root_path, style: "color: #333; text-decoration: none;" %></h1>
+      <h1>
+        <%= link_to root_path, class: "navbar-brand" do %>
+          <%= image_tag "playsync-logo.png", alt: "PlaySync logo", class: "navbar-logo" %>
+          <span>PlaySync</span>
+        <% end %>
+      </h1>
       <div>
         <% if user_signed_in? %>
-          <%= link_to "Posts", "#posts" %>
-          <%= link_to "Profile", "#profile" %>
+          <%= link_to "Posts", posts_index_path %>
+          <%= link_to "Profile", edit_user_registration_path %>
           <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
         <% else %>
           <%= link_to "Sign In", new_user_session_path %>

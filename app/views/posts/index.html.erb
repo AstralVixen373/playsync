@@ -1,7 +1,7 @@
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
   <h1>Find Teammates 🎮</h1>
-  <% if user_signed_in? %>
-    <%= link_to "Create Post", "#new-post", class: "btn" %>
+  <% if policy(Post).new? %>
+    <%= link_to "Create Post", posts_new_path, class: "btn" %>
   <% end %>
 </div>
 
@@ -11,7 +11,7 @@
       <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <h3 style="color: #333; margin-bottom: 0.5rem;"><%= post.title %></h3>
         <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-          <strong>Posted by:</strong> <%= post.user.username %>
+          <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
         </p>
 
         <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
@@ -23,9 +23,11 @@
         </div>
 
         <div style="display: flex; gap: 0.5rem;">
-          <%= link_to "View", "#post-#{post.id}", class: "btn", style: "flex: 1; text-align: center;" %>
-          <% if user_signed_in? && current_user == post.user %>
-            <%= link_to "Edit", "#edit-post-#{post.id}", class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
+          <%= link_to "View", posts_show_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
+          <% if policy(post).edit? %>
+            <%= link_to "Edit", posts_edit_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
+          <% end %>
+          <% if policy(post).destroy? %>
             <%= link_to "Delete", "#delete-post-#{post.id}", method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger", style: "flex: 1; text-align: center;" %>
           <% end %>
         </div>
@@ -33,5 +35,5 @@
     <% end %>
   </div>
 <% else %>
-  <p style="text-align: center; color: #999; padding: 3rem;">No posts yet. <%= link_to "Create one!", "#new-post" %></p>
+  <p style="text-align: center; color: #999; padding: 3rem;">No posts yet. <%= link_to "Create one!", posts_new_path %></p>
 <% end %>
