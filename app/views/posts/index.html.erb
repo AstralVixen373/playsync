@@ -1,7 +1,7 @@
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
   <h1>Find Teammates 🎮</h1>
   <% if policy(Post).new? %>
-    <%= link_to "Create Post", posts_new_path, class: "btn" %>
+    <%= link_to "Create Post", new_post_path, class: "btn" %>
   <% end %>
 </div>
 
@@ -23,9 +23,9 @@
         </div>
 
         <div style="display: flex; gap: 0.5rem;">
-          <%= link_to "View", posts_show_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
+          <%= link_to "View", posts_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
           <% if policy(post).edit? %>
-            <%= link_to "Edit", posts_edit_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
+            <%= link_to "Edit", edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
           <% end %>
           <% if policy(post).destroy? %>
             <%= link_to "Delete", "#delete-post-#{post.id}", method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger", style: "flex: 1; text-align: center;" %>
@@ -35,5 +35,5 @@
     <% end %>
   </div>
 <% else %>
-  <p style="text-align: center; color: #999; padding: 3rem;">No posts yet. <%= link_to "Create one!", posts_new_path %></p>
+  <p style="text-align: center; color: #999; padding: 3rem;">No posts yet. <%= link_to "Create one!", new_post_path %></p>
 <% end %>

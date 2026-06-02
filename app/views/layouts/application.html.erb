@@ -53,7 +53,7 @@
       </h1>
       <div>
         <% if user_signed_in? %>
-          <%= link_to "Posts", posts_index_path %>
+          <%= link_to "Posts", posts_path %>
           <%= link_to "Profile", edit_user_registration_path %>
           <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
         <% else %>

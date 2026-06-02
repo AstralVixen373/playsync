@@ -1,4 +1,4 @@
-class Scope < ApplicationPolicy::Scope
+class PostPolicy < ApplicationPolicy
   def show?
     true
   end
@@ -15,7 +15,7 @@ class Scope < ApplicationPolicy::Scope
     update?
   end
 
-  class Scope < Scope
+  class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all
     end
