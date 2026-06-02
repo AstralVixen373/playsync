@@ -1,2 +1,11 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div style="text-align: center; padding: 3rem 0;">
+  <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🎮 Welcome to PlaySync</h1>
+  <p style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">Find your perfect gaming teammates</p>
+
+  <% if user_signed_in? %>
+    <p style="margin-bottom: 2rem;">
+      <%= link_to "Browse Posts", posts_index_path, class: "btn", style: "font-size: 1.1rem; padding: 0.8rem 2rem;" %>
+      <%= link_to "Create Post", posts_new_path, class: "btn", style: "font-size: 1.1rem; padding: 0.8rem 2rem; margin-left: 1rem;" %>
+    </p>
+  <% end %>
+</div>

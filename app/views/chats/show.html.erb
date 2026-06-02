@@ -1,2 +1,54 @@
-<h1>Chats#show</h1>
-<p>Find me in app/views/chats/show.html.erb</p>
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; height: 90vh;">
+  <!-- Sidebar: Post Info -->
+  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; overflow-y: auto;">
+    <h2 style="margin-bottom: 1rem;">📋 Post Details</h2>
+
+    <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
+      <h3 style="margin-bottom: 0.5rem;"><%= @chat.post.title %></h3>
+      <p><strong>Game:</strong> <%= @chat.post.game %></p>
+      <p><strong>Platform:</strong> <%= @chat.post.platform %></p>
+      <p><strong>Language:</strong> <%= @chat.post.language %></p>
+      <p><strong>Type:</strong> <%= @chat.post.post_type %></p>
+      <p><strong>Slots:</strong> <%= @chat.post.slot %></p>
+    </div>
+
+    <h3 style="margin-bottom: 1rem;">👥 Participants</h3>
+    <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px;">
+      <% if @chat.users.any? %>
+        <% @chat.users.each do |user| %>
+          <div style="padding: 0.5rem 0; border-bottom: 1px solid #e0e0e0;">
+            <p style="margin: 0;"><%= user.username %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <p style="color: #999;">No participants yet</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Main: Chat Messages -->
+  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column;">
+    <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
+
+    <!-- Messages Container -->
+    <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid #e0e0e0;">
+      <% if @messages.any? %>
+        <% @messages.each do |message| %>
+          <%= render "messages/message", message: message %>
+        <% end %>
+      <% else %>
+        <p style="color: #999; text-align: center;">No messages yet. Start the conversation!</p>
+      <% end %>
+    </div>
+
+    <!-- Message Form -->
+    <% if user_signed_in? %>
+      <div style="display: flex; gap: 0.5rem;">
+        <textarea placeholder="Type a message..." style="flex: 1; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 80px; font-family: inherit;"></textarea>
+        <button class="btn" style="align-self: flex-end; height: fit-content;">Send</button>
+      </div>
+    <% else %>
+      <p style="color: #999; text-align: center;"><%= link_to "Sign in", new_user_session_path %> to send messages</p>
+    <% end %>
+  </div>
+</div>

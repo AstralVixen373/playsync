@@ -76,4 +76,4 @@ gem "devise", "~> 5.0"
 gem 'omniauth-google-oauth2'
 gem "omniauth-rails_csrf_protection"
 gem "omniauth"
-gem "pundit"
+gem "pundit", "~> 2.5"
