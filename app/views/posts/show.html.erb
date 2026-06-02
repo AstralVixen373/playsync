@@ -1,2 +1,48 @@
-<h1>Posts#show</h1>
-<p>Find me in app/views/posts/show.html.erb</p>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+  <!-- Post Details -->
+  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem;">
+    <h1 style="margin-bottom: 1rem;"><%= @post.title %></h1>
+
+    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
+      <p><strong>👤 Posted by:</strong> <%= @post.user.username %></p>
+      <p><strong>🎮 Game:</strong> <%= @post.game %></p>
+      <p><strong>🖥️ Platform:</strong> <%= @post.platform %></p>
+      <p><strong>🌐 Language:</strong> <%= @post.language %></p>
+      <p><strong>👥 Type:</strong> <%= @post.post_type %></p>
+      <p><strong>🎯 Slot:</strong> <%= @post.slot %></p>
+      <p style="color: #999; font-size: 0.9rem;"><strong>📅 Created:</strong> <%= @post.created_at.strftime("%b %d, %Y") %></p>
+    </div>
+
+    <% if user_signed_in? && current_user == @post.user %>
+      <div style="display: flex; gap: 0.5rem;">
+        <%= link_to "Edit", "#edit-post", class: "btn btn-secondary" %>
+        <%= link_to "Delete", "#delete-post", method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Chat Section -->
+  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
+    <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
+
+    <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
+      <% if @chat.messages.any? %>
+        <% @chat.messages.each do |message| %>
+          <%= render "messages/message", message: message %>
+        <% end %>
+      <% else %>
+        <p style="color: #999; text-align: center;">No messages yet</p>
+      <% end %>
+    </div>
+
+    <% if user_signed_in? %>
+      <!-- Message form will be connected to routes once backend is ready -->
+      <div style="display: flex; gap: 0.5rem;">
+        <textarea placeholder="Type a message..." style="flex: 1; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 60px;"></textarea>
+        <button class="btn" style="align-self: flex-end;">Send</button>
+      </div>
+    <% else %>
+      <p style="color: #999;"><%= link_to "Sign in", new_user_session_path %> to chat</p>
+    <% end %>
+  </div>
+</div>

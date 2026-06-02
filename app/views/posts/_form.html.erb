@@ -1,0 +1,49 @@
+<div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; max-width: 600px; margin: 0 auto;">
+  <%= form_with model: @post, local: true do |f| %>
+    <% if @post.errors.any? %>
+      <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+        <h4><%= pluralize(@post.errors.count, "error") %> prevented this post from being saved:</h4>
+        <ul>
+          <% @post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :title, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.text_field :title, placeholder: "Post title", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :game, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.text_field :game, placeholder: "e.g., League of Legends", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :platform, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :platform, ["PC", "PS5", "Xbox", "Nintendo Switch", "Mobile"], {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :language, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :language, ["English", "French", "Spanish", "German", "Other"], {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :post_type, ["Looking for Team", "Looking for Players", "Tournament"], {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+      <%= f.label :slot, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.number_field :slot, placeholder: "Number of players needed", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="display: flex; gap: 0.5rem;">
+      <%= f.submit class: "btn" %>
+      <%= link_to "Cancel", "#posts", class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+</div>
