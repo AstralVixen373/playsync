@@ -36,11 +36,18 @@ class PostsController < ApplicationController
   def update
     @post = params[:id].present? ? Post.find(params[:id]) : Post.new
     authorize @post
+    if @post.update(post_params)
+      redirect_to post_path(@post)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @post = params[:id].present? ? Post.find(params[:id]) : Post.new
     authorize @post
+    @post.destroy
+    redirect_to posts_path, notice: "post deleted."
   end
 
   private
