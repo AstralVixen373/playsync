@@ -1,0 +1,26 @@
+<h1 style="margin-bottom: 2rem;">My Matches</h1>
+
+<% if @posts.any? %>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+    <% @posts.each do |post| %>
+      <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="color: #333; margin-bottom: 0.5rem;"><%= post.title %></h3>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+          <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
+          <% if post.user == current_user %>
+            <span style="background: #007bff; color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;">You</span>
+          <% end %>
+        </p>
+
+        <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+          <p><strong>🎮 Game:</strong> <%= post.game %></p>
+          <p><strong>🖥️ Platform:</strong> <%= post.platform %></p>
+          <p><strong>🌐 Language:</strong> <%= post.language %></p>
+          <p><strong>👥 Type:</strong> <%= post.post_type %></p>
+        </div>
+
+        <%= link_to "View", my_match_path(post), class: "btn", style: "width: 100%; text-align: center; display: block;" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

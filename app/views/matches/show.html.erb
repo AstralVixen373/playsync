@@ -1,0 +1,48 @@
+<%= link_to "← Back to My Matches", my_matches_path, style: "color: #666; text-decoration: none; display: inline-block; margin-bottom: 1.5rem;" %>
+
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+  <!-- Post Details -->
+  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem;">
+    <h1 style="margin-bottom: 1.5rem;"><%= @post.title %></h1>
+
+    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
+      <p><strong>👤 Posted by:</strong>
+        <%= @post.user.username.presence || @post.user.email %>
+        <% if @post.user == current_user %>
+          <span style="background: #007bff; color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;">You</span>
+        <% end %>
+      </p>
+      <p><strong>🎮 Game:</strong> <%= @post.game %></p>
+      <p><strong>🖥️ Platform:</strong> <%= @post.platform %></p>
+      <p><strong>🌐 Language:</strong> <%= @post.language %></p>
+      <p><strong>👥 Type:</strong> <%= @post.post_type %></p>
+      <p><strong>🎯 Slots:</strong> <%= @post.slot %></p>
+    </div>
+
+    <% if @post.chat&.users&.any? %>
+      <h3 style="margin-bottom: 1rem;">👥 Participants</h3>
+      <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px;">
+        <% @post.chat.users.each do |user| %>
+          <div style="padding: 0.5rem 0; border-bottom: 1px solid #e0e0e0;">
+            <p style="margin: 0;"><%= user.username.presence || user.email %></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Chat -->
+  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
+    <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
+
+    <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 500px;">
+      <% if @post.chat&.messages&.any? %>
+        <% @post.chat.messages.each do |message| %>
+          <%= render "messages/message", message: message %>
+        <% end %>
+      <% else %>
+        <p style="color: #999; text-align: center;">No messages yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

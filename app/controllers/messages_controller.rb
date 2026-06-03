@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
     @message = Message.new(user: current_user)
     @post = @chat.post
     @message = @chat.messages.build(message_params)
-    @message.user_id = "user"
+    @message.user = current_user
 
     if @message.content.to_s.length > MAX_MESSAGE_LENGTH
       @message.errors.add(:content, "is too long")

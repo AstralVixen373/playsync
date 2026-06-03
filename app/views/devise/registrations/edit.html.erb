@@ -4,6 +4,11 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <% if resource.avatar.attached? %>
+      <%= image_tag resource.avatar.variant(resize_to_limit: [120, 120]), class: "rounded-circle mb-2", alt: "Current avatar" %>
+    <% end %>
+    <%= f.input :avatar, as: :file, label: "Avatar", input_html: { accept: "image/*" } %>
+
     <%= f.input :email, required: true, autofocus: true %>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
