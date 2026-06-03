@@ -47,7 +47,7 @@ class PostsController < ApplicationController
     @post = params[:id].present? ? Post.find(params[:id]) : Post.new
     authorize @post
     @post.destroy
-    redirect_to posts_path, notice: "post deleted."
+    redirect_to posts_path, notice: "post deleted.", status: :see_other
   end
 
   private
