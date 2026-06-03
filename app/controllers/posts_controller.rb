@@ -10,7 +10,9 @@ class PostsController < ApplicationController
   def show
     @post = find_post_or_placeholder
     authorize @post
-    @chat = @post.chat || @post.build_chat
+    @chat = @post.chat || @post.create_chat!
+    @chat.users << current_user unless @chat.users.include?(current_user)
+    @message = Message.new
   end
 
   def new
