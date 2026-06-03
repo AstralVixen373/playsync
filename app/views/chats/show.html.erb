@@ -43,10 +43,12 @@
 
     <!-- Message Form -->
     <% if user_signed_in? %>
-      <div style="display: flex; gap: 0.5rem;">
-        <textarea placeholder="Type a message..." style="flex: 1; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 80px; font-family: inherit;"></textarea>
-        <button class="btn" style="align-self: flex-end; height: fit-content;">Send</button>
-      </div>
+      <%= form_with model: [@chat, @message], url: chat_messages_path(@chat) do |f| %>
+        <div style="display: flex; gap: 0.5rem;">
+          <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 80px; font-family: inherit;" %>
+          <%= f.submit "Send", class: "btn", style: "align-self: flex-end; height: fit-content;" %>
+        </div>
+      <% end %>
     <% else %>
       <p style="color: #999; text-align: center;"><%= link_to "Sign in", new_user_session_path %> to send messages</p>
     <% end %>

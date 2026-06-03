@@ -1,19 +1,22 @@
 class MessagesController < ApplicationController
-  before_action :authenticate_user!
   MAX_MESSAGE_LENGTH = 250
+
   def create
     @chat = current_user.chats.find(params[:chat_id])
-    @message = Message.new(user: current_user)
-    @post = @chat.post
     @message = @chat.messages.build(message_params)
     @message.user = current_user
+    authorize @message
 
     if @message.content.to_s.length > MAX_MESSAGE_LENGTH
-      @message.errors.add(:content, "is too long")
-      return render_message_form(:unprocessable_entity)
+      redirect_to chat_path(@chat), alert: "Message is too long (max #{MAX_MESSAGE_LENGTH} characters)."
+      return
     end
 
-    @message.save
+    if @message.save
+      redirect_to request.referer || chat_path(@chat)
+    else
+      redirect_to request.referer || chat_path(@chat), alert: "Could not send message."
+    end
   end
 
   private
