@@ -44,10 +44,10 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = params[:id].present? ? Post.find(params[:id]) : Post.new
+    @post = Post.find(params[:id])
     authorize @post
     @post.destroy
-    redirect_to posts_path, notice: "post deleted.", status: :see_other
+    redirect_to posts_path(), notice: "post deleted.", status: :see_other
   end
 
   private

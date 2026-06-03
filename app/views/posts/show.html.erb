@@ -16,10 +16,10 @@
     <% if policy(@post).edit? || policy(@post).destroy? %>
       <div style="display: flex; gap: 0.5rem;">
         <% if policy(@post).edit? %>
-          <%= link_to "Edit", edit_post_path(@post), class: "btn btn-secondary" %>
+          <%= link_to "Edit", edit_post_path(id: @post.id), class: "btn btn-secondary" %>
         <% end %>
         <% if policy(@post).destroy? %>
-          <%= link_to "Delete", post_path(@post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+          <%= link_to "Delete", post_path(@post), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
         <% end %>
       </div>
     <% end %>
@@ -49,7 +49,4 @@
       <p style="color: #999;"><%= link_to "Sign in", new_user_session_path %> to chat</p>
     <% end %>
   </div>
-  <script>
-    <%= javascript_include_tag 'application' %>
-  </script>
 </div>
