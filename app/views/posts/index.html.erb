@@ -23,7 +23,7 @@
         </div>
 
         <div style="display: flex; gap: 0.5rem;">
-          <%= link_to "View", posts_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
+          <%= link_to "View", post_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
           <% if policy(post).edit? %>
             <%= link_to "Edit", edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
           <% end %>

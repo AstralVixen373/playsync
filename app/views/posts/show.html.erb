@@ -16,7 +16,7 @@
     <% if policy(@post).edit? || policy(@post).destroy? %>
       <div style="display: flex; gap: 0.5rem;">
         <% if policy(@post).edit? %>
-          <%= link_to "Edit", posts_edit_path(id: @post.id), class: "btn btn-secondary" %>
+          <%= link_to "Edit", edit_post_path(id: @post.id), class: "btn btn-secondary" %>
         <% end %>
         <% if policy(@post).destroy? %>
           <%= link_to "Delete", "#delete-post", method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>

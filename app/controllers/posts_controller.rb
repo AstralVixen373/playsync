@@ -19,7 +19,13 @@ class PostsController < ApplicationController
   end
 
   def create
-    authorize Post
+    @post = current_user.posts.new(post_params)
+    authorize @post
+    if @post.save
+      redirect_to post_path(@post), notice: "Post créé avec succès."
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -51,5 +57,9 @@ class PostsController < ApplicationController
 
   def user_not_authorized
     redirect_to root_path, alert: "You are not authorized to perform this action."
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :game, :platform, :language, :post_type, :slot)
   end
 end
