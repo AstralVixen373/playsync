@@ -8,6 +8,12 @@ Rails.application.routes.draw do
     resources :chats, only: [:new, :create]
   end
 
+  resources :games do
+    collection do
+      get :search
+    end
+  end
+
   resources :chats, only: [:new, :create, :update, :show] do
     resources :messages, only: [:new, :create]
   end

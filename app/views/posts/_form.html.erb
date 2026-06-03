@@ -17,8 +17,19 @@
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :game, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.text_field :game, placeholder: "e.g., League of Legends", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :game_id, "Game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+
+      <input
+        type="text"
+        id="game-search"
+        placeholder="Search a game..."
+        autocomplete="off"
+        style="width:100%; padding:0.5rem;"
+      >
+
+      <%= f.hidden_field :game_id, id: "game-id" %>
+
+      <div id="game-results"></div>
     </div>
 
     <div style="margin-bottom: 1rem;">
