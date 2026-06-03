@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_01_162714) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_03_143653) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_162714) do
     t.bigint "post_id", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_chats_on_post_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "igdb_id"
+    t.string "name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -33,7 +40,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_162714) do
 
   create_table "posts", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "game"
+    t.bigint "game_id", null: false
     t.string "language"
     t.string "platform"
     t.string "post_type"
@@ -41,6 +48,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_162714) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["game_id"], name: "index_posts_on_game_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -69,6 +77,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_162714) do
   add_foreign_key "chats", "posts"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users"
+  add_foreign_key "posts", "games"
   add_foreign_key "posts", "users"
   add_foreign_key "user_chats", "chats"
   add_foreign_key "user_chats", "users"

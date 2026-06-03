@@ -10,7 +10,9 @@ class PostsController < ApplicationController
   def show
     @post = find_post_or_placeholder
     authorize @post
-    @chat = @post.chat || @post.build_chat
+    @chat = @post.chat || @post.create_chat!
+    @chat.users << current_user unless @chat.users.include?(current_user)
+    @message = Message.new
   end
 
   def new
@@ -19,7 +21,13 @@ class PostsController < ApplicationController
   end
 
   def create
-    authorize Post
+    @post = current_user.posts.new(post_params)
+    authorize @post
+    if @post.save
+      redirect_to post_path(@post), notice: "Post créé avec succès."
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -51,5 +59,9 @@ class PostsController < ApplicationController
 
   def user_not_authorized
     redirect_to root_path, alert: "You are not authorized to perform this action."
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :game_id, :platform, :language, :post_type, :slot)
   end
 end
