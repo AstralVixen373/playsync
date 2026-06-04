@@ -5,6 +5,8 @@ class PostsController < ApplicationController
 
   def index
     @posts = policy_scope(Post).includes(:user).order(created_at: :desc)
+    @posts = Post.all
+    @post = Post.new
   end
 
   def show

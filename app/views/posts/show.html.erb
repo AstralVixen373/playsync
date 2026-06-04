@@ -13,6 +13,7 @@
       <p style="color: #999; font-size: 0.9rem;"><strong>📅 Created:</strong> <%= @post.created_at.strftime("%b %d, %Y") %></p>
     </div>
 
+
     <% if policy(@post).edit? || policy(@post).destroy? %>
       <div style="display: flex; gap: 0.5rem;">
         <% if policy(@post).edit? %>
@@ -24,6 +25,7 @@
       </div>
     <% end %>
   </div>
+
 
   <!-- Chat Section -->
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">

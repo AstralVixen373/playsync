@@ -1,9 +1,41 @@
+
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
   <h1>Find Teammates 🎮</h1>
   <% if policy(Post).new? %>
     <%= link_to "Create Post", new_post_path, class: "btn" %>
   <% end %>
 </div>
+
+
+<%= form_with(model: @post, local: true) do |form| %>
+
+  <!-- <div> -->
+    <!-- <%#= form.label :game, "Choose your game" %><br> -->
+    <%#= form.search_field :title_or_body_contains, placeholder: "put your game name here",value: params.dig(:query, :title_or_body_contains) %>
+  <!-- </div> -->
+
+  <div>
+  <%= form.label :game, "Choose your game" %><br>
+
+  <%= form.text_field :game, placeholder: "e.g., League of Legends", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+</div>
+
+  <div>
+    <%= form.label :post_type, "Choose your gaming type" %><br>
+    <%= form.select :post_type, Post::TYPES, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+  </div>
+
+  <div>
+    <%= form.label :platform, "Choose your platform" %><br>
+    <%= form.select :platform, Post::PLATFORMS, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+  </div>
+
+  <div>
+    <%= form.label :language, "Choose your language" %><br>
+    <%= form.select :language, Post::LANGUAGES, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+  </div>
+
+<% end %>
 
 <% if @posts.any? %>
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
