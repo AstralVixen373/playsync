@@ -37,35 +37,5 @@
 
 <% end %>
 
-<% if @posts.any? %>
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-    <% @posts.each do |post| %>
-      <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <h3 style="color: #333; margin-bottom: 0.5rem;"><%= post.title %></h3>
-        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-          <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
-        </p>
-
-        <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-          <p><strong>🎮 Game:</strong> <%= post.game %></p>
-          <p><strong>🖥️ Platform:</strong> <%= post.platform %></p>
-          <p><strong>🌐 Language:</strong> <%= post.language %></p>
-          <p><strong>👥 Type:</strong> <%= post.post_type %></p>
-          <p><strong>🎯 Slot:</strong> <%= post.slot %></p>
-        </div>
-
-        <div style="display: flex; gap: 0.5rem;">
-          <%= link_to "View", post_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
-          <% if policy(post).edit? %>
-            <%= link_to "Edit", edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
-          <% end %>
-          <% if policy(post).destroy? %>
-            <%= link_to "Delete", post_path(post.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-<% else %>
-  <p style="text-align: center; color: #999; padding: 3rem;">No posts yet. <%= link_to "Create one!", new_post_path %></p>
-<% end %>
+<%= turbo_stream_from "posts" %>
+<%= render "posts/list", posts: @posts, current_user: current_user %>

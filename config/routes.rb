@@ -5,6 +5,10 @@ Rails.application.routes.draw do
          omniauth_callbacks: 'users/omniauth_callbacks'
       }
   resources :posts do
+    member do
+      post :join
+      delete :leave
+    end
     resources :chats, only: [:new, :create]
   end
 

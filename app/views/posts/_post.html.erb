@@ -1,0 +1,30 @@
+<%# Renders one post card. `current_user` is passed as a local (nil in Turbo
+    broadcasts) so this partial never relies on request/Pundit state. %>
+<% member = current_user && post.member?(current_user) %>
+<% owner = current_user && post.user == current_user %>
+<div id="<%= dom_id(post) %>" style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+  <h3 style="color: #333; margin-bottom: 0.5rem;"><%= post.title %></h3>
+  <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+    <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
+  </p>
+
+  <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+    <p><strong>🎮 Game:</strong> <%= post.game %></p>
+    <p><strong>🖥️ Platform:</strong> <%= post.platform %></p>
+    <p><strong>🌐 Language:</strong> <%= post.language %></p>
+    <p><strong>👥 Type:</strong> <%= post.post_type %></p>
+    <p><%= render "posts/slots", post: post %></p>
+  </div>
+
+  <div style="display: flex; gap: 0.5rem;">
+    <% if member %>
+      <%= link_to "Open", post_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
+    <% else %>
+      <%= button_to "Join", join_post_path(post), method: :post, class: "btn", style: "flex: 1; text-align: center;" %>
+    <% end %>
+    <% if owner %>
+      <%= link_to "Edit", edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
+      <%= link_to "Delete", post_path(post.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    <% end %>
+  </div>
+</div>
