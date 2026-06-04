@@ -7,6 +7,8 @@ class PostsController < ApplicationController
     @posts = policy_scope(Post).includes(:user).order(created_at: :desc)
     @posts = Post.all
     @post = Post.new
+
+    @posts = @posts.by_platform(params[:platform]).by_game(params[:game]).by_type(params[:post_type]).by_language(params[:language])
   end
 
   def show
