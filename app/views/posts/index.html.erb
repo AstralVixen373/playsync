@@ -6,35 +6,35 @@
   <% end %>
 </div>
 
+<%= form_with url: posts_path, method: :get,
+              data: { controller: "form", action: "change->form#submit" } do |f| %>
+  <div style="display: flex; gap: 15px; align-items: flex-end;">
 
-<%= form_with(model: @post, local: true) do |form| %>
+    <div style="margin-bottom: 1rem">
+      <%= f.label :game, "Game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.text_field :game, value: params[:game], placeholder: "Search a game...", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
 
-  <!-- <div> -->
-    <!-- <%#= form.label :game, "Choose your game" %><br> -->
-    <%#= form.search_field :title_or_body_contains, placeholder: "put your game name here",value: params.dig(:query, :title_or_body_contains) %>
-  <!-- </div> -->
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :platform, "Platform", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :platform, Post::PLATFORMS, { include_blank: "All", selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
 
-  <div>
-  <%= form.label :game, "Choose your game" %><br>
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :post_type, Post::TYPES, { include_blank: "All", selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
 
-  <%= form.text_field :game, placeholder: "e.g., League of Legends", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-</div>
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :language, Post::LANGUAGES, { include_blank: "All", selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
 
-  <div>
-    <%= form.label :post_type, "Choose your gaming type" %><br>
-    <%= form.select :post_type, Post::TYPES, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    <div style="margin-bottom: 1.5rem;">
+      <%= link_to "Reset", posts_path if params.values_at(:platform, :game, :post_type, :language).any?(&:present?) %>
+    </div>
+
   </div>
-
-  <div>
-    <%= form.label :platform, "Choose your platform" %><br>
-    <%= form.select :platform, Post::PLATFORMS, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-  </div>
-
-  <div>
-    <%= form.label :language, "Choose your language" %><br>
-    <%= form.select :language, Post::LANGUAGES, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-  </div>
-
 <% end %>
 
 <% if @posts.any? %>
@@ -43,11 +43,11 @@
       <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <h3 style="color: #333; margin-bottom: 0.5rem;"><%= post.title %></h3>
         <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-          <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
+          <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email.split('@').first %>
         </p>
 
         <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-          <p><strong>🎮 Game:</strong> <%= post.game %></p>
+          <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
           <p><strong>🖥️ Platform:</strong> <%= post.platform %></p>
           <p><strong>🌐 Language:</strong> <%= post.language %></p>
           <p><strong>👥 Type:</strong> <%= post.post_type %></p>
