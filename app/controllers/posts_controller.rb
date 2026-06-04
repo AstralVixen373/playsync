@@ -5,10 +5,13 @@ class PostsController < ApplicationController
 
   def index
     @posts = policy_scope(Post).includes(:user).order(created_at: :desc)
-    @posts = Post.all
-    @post = Post.new
 
-    @posts = @posts.by_platform(params[:platform]).by_game(params[:game]).by_type(params[:post_type]).by_language(params[:language])
+    @posts = @posts.where(game_id: params[:game_id]) if params[:game_id].present?
+    @posts = @posts.where(post_type: params[:post_type]) if params[:post_type].present?
+    @posts = @posts.where(platform: params[:platform]) if params[:platform].present?
+    @posts = @posts.where(language: params[:language]) if params[:language].present?
+    
+    @post = Post.new
   end
 
   def show

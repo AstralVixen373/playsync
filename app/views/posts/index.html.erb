@@ -10,9 +10,20 @@
               data: { controller: "form", action: "change->form#submit" } do |f| %>
   <div style="display: flex; gap: 15px; align-items: flex-end;">
 
-    <div style="margin-bottom: 1rem">
-      <%= f.label :game, "Game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.text_field :game, value: params[:game], placeholder: "Search a game...", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :game_id, "Choose your game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+
+      <input
+        type="text"
+        id="filter-game-search"
+        placeholder="Search a game..."
+        autocomplete="off"
+        style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;"
+      >
+
+      <%= f.hidden_field :game_id, id: "filter-game-id" %>
+
+      <div id="filter-game-results"></div>
     </div>
 
     <div style="margin-bottom: 1rem;">
