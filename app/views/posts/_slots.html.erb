@@ -1,0 +1,6 @@
+<span id="<%= "#{dom_id(post)}_slots" %>">
+  <strong>🎯 <%= post.members_count %>/<%= post.capacity %> players</strong>
+  <% if post.full? %>
+    <span style="background: #dc3545; color: white; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 4px; margin-left: 0.4rem;">FULL</span>
+  <% end %>
+</span>

@@ -1,3 +1,4 @@
+<%= turbo_stream_from @post %>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
   <!-- Post Details -->
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem;">
@@ -9,13 +10,22 @@
       <p><strong>🖥️ Platform:</strong> <%= @post.platform %></p>
       <p><strong>🌐 Language:</strong> <%= @post.language %></p>
       <p><strong>👥 Type:</strong> <%= @post.post_type %></p>
-      <p><strong>🎯 Slot:</strong> <%= @post.slot %></p>
+      <p><%= render "posts/slots", post: @post %></p>
       <p style="color: #999; font-size: 0.9rem;"><strong>📅 Created:</strong> <%= @post.created_at.strftime("%b %d, %Y") %></p>
     </div>
 
+    <% if user_signed_in? %>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <% if @post.user == current_user %>
+          <span style="align-self: center; color: #666;">You created this match.</span>
+        <% elsif @is_member %>
+          <%= button_to "Leave match", leave_post_path(@post), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: "Leave this match?" } %>
+        <% elsif @post.full? %>
+          <button class="btn" disabled style="opacity: 0.6; cursor: not-allowed;">Full</button>
+        <% else %>
+          <%= button_to "Join match", join_post_path(@post), method: :post, class: "btn" %>
+        <% end %>
 
-    <% if policy(@post).edit? || policy(@post).destroy? %>
-      <div style="display: flex; gap: 0.5rem;">
         <% if policy(@post).edit? %>
           <%= link_to "Edit", edit_post_path(id: @post.id), class: "btn btn-secondary" %>
         <% end %>
@@ -31,17 +41,17 @@
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
     <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
 
-    <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
-      <% if @chat.messages.any? %>
-        <% @chat.messages.each do |message| %>
-          <%= render "messages/message", message: message %>
+    <% if @is_member && @chat %>
+      <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
+        <% if @chat.messages.any? %>
+          <% @chat.messages.each do |message| %>
+            <%= render "messages/message", message: message %>
+          <% end %>
+        <% else %>
+          <p style="color: #999; text-align: center;">No messages yet</p>
         <% end %>
-      <% else %>
-        <p style="color: #999; text-align: center;">No messages yet</p>
-      <% end %>
-    </div>
+      </div>
 
-    <% if user_signed_in? %>
       <%= form_with model: [@chat, @message], url: chat_messages_path(@chat) do |f| %>
         <div style="display: flex; gap: 0.5rem;">
           <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 60px;" %>
@@ -49,7 +59,13 @@
         </div>
       <% end %>
     <% else %>
-      <p style="color: #999;"><%= link_to "Sign in", new_user_session_path %> to chat</p>
+      <p style="color: #999; text-align: center; padding: 2rem;">
+        <% if @post.full? %>
+          This match is full — chat is reserved for its members.
+        <% else %>
+          Join the match to access the chat.
+        <% end %>
+      </p>
     <% end %>
   </div>
 </div>

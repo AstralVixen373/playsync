@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout *)",
+      "Bash(bin/rails runner *)",
+      "Bash(wsl -d ubuntu -- bash -lc 'cd ~/code/MonsieurKapp/playsync && bin/rails runner \"puts Post.new\\(slot: 3\\).capacity; puts Rails.application.routes.url_helpers.join_post_path\\(1\\); puts Rails.application.routes.url_helpers.leave_post_path\\(1\\)\" 2>&1 | tail -25')"
+    ]
+  }
+}

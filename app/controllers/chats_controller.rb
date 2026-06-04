@@ -9,9 +9,7 @@ class ChatsController < ApplicationController
   def create
     @post = Post.find(params[:post_id])
     authorize @post, :show?
-    @chat = @post.chat || @post.build_chat
-    @chat.save if @chat.new_record?
-    @chat.users << current_user unless @chat.users.include?(current_user)
-    redirect_to chat_path(@chat)
+    # Joining a match (and the slot limit) is handled by PostsController#join.
+    redirect_to post_path(@post)
   end
 end
