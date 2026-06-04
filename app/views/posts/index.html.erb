@@ -6,19 +6,23 @@
   <% end %>
 </div>
 
+<%= form_with url: posts_path, method: :get, local: true do |form| %>
 
-<%= form_with(model: @post, local: true) do |form| %>
+  <div style="margin-bottom: 1rem;">
+    <%= form.label :game_id, "Choose your game", style: "display: block; margin-bottom: 0.5rem;" %>
 
-  <!-- <div> -->
-    <!-- <%#= form.label :game, "Choose your game" %><br> -->
-    <%#= form.search_field :title_or_body_contains, placeholder: "put your game name here",value: params.dig(:query, :title_or_body_contains) %>
-  <!-- </div> -->
+    <input
+      type="text"
+      id="filter-game-search"
+      placeholder="Search a game..."
+      autocomplete="off"
+      style="width:100%; padding:0.5rem;"
+    >
 
-  <div>
-  <%= form.label :game, "Choose your game" %><br>
+    <%= form.hidden_field :game_id, id: "filter-game-id" %>
 
-  <%= form.text_field :game, placeholder: "e.g., League of Legends", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-</div>
+    <div id="filter-game-results"></div>
+  </div>
 
   <div>
     <%= form.label :post_type, "Choose your gaming type" %><br>
