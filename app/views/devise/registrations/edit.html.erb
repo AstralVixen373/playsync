@@ -4,9 +4,8 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <% if resource.avatar.attached? %>
+    <% if resource.avatar.attachment&.persisted? %>
       <%= image_tag resource.avatar, class: "rounded-circle mb-2", style: "width: 120px; height: 120px;", alt: "Current avatar" %>
-      <%#= image_tag resource.avatar.variant(resize_to_limit: [120, 120]), class: "rounded-circle mb-2", alt: "Current avatar" %>
     <% end %>
     <%= f.input :avatar, as: :file, label: "Avatar", input_html: { accept: "image/*" } %>
 
@@ -24,10 +23,6 @@
     <%= f.input :password_confirmation,
                 required: false,
                 input_html: { autocomplete: "new-password" } %>
-    <%= f.input :current_password,
-                hint: "we need your current password to confirm your changes",
-                required: true,
-                input_html: { autocomplete: "current-password" } %>
   </div>
 
   <div class="form-actions">
