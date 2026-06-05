@@ -31,9 +31,11 @@ class IgdbImporter
     games = JSON.parse(response.body)
 
     games.each do |game|
-      Game.find_or_create_by!(igdb_id: game["id"]) do |g|
-        g.name = game["name"]
-      end
+      Game.find_or_initialize_by(igdb_id: game["id"]).update!(
+        name: game["name"]
+      )
     end
+
+    games.size
   end
 end
