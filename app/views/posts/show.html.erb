@@ -55,6 +55,8 @@
     <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
 
     <% if @is_member && @chat %>
+      <%= render "posts/voice", post: @post %>
+
       <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
         <% if @chat.messages.any? %>
           <% @chat.messages.each do |message| %>

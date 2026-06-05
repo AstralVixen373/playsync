@@ -1,0 +1,24 @@
+<div data-controller="voice"
+     data-voice-post-id-value="<%= post.id %>"
+     data-voice-user-id-value="<%= current_user.id %>"
+     style="margin-bottom: 1rem; padding: 1rem; background: #f3f0ff; border: 1px solid #e0dcff; border-radius: 4px;">
+  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+    <strong style="margin-right: 0.25rem;">🎙️ Vocal</strong>
+    <button type="button" class="btn"
+            data-voice-target="joinButton" data-action="voice#join">
+      Rejoindre le vocal
+    </button>
+    <button type="button" class="btn btn-secondary"
+            data-voice-target="muteButton" data-action="voice#toggleMute"
+            style="display: none;">
+      🔇 Couper le micro
+    </button>
+    <button type="button" class="btn btn-danger"
+            data-voice-target="leaveButton" data-action="voice#leave"
+            style="display: none;">
+      Quitter le vocal
+    </button>
+    <span data-voice-target="status" style="color: #666; font-size: 0.9rem;"></span>
+  </div>
+  <div data-voice-target="audios"></div>
+</div>

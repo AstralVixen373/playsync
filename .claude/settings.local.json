@@ -3,7 +3,18 @@
     "allow": [
       "Bash(git checkout *)",
       "Bash(bin/rails runner *)",
-      "Bash(wsl -d ubuntu -- bash -lc 'cd ~/code/MonsieurKapp/playsync && bin/rails runner \"puts Post.new\\(slot: 3\\).capacity; puts Rails.application.routes.url_helpers.join_post_path\\(1\\); puts Rails.application.routes.url_helpers.leave_post_path\\(1\\)\" 2>&1 | tail -25')"
+      "Bash(wsl -d ubuntu -- bash -lc 'cd ~/code/MonsieurKapp/playsync && bin/rails runner \"puts Post.new\\(slot: 3\\).capacity; puts Rails.application.routes.url_helpers.join_post_path\\(1\\); puts Rails.application.routes.url_helpers.leave_post_path\\(1\\)\" 2>&1 | tail -25')",
+      "Bash(bin/rails db:migrate)",
+      "Bash(wsl -d ubuntu -- bash -lc \"cd /home/kapp/code/MonsieurKapp/playsync && bin/rails db:migrate 2>&1 | tail -40\")",
+      "Bash(xargs grep -l \"actioncable\\\\|action_cable\\\\|cable\")",
+      "Read(///wsl.localhost/ubuntu/home/kapp/code/MonsieurKapp/**)",
+      "Bash(ls -R app/channels)",
+      "Bash(ls vendor/javascript)",
+      "Bash(find app/channels -type f)",
+      "Bash(find app/javascript -type f)",
+      "Bash(find vendor/javascript -type f)",
+      "Bash(cat config/cable.yml)",
+      "Bash(cd \"//wsl.localhost/ubuntu/home/kapp/code/MonsieurKapp/playsync\"; echo \"=== controllers/index.js ===\"; cat app/javascript/controllers/index.js; echo \"=== controllers/application.js ===\"; cat app/javascript/controllers/application.js; echo \"=== app/javascript/application.js ===\"; cat app/javascript/application.js)"
     ]
   }
 }
