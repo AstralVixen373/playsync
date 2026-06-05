@@ -1,7 +1,7 @@
 class IgdbImportJob < ApplicationJob
   queue_as :default
 
-  def perform(max_pages: 3)
+  def perform(max_pages: nil)
     # Do something later
     Rails.logger.info("=== IGDB IMPORT STARTED ===")
     offset = 0
