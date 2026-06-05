@@ -12,7 +12,7 @@
 development:
   import_igdb_games:
     class: IgdbImportJob
-    schedule: every minute
+    schedule: every day at 4pm
 
 production:
   clear_solid_queue_finished_jobs:
