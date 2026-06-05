@@ -13,11 +13,10 @@ class MatchesController < ApplicationController
     @posts = (created + joined).uniq(&:id)
 
     @posts = Post.all
-
-    @posts = @posts.where(game_id: params[:game_id]) if params[:game_id].present?
-    @posts = @posts.where(platform: params[:platform]) if params[:platform].present?
-    @posts = @posts.where(post_type: params[:post_type]) if params[:post_type].present?
-    @posts = @posts.where(language: params[:language]) if params[:language].present?
+                 .with_games(params[:game_id])
+                 .with_platforms(params[:platform])
+                 .with_types(params[:post_type])
+                 .for_language(params[:language])
   end
 
   def show

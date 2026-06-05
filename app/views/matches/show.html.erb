@@ -13,7 +13,7 @@
         <% end %>
       </p>
       <p><strong>🎮 Game:</strong> <%= @post.game.name %></p>
-      <p><strong>🖥️ Platform:</strong> <%= @post.platform %></p>
+      <p><strong>🖥️ Platform:</strong> <%= @post.platforms.join(", ") %></p>
       <p><strong>🌐 Language:</strong> <%= @post.language %></p>
       <p><strong>👥 Type:</strong> <%= @post.post_type %></p>
       <p><strong>🎯 Slots:</strong> <%= @post.slot %></p>

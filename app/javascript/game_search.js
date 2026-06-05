@@ -1,4 +1,5 @@
 document.addEventListener("turbo:load", () => {
+  // --- Create / edit a post: single game selection -------------------------
   const input = document.getElementById("game-search");
   const results = document.getElementById("game-results");
   const hiddenInput = document.getElementById("game-id");
@@ -35,36 +36,86 @@ document.addEventListener("turbo:load", () => {
     });
   }
 
-  const filterInput = document.getElementById("filter-game-search");
-  const filterResults = document.getElementById("filter-game-results");
-  const filterHiddenInput = document.getElementById("filter-game-id");
+  // --- Reusable multi game picker (chips) ----------------------------------
+  // Used on the search page (auto-submits the filter form) and on the profile
+  // preferences form (no auto-submit — saved on form submit).
+  const initGameMulti = (prefix, { autoSubmit } = {}) => {
+    const searchInput = document.getElementById(`${prefix}-game-search`);
+    const searchResults = document.getElementById(`${prefix}-game-results`);
+    const chips = document.getElementById(`${prefix}-game-chips`);
+    if (!searchInput || !chips) return;
 
-  if (filterInput) {
-    filterInput.addEventListener("input", async () => {
-      const query = filterInput.value;
+    const form = searchInput.closest("form");
+    const maybeSubmit = () => { if (autoSubmit && form) form.requestSubmit(); };
+
+    const hasGame = (id) =>
+      chips.querySelector(`input[name="${chips.dataset.field}"][value="${id}"]`) !== null;
+
+    const addChip = (game) => {
+      if (hasGame(game.id)) return;
+
+      const chip = document.createElement("span");
+      chip.className = "game-chip";
+      chip.style.cssText =
+        "display: inline-flex; align-items: center; gap: 0.3rem; background: #eef; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;";
+
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.name = chips.dataset.field;
+      hidden.value = game.id;
+
+      const label = document.createElement("span");
+      label.textContent = game.name;
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "game-chip-remove";
+      remove.textContent = "×";
+      remove.style.cssText =
+        "border: none; background: none; cursor: pointer; font-weight: bold;";
+
+      chip.append(hidden, label, remove);
+      chips.appendChild(chip);
+    };
+
+    searchInput.addEventListener("input", async () => {
+      const query = searchInput.value;
 
       if (query.length < 2) {
-        filterResults.innerHTML = "";
+        searchResults.innerHTML = "";
         return;
       }
 
       const response = await fetch(`/games/search?q=${query}`);
       const games = await response.json();
 
-      filterResults.innerHTML = "";
+      searchResults.innerHTML = "";
 
       games.forEach(game => {
         const item = document.createElement("div");
         item.textContent = game.name;
+        item.style.cursor = "pointer";
+        item.style.padding = "8px";
 
         item.addEventListener("click", () => {
-          filterInput.value = game.name;
-          filterHiddenInput.value = game.id;
-          filterResults.innerHTML = "";
+          addChip(game);
+          searchInput.value = "";
+          searchResults.innerHTML = "";
+          maybeSubmit();
         });
 
-        filterResults.appendChild(item);
+        searchResults.appendChild(item);
       });
     });
-  }
+
+    chips.addEventListener("click", (event) => {
+      if (!event.target.classList.contains("game-chip-remove")) return;
+
+      event.target.closest(".game-chip").remove();
+      maybeSubmit();
+    });
+  };
+
+  initGameMulti("filter", { autoSubmit: true });
+  initGameMulti("profile", { autoSubmit: false });
 });

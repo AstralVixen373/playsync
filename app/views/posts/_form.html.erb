@@ -24,6 +24,7 @@
         id="game-search"
         placeholder="Search a game..."
         autocomplete="off"
+        value="<%= post.game&.name %>"
         style="width:100%; padding:0.5rem;"
       >
 
@@ -33,8 +34,8 @@
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :platform, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :platform, Post::PLATFORMS, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :platforms, "Platforms", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= render "shared/multiselect", name: "post[platforms][]", options: Post::PLATFORMS, selected: post.platforms, placeholder: "Select platform(s)" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
