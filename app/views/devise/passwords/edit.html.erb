@@ -1,7 +1,9 @@
 <h2>Change your password</h2>
 
 <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <div id="error-notification">
   <%= f.error_notification %>
+</div>
 
   <%= f.input :reset_password_token, as: :hidden %>
   <%= f.full_error :reset_password_token %>
@@ -25,3 +27,23 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const errorFlash = document.getElementById("error-notification");
+
+    // On vérifie si la notification contient bien du texte (si une erreur existe)
+    if (errorFlash && errorFlash.innerText.trim() !== "") {
+      setTimeout(() => {
+        // Effet de transition pour une disparition fluide
+        errorFlash.style.transition = "opacity 0.5s ease";
+        errorFlash.style.opacity = "0";
+
+        // On retire complètement l'élément du DOM après l'effet
+        setTimeout(() => {
+          errorFlash.remove();
+        }, 500);
+      }, 5000); // 5000 ms = 5 secondes avant de commencer à disparaître
+    }
+  });
+</script>
