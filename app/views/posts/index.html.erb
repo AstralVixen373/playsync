@@ -8,10 +8,14 @@
 
 <%= form_with url: posts_path, method: :get,
               data: { controller: "form", action: "change->form#submit" } do |f| %>
-  <div style="display: flex; gap: 15px; align-items: flex-end;">
+  <%# Marks any form submission as user-driven so the controller honours the
+      current selection (even empty) instead of falling back to preferences. %>
+  <%= hidden_field_tag :committed, "1" %>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :game_id, "Choose your game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+  <div style="display: flex; gap: 15px; align-items: flex-start;">
+
+    <div style="margin-bottom: 1rem; min-width: 220px;">
+      <%= label_tag :filter_game_search, "Games", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
 
       <input
         type="text"
@@ -21,28 +25,37 @@
         style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;"
       >
 
-      <%= f.hidden_field :game_id, id: "filter-game-id" %>
-
       <div id="filter-game-results"></div>
+
+      <%# Selected games become chips, each carrying a game_ids[] hidden input. %>
+      <div id="filter-game-chips" data-field="game_ids[]" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+        <% @selected_games.each do |game| %>
+          <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: #eef; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
+            <%= hidden_field_tag "game_ids[]", game.id %>
+            <%= game.name %>
+            <button type="button" class="game-chip-remove" style="border: none; background: none; cursor: pointer; font-weight: bold;">×</button>
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 1rem; min-width: 160px;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Platform</label>
+      <%= render "shared/multiselect", name: "platforms[]", options: Post::PLATFORMS, selected: @selected_platforms, placeholder: "All" %>
+    </div>
+
+    <div style="margin-bottom: 1rem; min-width: 140px;">
+      <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Type</label>
+      <%= render "shared/multiselect", name: "post_types[]", options: Post::TYPES, selected: @selected_post_types, placeholder: "All" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :platform, "Platform", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :platform, Post::PLATFORMS, { include_blank: "All", selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= label_tag :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= select_tag :language, options_for_select(Post::LANGUAGES, @selected_language), include_blank: "All", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
     </div>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :post_type, Post::TYPES, { include_blank: "All", selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-    </div>
-
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :language, Post::LANGUAGES, { include_blank: "All", selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-    </div>
-
-    <div style="margin-bottom: 1.5rem;">
-      <%= link_to "Reset", posts_path if params.values_at(:platform, :game, :post_type, :language).any?(&:present?) %>
+    <div style="margin-bottom: 1.5rem; align-self: flex-end;">
+      <%= link_to "Reset", posts_path %>
     </div>
 
   </div>

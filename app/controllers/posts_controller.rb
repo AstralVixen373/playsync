@@ -4,13 +4,23 @@ class PostsController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @posts = policy_scope(Post).with_free_slots.includes(:user).order(created_at: :desc)
+    @posts = policy_scope(Post).with_free_slots.includes(:user, :game).order(created_at: :desc)
 
-    @posts = @posts.where(game_id: params[:game_id]) if params[:game_id].present?
-    @posts = @posts.where(post_type: params[:post_type]) if params[:post_type].present?
-    @posts = @posts.where(platform: params[:platform]) if params[:platform].present?
-    @posts = @posts.where(language: params[:language]) if params[:language].present?
+    # On a fresh visit (no `committed` flag) the filters default to the user's
+    # saved preferences. Once the user touches the form, `committed` is set and
+    # we honour exactly what they selected (including clearing everything).
+    committed = params[:committed].present?
+    @selected_game_ids   = committed ? clean_filter(params[:game_ids])   : current_user.preferred_game_ids
+    @selected_platforms  = committed ? clean_filter(params[:platforms])  : current_user.preferred_platforms
+    @selected_post_types = committed ? clean_filter(params[:post_types]) : current_user.preferred_post_types
+    @selected_language   = committed ? params[:language].presence        : current_user.preferred_language
 
+    @posts = @posts.with_games(@selected_game_ids)
+                   .with_platforms(@selected_platforms)
+                   .with_types(@selected_post_types)
+                   .for_language(@selected_language)
+
+    @selected_games = Game.where(id: @selected_game_ids)
     @post = Post.new
   end
 
@@ -23,7 +33,15 @@ class PostsController < ApplicationController
   end
 
   def new
-    @post = Post.new
+    # Pre-fill the form from the user's saved preferences. A post holds a single
+    # game / type / language, so we take the first preferred value for those;
+    # platforms is multi-valued so all preferred platforms are pre-selected.
+    @post = Post.new(
+      platforms: current_user.preferred_platforms,
+      post_type: current_user.preferred_post_types.first,
+      language: current_user.preferred_language,
+      game_id: current_user.preferred_game_ids.first
+    )
     authorize @post
   end
 
@@ -146,6 +164,10 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :game_id, :platform, :language, :post_type, :slot)
+    params.require(:post).permit(:title, :game_id, :language, :post_type, :slot, platforms: [])
+  end
+
+  def clean_filter(values)
+    Array(values).reject(&:blank?)
   end
 end

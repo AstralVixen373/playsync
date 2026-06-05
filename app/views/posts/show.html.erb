@@ -7,7 +7,7 @@
     <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
       <p><strong>👤 Posted by:</strong> <%= @post.user.username.presence || @post.user.email %></p>
       <p><strong>🎮 Game:</strong> <%= @post.game.name %></p>
-      <p><strong>🖥️ Platform:</strong> <%= @post.platform %></p>
+      <p><strong>🖥️ Platform:</strong> <%= @post.platforms.join(", ") %></p>
       <p><strong>🌐 Language:</strong> <%= @post.language %></p>
       <p><strong>👥 Type:</strong> <%= @post.post_type %></p>
       <p><%= render "posts/slots", post: @post %></p>
@@ -55,6 +55,8 @@
     <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
 
     <% if @is_member && @chat %>
+      <%= render "posts/voice", post: @post %>
+
       <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
         <% if @chat.messages.any? %>
           <% @chat.messages.each do |message| %>

@@ -12,4 +12,23 @@ class User < ApplicationRecord
   has_many :chats, through: :user_chats
 
   has_one_attached :avatar
+
+  # Saved filter preferences pre-fill the search and the new-post form.
+  # Multi-selects submit a blank entry, so strip blanks before saving.
+  before_validation :clean_filter_preferences
+
+  # The games behind the saved preferred_game_ids (for displaying chips).
+  def preferred_games
+    return Game.none if preferred_game_ids.blank?
+
+    Game.where(id: preferred_game_ids)
+  end
+
+  private
+
+  def clean_filter_preferences
+    self.preferred_platforms  = Array(preferred_platforms).reject(&:blank?)
+    self.preferred_post_types = Array(preferred_post_types).reject(&:blank?)
+    self.preferred_game_ids   = Array(preferred_game_ids).reject(&:blank?).map(&:to_i)
+  end
 end

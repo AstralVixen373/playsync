@@ -14,6 +14,53 @@
     <%= f.input :email, required: true, autofocus: true %>
     <%= f.input :username, required: false, autofocus: true %>
 
+    <fieldset data-controller="preferences" style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem; margin: 1rem 0;">
+      <legend style="font-weight: bold; padding: 0 0.5rem;">🎮 Filter preferences</legend>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;">
+        <p style="color: #888; font-size: 0.85rem; margin-top: 0;">
+          These pre-fill the search and the new-post form. Leave empty for no preference.
+        </p>
+        <%= button_tag "Reset filters", type: "button",
+              data: { action: "preferences#reset" },
+              style: "border: none; background: none; color: #007bff; cursor: pointer; padding: 0; white-space: nowrap;" %>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred games</label>
+        <input type="text" id="profile-game-search" placeholder="Search a game..."
+               autocomplete="off"
+               style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;">
+        <div id="profile-game-results"></div>
+        <div id="profile-game-chips" data-field="user[preferred_game_ids][]"
+             style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+          <%# Always submit at least an empty value so games can be cleared. %>
+          <input type="hidden" name="user[preferred_game_ids][]" value="">
+          <% resource.preferred_games.each do |game| %>
+            <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: #eef; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
+              <input type="hidden" name="user[preferred_game_ids][]" value="<%= game.id %>">
+              <%= game.name %>
+              <button type="button" class="game-chip-remove" style="border: none; background: none; cursor: pointer; font-weight: bold;">×</button>
+            </span>
+          <% end %>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred platforms</label>
+        <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: "No preference", include_hidden: true %>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred types</label>
+        <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: "No preference", include_hidden: true %>
+      </div>
+
+      <%= f.input :preferred_language,
+                  collection: Post::LANGUAGES,
+                  include_blank: "No preference",
+                  label: "Preferred language" %>
+    </fieldset>
+
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
     <% end %>

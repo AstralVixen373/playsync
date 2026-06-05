@@ -71,7 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_05_125241) do
     t.datetime "created_at", null: false
     t.bigint "game_id", null: false
     t.string "language"
-    t.string "platform"
+    t.string "platforms", default: [], array: true
     t.string "post_type"
     t.integer "slot"
     t.string "title"
@@ -237,6 +237,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_05_125241) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.integer "preferred_game_ids", default: [], array: true
+    t.string "preferred_language"
+    t.string "preferred_platforms", default: [], array: true
+    t.string "preferred_post_types", default: [], array: true
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
