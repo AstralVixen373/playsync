@@ -29,5 +29,8 @@ module Playsync
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    
+    # Configuration of the Solid Queue Job Scheduler
+    config.active_job.queue_adapter = :solid_queue
   end
 end
