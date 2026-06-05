@@ -1,27 +1,4 @@
-<h2>Resend unlock instructions</h2>
 
-<%= simple_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-  <div id="error-notification">
-  <%= f.error_notification %>
-  <%= f.full_error :unlock_token %>
-</div>
-
-
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Resend unlock instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
-
-<script>
   document.addEventListener("DOMContentLoaded", () => {
     const errorFlash = document.getElementById("error-notification");
 
@@ -39,4 +16,3 @@
       }, 5000); // 5000 ms = 5 secondes avant de commencer à disparaître
     }
   });
-</script>

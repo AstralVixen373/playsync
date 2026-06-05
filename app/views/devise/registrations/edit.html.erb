@@ -1,7 +1,9 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <div id="error-notification">
   <%= f.error_notification %>
+</div>
 
   <div class="form-inputs">
     <% if resource.avatar.attachment&.persisted? %>
@@ -35,3 +37,23 @@
 <div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
 
 <%= link_to "Back", :back %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const errorFlash = document.getElementById("error-notification");
+
+    // On vérifie si la notification contient bien du texte (si une erreur existe)
+    if (errorFlash && errorFlash.innerText.trim() !== "") {
+      setTimeout(() => {
+        // Effet de transition pour une disparition fluide
+        errorFlash.style.transition = "opacity 0.5s ease";
+        errorFlash.style.opacity = "0";
+
+        // On retire complètement l'élément du DOM après l'effet
+        setTimeout(() => {
+          errorFlash.remove();
+        }, 500);
+      }, 5000); // 5000 ms = 5 secondes avant de commencer à disparaître
+    }
+  });
+</script>

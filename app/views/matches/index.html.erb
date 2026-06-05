@@ -1,5 +1,48 @@
 <h1 style="margin-bottom: 2rem;">My Matches</h1>
 
+<%= form_with url: my_matches_path, method: :get,
+              data: { controller: "form", action: "change->form#submit" } do |f| %>
+  <div style="display: flex; gap: 15px; align-items: flex-end;">
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :game_id, "Choose your game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+
+      <input
+        type="text"
+        id="filter-game-search"
+        placeholder="Search a game..."
+        autocomplete="off"
+        style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;"
+      >
+
+      <%= f.hidden_field :game_id, id: "filter-game-id" %>
+
+      <div id="filter-game-results"></div>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :platform, "Platform", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :platform, Post::PLATFORMS, { include_blank: "All", selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :post_type, Post::TYPES, { include_blank: "All", selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :language, Post::LANGUAGES, { include_blank: "All", selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <%= link_to "Reset", my_matches_path if params.values_at(:platform, :game, :post_type, :language).any?(&:present?) %>
+    </div>
+
+  </div>
+<% end %>
+
+
 <% if @posts.any? %>
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
     <% @posts.each do |post| %>
@@ -13,13 +56,13 @@
         </p>
 
         <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-          <p><strong>🎮 Game:</strong> <%= post.game %></p>
+          <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
           <p><strong>🖥️ Platform:</strong> <%= post.platform %></p>
           <p><strong>🌐 Language:</strong> <%= post.language %></p>
           <p><strong>👥 Type:</strong> <%= post.post_type %></p>
         </div>
 
-        <%= link_to "View", my_match_path(post), class: "btn", style: "width: 100%; text-align: center; display: block;" %>
+        <%= link_to "View", post_path(post), class: "btn", style: "width: 100%; text-align: center; display: block;" %>
       </div>
     <% end %>
   </div>
