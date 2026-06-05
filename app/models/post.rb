@@ -34,6 +34,10 @@ class Post < ApplicationRecord
     chat&.users&.count || 0
   end
 
+  def remaining_slots
+    capacity - members_count
+  end
+
   def full?
     members_count >= capacity
   end
