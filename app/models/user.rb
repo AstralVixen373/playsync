@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:google_oauth2]
+         :omniauthable, omniauth_providers: [:steam]
 
   has_many :posts, dependent: :destroy
   has_many :messages, dependent: :destroy
@@ -12,6 +12,14 @@ class User < ApplicationRecord
   has_many :chats, through: :user_chats
 
   has_one_attached :avatar
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
+      user.email      = "#{auth.uid}@steam.com" # Steam ne return pas de d'email; donc on le crée nous même via le uid Steam.
+      user.password   = Devise.friendly_token[0, 20]
+      # user.avatar = auth.info.image # Commentaire provisoire jusqu'à avoir avatar_url en colonne de user
+    end.tap(&:save!)
+  end
 
   # Saved filter preferences pre-fill the search and the new-post form.
   # Multi-selects submit a blank entry, so strip blanks before saving.
