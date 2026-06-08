@@ -3,7 +3,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   skip_before_action :verify_authenticity_token, only: %i[steam]
 
   def steam
-    user = User.from_omniauth(auth) # comment lui indiquer de se rediriger vers "https://steamcommunity.com/openid/loginform"
+    user = User.from_omniauth(auth)
     user.save if user.new_record? # Save the user if it's a new record
     if user.present?
       sign_out_all_scopes
@@ -12,6 +12,20 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       flash[:alert] =
         t 'devise.omniauth_callbacks.failure', kind: 'steam', reason: "#{auth.info.email} is not authorized."
+      redirect_to new_user_session_path
+    end
+  end
+
+  def twitch
+    user = User.from_omniauth(auth)
+    user.save if user.new_record? # Save the user if it's a new record
+    if user.present?
+      sign_out_all_scopes
+      flash[:success] = t 'devise.omniauth_callbacks.success', kind: 'twitch'
+      sign_in_and_redirect user, event: :authentication
+    else
+      flash[:alert] =
+        t 'devise.omniauth_callbacks.failure', kind: 'twitch', reason: "#{auth.info.email} is not authorized."
       redirect_to new_user_session_path
     end
   end

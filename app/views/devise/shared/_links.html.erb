@@ -31,7 +31,18 @@
           <%= image_tag "https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png",
                 alt: "steam connection button",
                 aria: { hidden: true },
-                class: "w-180 h-35" %>
+                class: "steam_logo" %>
+        <% end %>
+      <% end %>
+      <% if provider.to_s == "twitch" %>
+        <%= button_to user_twitch_omniauth_authorize_path,
+              method: :post,
+              form: { data: { turbo: "false" } },
+              class: "auth-provider-form" do %>
+          <%= image_tag "twitch_emblem.png",
+                alt: "Twitch connection button",
+                aria: { hidden: true },
+                class: "twitch_logo" %>
         <% end %>
       <% end %>
     <% end %>
