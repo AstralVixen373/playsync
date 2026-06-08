@@ -4,19 +4,22 @@ class MatchesController < ApplicationController
   def index
     authorize :match, :index?
 
-    created = current_user.posts.includes(:user)
-    joined  = Post.joins(chat: :user_chats)
-                  .where(user_chats: { user_id: current_user.id })
-                  .where.not(user_id: current_user.id)
-                  .includes(:user)
+    base = Post.where(
+      id: current_user.posts.select(:id)
+    ).or(
+      Post.where(
+        id: Post.joins(chat: :user_chats)
+                .where(user_chats: { user_id: current_user.id })
+                .where.not(user_id: current_user.id)
+                .select(:id)
+      )
+    ).includes(:user, :game)
 
-    @posts = (created + joined).uniq(&:id)
-
-    @posts = Post.all
-                 .with_games(params[:game_id])
+    @posts = base.with_games(params[:game_id])
                  .with_platforms(params[:platform])
                  .with_types(params[:post_type])
                  .for_language(params[:language])
+                 .order(Arel.sql("CASE WHEN posts.status = 'open' THEN 0 ELSE 1 END"), created_at: :desc)
   end
 
   def show

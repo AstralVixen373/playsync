@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @posts = policy_scope(Post).with_free_slots.includes(:user, :game).order(created_at: :desc)
+    @posts = policy_scope(Post).open.with_free_slots.includes(:user, :game).order(created_at: :desc)
 
     # On a fresh visit (no `committed` flag) the filters default to the user's
     # saved preferences. Once the user touches the form, `committed` is set and
@@ -107,6 +107,18 @@ class PostsController < ApplicationController
     redirect_to post_path(@post), notice: notice, alert: alert
   end
 
+  def finish
+    @post = Post.find(params[:id])
+    authorize @post
+
+    if @post.update(status: "finished")
+      broadcast_post_changes(@post)
+      redirect_to post_path(@post), notice: "Match marked as finished."
+    else
+      redirect_to post_path(@post), alert: "Could not update the match status."
+    end
+  end
+
   def leave
     @post = Post.find(params[:id])
     authorize @post, :show?
@@ -137,7 +149,7 @@ class PostsController < ApplicationController
       "posts",
       target: "posts_list",
       partial: "posts/list",
-      locals: { posts: Post.with_free_slots.includes(:user).order(created_at: :desc), current_user: nil }
+      locals: { posts: Post.open.with_free_slots.includes(:user).order(created_at: :desc), current_user: nil }
     )
 
     # Refresh the slot counter on the post page for everyone watching it.

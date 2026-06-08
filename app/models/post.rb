@@ -2,12 +2,18 @@ class Post < ApplicationRecord
   PLATFORMS = ["PC", "PS5", "Xbox", "Nintendo Switch", "Mobile"]
   LANGUAGES = ["English", "French", "Spanish", "German", "Other"]
   TYPES = ["Chill", "Fun", "Competitive"]
+  STATUSES = %w[open finished].freeze
+
+  enum :status, { open: "open", finished: "finished" }, prefix: false
+
+  before_create :set_default_status
 
   # A post can target several platforms (e.g. crossplay), so platforms is an
   # array. The multi-select sends a blank entry, so we strip it out first.
   before_validation :clean_platforms
 
   validates :title, presence: true
+  validates :status, inclusion: { in: STATUSES }
   validates :platforms, presence: true
   validate  :platforms_within_allowed_list
   validates :post_type, presence: true, inclusion: { in: TYPES }
@@ -56,6 +62,10 @@ class Post < ApplicationRecord
   end
 
   private
+
+  def set_default_status
+    self.status ||= "open"
+  end
 
   def clean_platforms
     self.platforms = Array(platforms).reject(&:blank?)

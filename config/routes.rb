@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     member do
       post :join
       delete :leave
+      patch :finish
     end
     resources :chats, only: [:new, :create]
   end
