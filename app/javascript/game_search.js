@@ -111,7 +111,11 @@ document.addEventListener("turbo:load", () => {
     chips.addEventListener("click", (event) => {
       if (!event.target.classList.contains("game-chip-remove")) return;
 
-      event.target.closest(".game-chip").remove();
+      // Server-rendered chips use `.ps-game-chip`; JS-added ones use `.game-chip`.
+      const chip = event.target.closest(".game-chip, .ps-game-chip");
+      if (!chip) return;
+
+      chip.remove();
       maybeSubmit();
     });
   };

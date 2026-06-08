@@ -1,4 +1,7 @@
-<h1 style="margin-bottom: 2rem;">My Matches</h1>
+<% content_for :page_title do %>
+  <h1>My Matches</h1>
+  <p>Your sessions in progress and finished</p>
+<% end %>
 
 <%= form_with url: my_matches_path, method: :get,
               data: { controller: "form", action: "change->form#submit" } do |f| %>
@@ -64,7 +67,7 @@
 
         <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
           <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
-          <p><strong>🖥️ Platform:</strong> <%= post.platforms.join(", ") %></p>
+          <p><strong>🖥️ Platform:</strong> <%= platform_list(post.platforms) %></p>
           <p><strong>🌐 Language:</strong> <%= post.language %></p>
           <p><strong>👥 Type:</strong> <%= post.post_type %></p>
         </div>

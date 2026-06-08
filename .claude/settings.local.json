@@ -17,7 +17,24 @@
       "Bash(cd \"//wsl.localhost/ubuntu/home/kapp/code/MonsieurKapp/playsync\"; echo \"=== controllers/index.js ===\"; cat app/javascript/controllers/index.js; echo \"=== controllers/application.js ===\"; cat app/javascript/controllers/application.js; echo \"=== app/javascript/application.js ===\"; cat app/javascript/application.js)",
       "Bash(ls -la db/*.yml)",
       "Bash(ls -la db/schema_cache*)",
-      "Bash(wsl -d ubuntu -e bash -lc \"cd /home/kapp/code/MonsieurKapp/playsync && bin/rails runner \\\\\"Rails.application.eager_load!; p Post.type_for_attribute\\('status'\\).class; p Post.statuses; puts 'OK enum resolved'\\\\\" 2>&1 | tail -25\")"
+      "Bash(wsl -d ubuntu -e bash -lc \"cd /home/kapp/code/MonsieurKapp/playsync && bin/rails runner \\\\\"Rails.application.eager_load!; p Post.type_for_attribute\\('status'\\).class; p Post.statuses; puts 'OK enum resolved'\\\\\" 2>&1 | tail -25\")",
+      "Bash(xargs grep -l \"platform\")",
+      "Bash(cp /tmp/xbox-v9.svg app/assets/images/platforms/xbox.svg)",
+      "Bash(cp /tmp/nintendoswitch-v9.svg app/assets/images/platforms/nintendoswitch.svg)",
+      "Bash(grep -vE '^\\\\s*#|^\\\\s*$')",
+      "Bash(grep -n \"LANGUAGES\\\\|TYPES\\\\|PLATFORMS\" \"\\\\\\\\\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\app\\\\models\\\\post.rb\")",
+      "Bash(curl -fsSL \"https://emojicdn.elk.sh/%F0%9F%98%8E?style=apple\" -o app/assets/images/emojis/chill.png)",
+      "Bash(curl -fsSL \"https://emojicdn.elk.sh/%F0%9F%8E%89?style=apple\" -o app/assets/images/emojis/fun.png)",
+      "Bash(curl -fsSL \"https://emojicdn.elk.sh/%F0%9F%8F%86?style=apple\" -o app/assets/images/emojis/competitive.png)",
+      "Bash(curl -fsSL \"https://emojicdn.elk.sh/%F0%9F%8C%90?style=apple\" -o app/assets/images/emojis/globe.png)",
+      "Bash(file app/assets/images/emojis/*.png)",
+      "Read(///wsl.localhost/ubuntu/home/kapp/code/MonsieurKapp/playsync/app/assets/stylesheets/config/**)",
+      "Read(///wsl.localhost/ubuntu/home/kapp/code/MonsieurKapp/playsync/app/assets/stylesheets/**)",
+      "Read(//dev/**)",
+      "Bash(node -e \"const fs=require\\('fs'\\);const p='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\wsl.localhost\\\\\\\\\\\\\\\\ubuntu\\\\\\\\\\\\\\\\home\\\\\\\\\\\\\\\\kapp\\\\\\\\\\\\\\\\code\\\\\\\\\\\\\\\\MonsieurKapp\\\\\\\\\\\\\\\\playsync\\\\\\\\\\\\\\\\app\\\\\\\\\\\\\\\\assets\\\\\\\\\\\\\\\\stylesheets\\\\\\\\\\\\\\\\pages\\\\\\\\\\\\\\\\_posts.scss';\")",
+      "Bash(cd \"\\\\\\\\\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\" 2>/dev/null; cat package.json 2>/dev/null | grep -A6 '\"scripts\"'; echo \"---gems---\"; grep -i \"sass\\\\|cssbundling\\\\|dartsass\" Gemfile 2>/dev/null)",
+      "Bash(wsl -d ubuntu bash -lc \"cd /home/kapp/code/MonsieurKapp/playsync && bin/rails db:migrate 2>&1 | tail -30\")",
+      "Bash(git add *)"
     ]
   }
 }

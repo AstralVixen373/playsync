@@ -20,60 +20,109 @@
 
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
-      nav { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-      nav h1 { color: #333; font-size: 1.5rem; }
-      nav a { color: #666; text-decoration: none; margin-left: 1.5rem; }
-      nav a:hover { color: #000; }
-      .navbar-brand { display: inline-flex; align-items: center; gap: 0.5rem; color: #333; text-decoration: none; margin-left: 0; }
-      .navbar-logo { width: 36px; height: 36px; object-fit: contain; border-radius: 4px; }
-
-      .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-      .alert { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; }
+      .alert { padding: 0.85rem 1rem; margin-bottom: 1rem; border-radius: 8px; font-size: 0.9rem; }
       .alert-notice { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-      .alert-alert { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+      .alert-alert  { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-      .btn { display: inline-block; padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
-      .btn:hover { background: #0056b3; }
+      .btn { display: inline-block; padding: 0.5rem 1rem; background: #7C3AED; color: white; text-decoration: none; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; }
+      .btn:hover { background: #6D28D9; color: white; }
       .btn-secondary { background: #6c757d; }
       .btn-secondary:hover { background: #545b62; }
       .btn-danger { background: #dc3545; }
       .btn-danger:hover { background: #c82333; }
+
+      /* Auth nav (unauthenticated users) */
+      .ps-auth-nav { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+      .ps-auth-nav a { color: #666; text-decoration: none; margin-left: 1rem; }
+      .ps-auth-nav a:hover { color: #333; }
+      .ps-auth-container { max-width: 900px; margin: 0 auto; padding: 2rem; }
     </style>
   </head>
 
   <body>
-    <nav>
-      <h1>
-        <%= link_to root_path, class: "navbar-brand" do %>
-          <%= image_tag "playsync-logo.png", alt: "PlaySync logo", class: "navbar-logo" %>
-          <span>PlaySync</span>
-        <% end %>
-      </h1>
-      <div>
-        <% if user_signed_in? %>
-          <%= link_to "Posts", posts_path %>
-          <%= link_to "My Matches", my_matches_path %>
-          <%= link_to "Profile", edit_user_registration_path %>
-          <%= link_to "Settings", "#" %>
-          <%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete } %>
-        <% else %>
+    <% if user_signed_in? %>
+      <div class="ps-layout">
+
+        <aside class="ps-sidebar">
+          <%= link_to root_path, class: "ps-sidebar__logo" do %>
+            <span class="ps-sidebar__logo-icon">
+              <%= image_tag "playsync-logo.png", alt: "PlaySync", class: "ps-sidebar__logo-img" %>
+            </span>
+            <span class="ps-sidebar__logo-name"><strong>Play</strong>Sync</span>
+          <% end %>
+          <nav class="ps-sidebar__nav">
+            <%= link_to posts_path, class: "ps-sidebar__link #{request.path == '/' || request.path.start_with?('/posts') ? 'active' : ''}" do %>
+              <i class="fa-solid fa-bullhorn"></i>
+              <span>Announcements</span>
+            <% end %>
+            <%= link_to my_matches_path, class: "ps-sidebar__link #{request.path.start_with?('/my_matches') ? 'active' : ''}" do %>
+              <i class="fa-solid fa-heart"></i>
+              <span>My Matches</span>
+            <% end %>
+            <%= link_to edit_user_registration_path, class: "ps-sidebar__link #{request.path == edit_user_registration_path ? 'active' : ''}" do %>
+              <i class="fa-solid fa-user"></i>
+              <span>Profile</span>
+            <% end %>
+            <%= link_to settings_path, class: "ps-sidebar__link #{request.path.start_with?('/settings') ? 'active' : ''}" do %>
+              <i class="fa-solid fa-gear"></i>
+              <span>Settings</span>
+            <% end %>
+          </nav>
+
+          <div class="ps-sidebar__footer">
+            <%= link_to new_post_path, class: "ps-sidebar__cta" do %>
+              <i class="fa-solid fa-bolt"></i> Create announcement
+            <% end %>
+          </div>
+        </aside>
+
+        <main class="ps-main">
+          <div class="ps-topbar">
+            <div class="ps-topbar__title">
+              <%= yield(:page_title) %>
+            </div>
+            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-topbar__logout" do %>
+              Logout
+            <% end %>
+          </div>
+
+          <div class="ps-main__inner">
+            <% if notice %>
+              <div class="alert alert-notice"><%= notice %></div>
+            <% end %>
+            <% if alert %>
+              <div class="alert alert-alert"><%= alert %></div>
+            <% end %>
+
+            <%= yield %>
+          </div>
+        </main>
+
+      </div>
+    <% else %>
+      <nav class="ps-auth-nav">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          <%= link_to root_path, style: "display: inline-flex; align-items: center; gap: 0.5rem; color: #333; text-decoration: none; font-weight: 700; font-size: 1.1rem;" do %>
+            <%= image_tag "playsync-logo.png", alt: "PlaySync", style: "width: 30px; border-radius: 6px;" %>
+            <span>PlaySync</span>
+          <% end %>
+        </div>
+        <div>
           <%= link_to "Sign In", new_user_session_path %>
           <%= link_to "Sign Up", new_user_registration_path %>
+        </div>
+      </nav>
+      <div class="ps-auth-container">
+        <% if notice %>
+          <div class="alert alert-notice"><%= notice %></div>
         <% end %>
+        <% if alert %>
+          <div class="alert alert-alert"><%= alert %></div>
+        <% end %>
+        <%= yield %>
       </div>
-    </nav>
-
-    <div class="container">
-      <% if notice %>
-        <div class="alert alert-notice"><%= notice %></div>
-      <% end %>
-      <% if alert %>
-        <div class="alert alert-alert"><%= alert %></div>
-      <% end %>
-
-      <%= yield %>
-    </div>
+    <% end %>
   </body>
 </html>
