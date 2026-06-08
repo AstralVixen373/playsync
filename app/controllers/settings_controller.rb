@@ -12,14 +12,6 @@ class SettingsController < ApplicationController
     end
   end
 
-  def update_theme
-    theme = params[:theme].to_s
-    if %w[light dark].include?(theme)
-      current_user.update!(theme: theme)
-    end
-    redirect_to settings_path
-  end
-
   def update_password
     unless current_user.valid_password?(params[:user][:current_password])
       return redirect_to settings_path, alert: "Current password is incorrect."

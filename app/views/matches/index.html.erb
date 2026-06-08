@@ -12,7 +12,7 @@
         id="filter-game-search"
         placeholder="Search a game..."
         autocomplete="off"
-        style="width:100%; padding:0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; background: var(--bs-body-bg); color: var(--bs-body-color);"
+        style="width:100%; padding:0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;"
       >
 
       <%= f.hidden_field :game_id, id: "filter-game-id" %>
@@ -22,17 +22,17 @@
 
     <div style="margin-bottom: 1rem;">
       <%= f.label :platform, "Platform", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :platform, Post::PLATFORMS, { include_blank: "All", selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; background: var(--bs-body-bg); color: var(--bs-body-color);" %>
+      <%= f.select :platform, Post::PLATFORMS, { include_blank: "All", selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
       <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :post_type, Post::TYPES, { include_blank: "All", selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; background: var(--bs-body-bg); color: var(--bs-body-color);" %>
+      <%= f.select :post_type, Post::TYPES, { include_blank: "All", selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
       <%= f.label :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :language, Post::LANGUAGES, { include_blank: "All", selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; background: var(--bs-body-bg); color: var(--bs-body-color);" %>
+      <%= f.select :language, Post::LANGUAGES, { include_blank: "All", selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1.5rem;">
@@ -46,16 +46,16 @@
 <% if @posts.any? %>
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
     <% @posts.each do |post| %>
-      <div style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <h3 style="color: var(--bs-body-color); margin-bottom: 0.5rem;"><%= post.title %></h3>
-        <p style="color: var(--bs-secondary-color); font-size: 0.9rem; margin-bottom: 1rem;">
+      <div style="background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h3 style="color: #212529; margin-bottom: 0.5rem;"><%= post.title %></h3>
+        <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1rem;">
           <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
           <% if post.user == current_user %>
             <span style="background: #007bff; color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;">You</span>
           <% end %>
         </p>
 
-        <div style="background: var(--bs-tertiary-bg); padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+        <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
           <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
           <p><strong>🖥️ Platform:</strong> <%= post.platforms.join(", ") %></p>
           <p><strong>🌐 Language:</strong> <%= post.language %></p>

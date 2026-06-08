@@ -53,21 +53,6 @@
   </section>
 
   <section class="settings-section">
-    <h3>Theme</h3>
-    <p class="settings-description">Choose between light and dark mode.</p>
-    <div class="theme-options">
-      <% %w[light dark].each do |theme| %>
-        <%= button_to settings_theme_path,
-              method: :patch,
-              params: { theme: theme },
-              class: "theme-option #{"theme-option--active" if current_user.theme == theme}" do %>
-          <%= theme == "light" ? "☀️ Light" : "🌙 Dark" %>
-        <% end %>
-      <% end %>
-    </div>
-  </section>
-
-  <section class="settings-section">
     <h3>Language</h3>
     <p class="settings-description">Choose your preferred language.</p>
     <div class="settings-placeholder">

@@ -1,11 +1,11 @@
-<%= link_to "← Back to My Matches", my_matches_path, style: "color: var(--bs-secondary-color); text-decoration: none; display: inline-block; margin-bottom: 1.5rem;" %>
+<%= link_to "← Back to My Matches", my_matches_path, style: "color: #6c757d; text-decoration: none; display: inline-block; margin-bottom: 1.5rem;" %>
 
 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
   <!-- Post Details -->
-  <div style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 2rem;">
+  <div style="background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 2rem;">
     <h1 style="margin-bottom: 1.5rem;"><%= @post.title %></h1>
 
-    <div style="background: var(--bs-tertiary-bg); padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
+    <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
       <p><strong>👤 Posted by:</strong>
         <%= @post.user.username.presence || @post.user.email %>
         <% if @post.user == current_user %>
@@ -21,9 +21,9 @@
 
     <% if @post.chat&.users&.any? %>
       <h3 style="margin-bottom: 1rem;">👥 Participants</h3>
-      <div style="background: var(--bs-tertiary-bg); padding: 1rem; border-radius: 4px;">
+      <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
         <% @post.chat.users.each do |user| %>
-          <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--bs-border-color);">
+          <div style="padding: 0.5rem 0; border-bottom: 1px solid #dee2e6;">
             <p style="margin: 0;"><%= user.username.presence || user.email %></p>
           </div>
         <% end %>
@@ -32,16 +32,16 @@
   </div>
 
   <!-- Chat -->
-  <div style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
+  <div style="background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
     <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
 
-    <div style="flex: 1; overflow-y: auto; background: var(--bs-tertiary-bg); padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 500px;">
+    <div style="flex: 1; overflow-y: auto; background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 500px;">
       <% if @post.chat&.messages&.any? %>
         <% @post.chat.messages.each do |message| %>
           <%= render "messages/message", message: message %>
         <% end %>
       <% else %>
-        <p style="color: var(--bs-tertiary-color); text-align: center;">No messages yet.</p>
+        <p style="color: #adb5bd; text-align: center;">No messages yet.</p>
       <% end %>
     </div>
   </div>
