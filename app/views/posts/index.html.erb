@@ -1,64 +1,42 @@
-
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-  <h1>Find Teammates 🎮</h1>
-  <% if policy(Post).new? %>
-    <%= link_to "Create Post", new_post_path, class: "btn" %>
-  <% end %>
-</div>
+<% content_for :page_title do %>
+  <h1>Announcements</h1>
+  <p>Find players to share your session</p>
+<% end %>
 
 <%= form_with url: posts_path, method: :get,
               data: { controller: "form", action: "change->form#submit" } do |f| %>
-  <%# Marks any form submission as user-driven so the controller honours the
-      current selection (even empty) instead of falling back to preferences. %>
   <%= hidden_field_tag :committed, "1" %>
 
-  <div style="display: flex; gap: 15px; align-items: flex-start;">
+  <div class="ps-filter-bar">
 
-    <div style="margin-bottom: 1rem; min-width: 220px;">
-      <%= label_tag :filter_game_search, "Games", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-
-      <input
-        type="text"
-        id="filter-game-search"
-        placeholder="Search a game..."
-        autocomplete="off"
-        style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;"
-      >
-
+    <div class="ps-filter-game-wrapper">
+      <input type="text" id="filter-game-search"
+             placeholder="🎮 Games"
+             autocomplete="off"
+             class="ps-filter-pill-input">
       <div id="filter-game-results"></div>
-
-      <%# Selected games become chips, each carrying a game_ids[] hidden input. %>
-      <div id="filter-game-chips" data-field="game_ids[]" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
-        <% @selected_games.each do |game| %>
-          <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: #eef; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
-            <%= hidden_field_tag "game_ids[]", game.id %>
-            <%= game.name %>
-            <button type="button" class="game-chip-remove" style="border: none; background: none; cursor: pointer; font-weight: bold;">×</button>
-          </span>
-        <% end %>
-      </div>
     </div>
 
-    <div style="margin-bottom: 1rem; min-width: 160px;">
-      <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Platform</label>
-      <%= render "shared/multiselect", name: "platforms[]", options: Post::PLATFORMS, selected: @selected_platforms, placeholder: "All" %>
-    </div>
+    <%= render "shared/multiselect", name: "platforms[]", options: Post::PLATFORMS,  selected: @selected_platforms,  placeholder: "🖥️ All Platforms" %>
+    <%= render "shared/multiselect", name: "post_types[]", options: Post::TYPES,     selected: @selected_post_types, placeholder: "👥 All Types" %>
 
-    <div style="margin-bottom: 1rem; min-width: 140px;">
-      <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Type</label>
-      <%= render "shared/multiselect", name: "post_types[]", options: Post::TYPES, selected: @selected_post_types, placeholder: "All" %>
-    </div>
+    <%= render "shared/multiselect", name: "language", options: Post::LANGUAGES, selected: @selected_language, placeholder: "🌐 Language", single: true %>
 
-    <div style="margin-bottom: 1rem;">
-      <%= label_tag :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= select_tag :language, options_for_select(Post::LANGUAGES, @selected_language), include_blank: "All", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-    </div>
-
-    <div style="margin-bottom: 1.5rem; align-self: flex-end;">
-      <%= link_to "Reset", posts_path %>
-    </div>
+    <%= link_to "Reset", posts_path, class: "ps-filter-reset" %>
 
   </div>
+
+  <%# Game chips appear below the filter bar, not inside it %>
+  <div id="filter-game-chips" data-field="game_ids[]" class="ps-game-chips" style="margin-bottom: 1rem;">
+    <% @selected_games.each do |game| %>
+      <span class="ps-game-chip">
+        <%= hidden_field_tag "game_ids[]", game.id %>
+        <%= game.name %>
+        <button type="button" class="game-chip-remove">×</button>
+      </span>
+    <% end %>
+  </div>
+
 <% end %>
 
 <%= turbo_stream_from "posts" %>

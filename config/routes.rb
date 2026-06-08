@@ -31,5 +31,7 @@ Rails.application.routes.draw do
   get "my_matches", to: "matches#index"
   get "my_matches/:id", to: "matches#show", as: "my_match"
 
+  get "settings", to: "settings#index", as: :settings
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

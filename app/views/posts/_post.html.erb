@@ -1,56 +1,91 @@
 <%# Renders one post card. `current_user` is passed as a local (nil in Turbo
     broadcasts) so this partial never relies on request/Pundit state. %>
-<% member = current_user && post.member?(current_user) %>
-<% owner = current_user && post.user == current_user %>
-<% expired = post.created_at < 1.hour.ago %>
-<% full = post.full? %>
-<% card_style = if expired
-    "filter: grayscale(60%); opacity: 0.7;"
-  elsif full
-    "border-color: #e8a87c;"
-  end %>
-<div id="<%= dom_id(post) %>" style="position: relative; overflow: hidden; background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); <%= card_style %>">
+<% member    = current_user && post.member?(current_user) %>
+<% owner     = current_user && post.user == current_user %>
+<% expired   = post.created_at < 1.hour.ago %>
+<% full      = post.full? %>
+<% platforms = Array(post.platforms) %>
+<% crossplay = platforms.size > 1 %>
+
+<div id="<%= dom_id(post) %>" class="ps-card <%= 'ps-card--expired' if expired %> <%= 'ps-card--full' if full && !expired %>">
 
   <% if expired %>
-    <div style="position: absolute; top: 18px; right: -28px; background: #6c757d; color: white; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.2rem 2.5rem; transform: rotate(35deg); pointer-events: none;">
-      EXPIRED
-    </div>
+    <div class="ps-card__banner ps-card__banner--expired">EXPIRED</div>
   <% elsif full %>
-    <div style="position: absolute; top: 18px; right: -28px; background: #e67e22; color: white; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; padding: 0.2rem 2.5rem; transform: rotate(35deg); pointer-events: none;">
-      FULL
-    </div>
+    <div class="ps-card__banner ps-card__banner--full">FULL</div>
   <% end %>
 
-  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-    <h3 style="color: #333; margin: 0;"><%= post.title %></h3>
-    <% if post.open? %>
-      <span style="background: #d4edda; color: #155724; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">Open</span>
+  <%# ZONE 1 — Identity: game cover (IGDB) with a letter placeholder fallback %>
+  <div class="ps-card__cover <%= 'ps-card__cover--art' if post.game.cover? %>">
+    <% if post.game.cover? %>
+      <%= image_tag post.game.cover_url, alt: post.game.name, loading: "lazy", class: "ps-card__cover-img" %>
     <% else %>
-      <span style="background: #e2e3e5; color: #383d41; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">Finished</span>
+      <%= post.game.name.first.upcase %>
     <% end %>
-  </div>
-  <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-    <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email.split('@').first %>
-    · Posted <%= time_ago_in_words(post.created_at) %> ago
-  </p>
-
-  <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-    <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
-    <p><strong>🖥️ Platform:</strong> <%= post.platforms.join(", ") %></p>
-    <p><strong>🌐 Language:</strong> <%= post.language %></p>
-    <p><strong>👥 Type:</strong> <%= post.post_type %></p>
-    <p><%= render "posts/slots", post: post %></p>
   </div>
 
-  <div style="display: flex; gap: 0.5rem;">
-    <% if member %>
-      <%= link_to "Open", post_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
-    <% else %>
-      <%= button_to "Join", join_post_path(post), method: :post, class: "btn", style: "flex: 1; text-align: center;" %>
-    <% end %>
-    <% if owner %>
-      <%= link_to "Edit", edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
-      <%= link_to "Delete", post_path(post.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
-    <% end %>
+  <div class="ps-card__body">
+    <div class="ps-card__top">
+      <span class="ps-badge ps-badge--<%= post.post_type.downcase %>">
+        <%= option_icon(post.post_type, size: 13) %><%= post.post_type %>
+      </span>
+    </div>
+
+    <h3 class="ps-card__title"><%= post.title %></h3>
+    <p class="ps-card__desc"><%= post.game.name %></p>
+
+    <%# ZONE 2 — Primary info: language + player count %>
+    <div class="ps-card__info">
+      <span class="ps-info">
+        <%= option_icon(post.language, size: 14) %>
+        <%= language_label(post.language) %>
+      </span>
+      <span class="ps-info ps-info--players">
+        <i class="fa-solid fa-user-group"></i>
+        <%= render "posts/slots", post: post %>
+      </span>
+    </div>
+
+    <%# ZONE 3 — Session tags: platform chips (+ crossplay) %>
+    <div class="ps-card__chips">
+      <% platforms.each do |name| %>
+        <span class="ps-chip"><%= platform_icon(name, size: 14) %><%= name %></span>
+      <% end %>
+      <% if crossplay %>
+        <span class="ps-chip ps-chip--crossplay">
+          <i class="fa-solid fa-gamepad"></i>Crossplay
+        </span>
+      <% end %>
+    </div>
+
+    <%# ZONE 6 — Secondary info: creation time, de-emphasised %>
+    <div class="ps-card__time">
+      <i class="fa-regular fa-clock"></i>
+      <%= time_ago_in_words(post.created_at) %> ago
+    </div>
   </div>
+
+  <%# ZONE 4 + 5 — Status + primary action %>
+  <div class="ps-card__aside">
+    <div class="ps-card__aside-top">
+      <span class="ps-status ps-status--<%= post.status %>">
+        <span class="ps-status__dot"></span><%= post.status.capitalize %>
+      </span>
+
+      <% if member || owner %>
+        <%= link_to post_path(id: post.id), class: "ps-action" do %>
+          View <i class="fa-solid fa-arrow-right"></i>
+        <% end %>
+      <% elsif current_user %>
+        <%= button_to join_post_path(post), method: :post, class: "ps-action ps-action--join" do %>
+          Join <i class="fa-solid fa-arrow-right"></i>
+        <% end %>
+      <% else %>
+        <%= link_to post_path(id: post.id), class: "ps-action" do %>
+          View <i class="fa-solid fa-arrow-right"></i>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
 </div>

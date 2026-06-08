@@ -1,0 +1,302 @@
+// ─── App shell ────────────────────────────────────────────────────────────────
+
+body {
+  background: $brand-bg;
+  min-height: 100vh;
+}
+
+.ps-layout {
+  display: flex;
+  align-items: stretch;
+  min-height: 100vh;
+  padding: 1rem;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+// ─── Left card (sidebar) ──────────────────────────────────────────────────────
+
+.ps-sidebar {
+  position: sticky;
+  top: 1rem;
+  align-self: flex-start;
+  width: 210px;
+  min-width: 210px;
+  height: calc(100vh - 2rem);
+  background: $brand-sidebar;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem 1.25rem;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+// Logo zone — App Store style icon + wordmark
+.ps-sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  padding: 0 0.15rem;
+  margin-bottom: 1.75rem;
+
+  // White rounded "app icon" tile that the logo sits on top of
+  .ps-sidebar__logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .ps-sidebar__logo-img {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    object-fit: contain;
+  }
+
+  .ps-sidebar__logo-name {
+    font-size: 1.4rem;
+    font-weight: 500;
+    font-family: $headers-font;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: -0.01em;
+    line-height: 1;
+
+    strong {
+      font-weight: 800;
+      color: white;
+    }
+  }
+}
+
+.ps-sidebar__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ps-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+
+  i {
+    width: 18px;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.13);
+    color: white;
+  }
+}
+
+.ps-sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.15rem 0.25rem; // slight breathing room of purple around the CTA
+}
+
+.ps-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+
+  .ps-sidebar__avatar {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Slow sheen sweep across the solid button — a quiet highlight that keeps it alive.
+// The sweep happens in the first ~22% of the cycle, then the highlight rests fully
+// off-screen for the remainder so the loop restart is never visible (no hard cut).
+@keyframes ps-cta-sheen {
+  0%   { transform: translateX(-160%) skewX(-18deg); }
+  42%  { transform: translateX(260%)  skewX(-18deg); }
+  100% { transform: translateX(260%)  skewX(-18deg); }
+}
+
+.ps-sidebar__cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.9rem 0.6rem;
+  border-radius: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  // Solid brand-purple gradient — high contrast against the muted sidebar
+  background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff !important;
+
+  font-family: $headers-font;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+
+  // Colored glow lifts it off the surface; inset highlight gives a crisp top edge
+  box-shadow:
+    0 8px 20px rgba($purple, 0.45),
+    0 2px 6px rgba($purple-dark, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+
+  .fa-bolt {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55));
+  }
+
+  // Diagonal sheen that sweeps across, then rests off-screen before the next pass
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: -20%;
+    left: 0;
+    width: 45%;
+    height: 140%; // taller than the button so the skewed edges never clip inside
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.10) 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      rgba(255, 255, 255, 0.10) 65%,
+      transparent 100%
+    );
+    // Soft-in/soft-out sweep; the long rest tail lives in the keyframes
+    animation: ps-cta-sheen 3.4s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+    animation-delay: 1s;
+    pointer-events: none;
+  }
+
+  &:hover {
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    filter: saturate(1.08);
+    box-shadow:
+      0 12px 28px rgba($purple, 0.55),
+      0 3px 8px rgba($purple-dark, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    transition-duration: 0.08s;
+  }
+}
+
+// ─── Right card (main content) ────────────────────────────────────────────────
+
+.ps-main {
+  flex: 1;
+  background: $brand-panel;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2rem);
+  overflow: hidden;
+}
+
+// Top bar: title (left) + logout (right)
+.ps-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 1.5rem 0;
+  flex-shrink: 0;
+}
+
+.ps-topbar__title {
+  h1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #1a1a2e;
+    font-family: $headers-font;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 0.72rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-weight: 600;
+    margin: 0.25rem 0 0;
+  }
+}
+
+.ps-topbar__logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  padding: 0.45rem 1.1rem;
+  border-radius: 10px;
+  background: #A1A9DD;
+  flex-shrink: 0;
+  transition: background 0.15s;
+
+  &:hover { background: darken(#A1A9DD, 8%); }
+}
+
+.ps-main__inner {
+  padding: 1.25rem 1.5rem 2rem;
+  flex: 1;
+}
