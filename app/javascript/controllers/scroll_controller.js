@@ -2,11 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="scroll"
 export default class extends Controller {
-  static targets = ["messages"]
+  static targets = ["messages", "message"]
   scrollToBottom() {
     this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
   }
-  messagesTargetConnected() {
+  messageTargetConnected() {
     console.log("coucou")
     this.scrollToBottom()
   }

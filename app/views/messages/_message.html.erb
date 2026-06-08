@@ -1,4 +1,4 @@
-<div style="margin-bottom: 1rem; padding: 0.75rem; background: <%= current_user == message.user ? '#e3f2fd' : '#fff' %>; border-radius: 4px; border-left: 3px solid <%= current_user == message.user ? '#2196F3' : '#ccc' %>;">
+<div style="margin-bottom: 1rem; padding: 0.75rem; background: <%= true ? '#e3f2fd' : '#fff' %>; border-radius: 4px; border-left: 3px solid <%= true ? '#2196F3' : '#ccc' %>;" data-scroll-target="message">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;" id="<%= dom_id(message) %>">
     <strong><%= message.user.username %></strong>
     <span style="font-size: 0.85rem; color: #999;"><%= message.created_at.strftime("%H:%M") %></span>
