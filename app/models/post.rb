@@ -4,6 +4,13 @@ class Post < ApplicationRecord
   TYPES = ["Chill", "Fun", "Competitive"]
   STATUSES = %w[open finished].freeze
 
+  # Declare the backing type explicitly so the enum resolves at class-load time
+  # even before the DB schema is introspected. In production `eager_load = true`
+  # loads this model during boot, sometimes before the `posts` columns are known
+  # to ActiveRecord; without this, `enum` can't find its type and Rails raises
+  # "Undeclared attribute type for enum 'status'".
+  attribute :status, :string, default: "open"
+
   enum :status, { open: "open", finished: "finished" }, prefix: false
 
   before_create :set_default_status
