@@ -1,0 +1,12 @@
+.message-bubble {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--bs-body-bg);
+  border-radius: 4px;
+  border-left: 3px solid var(--bs-border-color);
+
+  &--own {
+    background: var(--bs-primary-bg-subtle);
+    border-left-color: var(--bs-primary);
+  }
+}

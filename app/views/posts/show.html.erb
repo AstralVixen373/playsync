@@ -1,36 +1,36 @@
 <%= turbo_stream_from @post %>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
   <!-- Post Details -->
-  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem;">
+  <div style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 2rem;">
     <h1 style="margin-bottom: 1rem;"><%= @post.title %></h1>
 
-    <div style="background: #f9f9f9; padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
+    <div style="background: var(--bs-tertiary-bg); padding: 1.5rem; border-radius: 4px; margin-bottom: 1.5rem;">
       <p><strong>👤 Posted by:</strong> <%= @post.user.username.presence || @post.user.email %></p>
       <p><strong>🎮 Game:</strong> <%= @post.game.name %></p>
       <p><strong>🖥️ Platform:</strong> <%= @post.platforms.join(", ") %></p>
       <p><strong>🌐 Language:</strong> <%= @post.language %></p>
       <p><strong>👥 Type:</strong> <%= @post.post_type %></p>
       <p><%= render "posts/slots", post: @post %></p>
-      <p style="color: #999; font-size: 0.9rem;"><strong>📅 Created:</strong> <%= @post.created_at.strftime("%b %d, %Y") %></p>
+      <p style="color: var(--bs-tertiary-color); font-size: 0.9rem;"><strong>📅 Created:</strong> <%= @post.created_at.strftime("%b %d, %Y") %></p>
     </div>
 
-        <h3 style="margin-bottom: 1rem;">👥 Participants</h3>
-    <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px;">
+    <h3 style="margin-bottom: 1rem;">👥 Participants</h3>
+    <div style="background: var(--bs-tertiary-bg); padding: 1rem; border-radius: 4px;">
       <% if @chat.users.any? %>
         <% @chat.users.each do |user| %>
-          <div style="padding: 0.5rem 0; border-bottom: 1px solid #e0e0e0;">
+          <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--bs-border-color);">
             <p style="margin: 0;"><%= user.username %></p>
           </div>
         <% end %>
       <% else %>
-        <p style="color: #999;">No participants yet</p>
+        <p style="color: var(--bs-tertiary-color);">No participants yet</p>
       <% end %>
     </div>
 
     <% if user_signed_in? %>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem;">
         <% if @post.user == current_user %>
-          <span style="align-self: center; color: #666;">You created this match.</span>
+          <span style="align-self: center; color: var(--bs-secondary-color);">You created this match.</span>
         <% elsif @is_member %>
           <%= button_to "Leave match", leave_post_path(@post), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: "Leave this match?" } %>
         <% elsif @post.full? %>
@@ -49,32 +49,31 @@
     <% end %>
   </div>
 
-
   <!-- Chat Section -->
-  <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
+  <div style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
     <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
 
     <% if @is_member && @chat %>
       <%= render "posts/voice", post: @post %>
 
-      <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
+      <div style="flex: 1; overflow-y: auto; background: var(--bs-tertiary-bg); padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
         <% if @chat.messages.any? %>
           <% @chat.messages.each do |message| %>
             <%= render "messages/message", message: message %>
           <% end %>
         <% else %>
-          <p style="color: #999; text-align: center;">No messages yet</p>
+          <p style="color: var(--bs-tertiary-color); text-align: center;">No messages yet</p>
         <% end %>
       </div>
 
       <%= form_with model: [@chat, @message], url: chat_messages_path(@chat) do |f| %>
         <div style="display: flex; gap: 0.5rem;">
-          <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 60px;" %>
+          <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; resize: none; height: 60px; background: var(--bs-body-bg); color: var(--bs-body-color);" %>
           <%= f.submit "Send", class: "btn", style: "align-self: flex-end;" %>
         </div>
       <% end %>
     <% else %>
-      <p style="color: #999; text-align: center; padding: 2rem;">
+      <p style="color: var(--bs-tertiary-color); text-align: center; padding: 2rem;">
         <% if @post.full? %>
           This match is full — chat is reserved for its members.
         <% else %>
