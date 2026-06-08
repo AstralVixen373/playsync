@@ -24,15 +24,14 @@
   <div class="auth-provider-actions">
     <% resource_class.omniauth_providers.each do |provider| %>
       <% if provider.to_s == "steam" %>
-        <% provider_name = provider.to_s %>
-        <%= form_for "Connexion",
-          url: user_steam_omniauth_authorize_path(resource_name, provider),
-          method: :post,
-          data: { turbo: "false" },
-          html: { class: "auth-provider-form" } do |f| %>
-            <%= f.button type: "submit", class: "w-180 h-35 border-none" do %>
-              <%= image_tag "https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png", alt: "steam connection button", aria: { hidden: true } %>
-            <% end %>
+        <%= button_to user_steam_omniauth_authorize_path,
+              method: :post,
+              form: { data: { turbo: "false" } },
+              class: "auth-provider-form" do %>
+          <%= image_tag "https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png",
+                alt: "steam connection button",
+                aria: { hidden: true },
+                class: "w-180 h-35" %>
         <% end %>
       <% end %>
     <% end %>

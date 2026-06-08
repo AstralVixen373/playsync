@@ -1,5 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   skip_before_action :authenticate_user!
+  skip_before_action :verify_authenticity_token, only: %i[steam]
 
   def steam
     user = User.from_omniauth(auth) # comment lui indiquer de se rediriger vers "https://steamcommunity.com/openid/loginform"

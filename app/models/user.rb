@@ -15,9 +15,9 @@ class User < ApplicationRecord
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
-      user.email      = auth.info.email
+      user.email      = "#{auth.uid}@steam.com" # Steam ne return pas de d'email; donc on le crée nous même via le uid Steam.
       user.password   = Devise.friendly_token[0, 20]
-      user.avatar_url = auth.info.image
+      # user.avatar = auth.info.image # Commentaire provisoire jusqu'à avoir avatar_url en colonne de user
     end.tap(&:save!)
   end
 end
