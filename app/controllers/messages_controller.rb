@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
   def create
     @chat = current_user.chats.find(params[:chat_id])
     @message = @chat.messages.build(message_params)
+    @new_message = Message.new
     @message.user = current_user
     authorize @message
 
@@ -13,7 +14,10 @@ class MessagesController < ApplicationController
     end
 
     if @message.save
-      redirect_to request.referer || chat_path(@chat)
+      # redirect_to request.referer || chat_path(@chat)
+      respond_to do |format|
+        format.turbo_stream
+      end
     else
       redirect_to request.referer || chat_path(@chat), alert: "Could not send message."
     end
