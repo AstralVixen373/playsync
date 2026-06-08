@@ -1,7 +1,7 @@
 <div class="message-bubble <%= current_user == message.user ? "message-bubble--own" : "" %>">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
     <strong><%= message.user.username %></strong>
-    <span style="font-size: 0.85rem; color: var(--bs-tertiary-color);"><%= message.created_at.strftime("%H:%M") %></span>
+    <span style="font-size: 0.85rem; color: rgba(33, 37, 41, .5);"><%= message.created_at.strftime("%H:%M") %></span>
   </div>
-  <p style="color: var(--bs-body-color); margin: 0;"><%= message.content %></p>
+  <p style="color: #212529; margin: 0;"><%= message.content %></p>
 </div>

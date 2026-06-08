@@ -54,17 +54,7 @@
 
   <section class="settings-section">
     <h3><%= t("settings.theme.title") %></h3>
-    <p class="settings-description"><%= t("settings.theme.description") %></p>
-    <div class="theme-options">
-      <% %w[light dark].each do |theme| %>
-        <%= button_to settings_theme_path,
-              method: :patch,
-              params: { theme: theme },
-              class: "theme-option #{"theme-option--active" if current_user.theme == theme}" do %>
-          <%= theme == "light" ? "☀️ #{t("settings.theme.light")}" : "🌙 #{t("settings.theme.dark")}" %>
-        <% end %>
-      <% end %>
-    </div>
+    <p class="settings-placeholder">Here will be the theme feature</p>
   </section>
 
   <section class="settings-section">

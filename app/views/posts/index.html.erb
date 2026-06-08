@@ -22,7 +22,7 @@
         id="filter-game-search"
         placeholder="<%= t("posts.index.search_game") %>"
         autocomplete="off"
-        style="width:100%; padding:0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; background: var(--bs-body-bg); color: var(--bs-body-color);"
+        style="width:100%; padding:0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;"
       >
 
       <div id="filter-game-results"></div>
@@ -30,7 +30,7 @@
       <%# Selected games become chips, each carrying a game_ids[] hidden input. %>
       <div id="filter-game-chips" data-field="game_ids[]" style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
         <% @selected_games.each do |game| %>
-          <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: var(--bs-primary-bg-subtle); color: var(--bs-primary-text-emphasis); border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
+          <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: #cfe2ff; color: #052c65; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
             <%= hidden_field_tag "game_ids[]", game.id %>
             <%= game.name %>
             <button type="button" class="game-chip-remove" style="border: none; background: none; cursor: pointer; font-weight: bold;">×</button>
@@ -51,7 +51,7 @@
 
     <div style="margin-bottom: 1rem;">
       <%= label_tag :language, t("posts.index.language"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= select_tag :language, options_for_select(Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, @selected_language), include_blank: t("posts.index.all"), style: "width: 100%; padding: 0.5rem; border: 1px solid var(--bs-border-color); border-radius: 4px; background: var(--bs-body-bg); color: var(--bs-body-color);" %>
+      <%= select_tag :language, options_for_select(Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, @selected_language), include_blank: t("posts.index.all"), style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1.5rem; align-self: flex-end;">
