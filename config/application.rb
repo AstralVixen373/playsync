@@ -32,5 +32,8 @@ module Playsync
     
     # Configuration of the Solid Queue Job Scheduler
     config.active_job.queue_adapter = :solid_queue
+
+    config.i18n.default_locale = :en
+    config.i18n.available_locales = %i[en fr es de]
   end
 end

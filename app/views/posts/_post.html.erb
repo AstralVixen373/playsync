@@ -5,27 +5,27 @@
 <div id="<%= dom_id(post) %>" style="background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
   <h3 style="color: var(--bs-body-color); margin-bottom: 0.5rem;"><%= post.title %></h3>
   <p style="color: var(--bs-secondary-color); font-size: 0.9rem; margin-bottom: 1rem;">
-    <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email.split('@').first %>
-    · Posted <%= time_ago_in_words(post.created_at) %> ago
+    <strong><%= t("posts.post.posted_by") %>:</strong> <%= post.user.username.presence || post.user.email.split('@').first %>
+    · <%= t("posts.post.posted_ago", time: time_ago_in_words(post.created_at)) %>
   </p>
 
   <div style="background: var(--bs-tertiary-bg); padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-    <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
-    <p><strong>🖥️ Platform:</strong> <%= post.platforms.join(", ") %></p>
-    <p><strong>🌐 Language:</strong> <%= post.language %></p>
-    <p><strong>👥 Type:</strong> <%= post.post_type %></p>
+    <p><strong>🎮 <%= t("posts.show.game") %>:</strong> <%= post.game.name %></p>
+    <p><strong>🖥️ <%= t("posts.show.platform") %>:</strong> <%= post.platforms.join(", ") %></p>
+    <p><strong>🌐 <%= t("posts.show.language") %>:</strong> <%= post.language %></p>
+    <p><strong>👥 <%= t("posts.show.type") %>:</strong> <%= post.post_type %></p>
     <p><%= render "posts/slots", post: post %></p>
   </div>
 
   <div style="display: flex; gap: 0.5rem;">
     <% if member %>
-      <%= link_to "Open", post_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
+      <%= link_to t("posts.post.open"), post_path(id: post.id), class: "btn", style: "flex: 1; text-align: center;" %>
     <% else %>
-      <%= button_to "Join", join_post_path(post), method: :post, class: "btn", style: "flex: 1; text-align: center;" %>
+      <%= button_to t("posts.post.join"), join_post_path(post), method: :post, class: "btn", style: "flex: 1; text-align: center;" %>
     <% end %>
     <% if owner %>
-      <%= link_to "Edit", edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
-      <%= link_to "Delete", post_path(post.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      <%= link_to t("posts.post.edit"), edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
+      <%= link_to t("posts.post.delete"), post_path(post.id), data: { turbo_method: :delete, turbo_confirm: t("posts.post.delete_confirm") }, class: "btn btn-danger" %>
     <% end %>
   </div>
 </div>

@@ -2,7 +2,7 @@
   <%= form_with model: post, local: true do |f| %>
     <% if post.errors.any? %>
       <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-        <h4><%= pluralize(post.errors.count, "error") %> prevented this post from being saved:</h4>
+        <h4><%= t("posts.form.errors", count: post.errors.count) %>:</h4>
         <ul>
           <% post.errors.full_messages.each do |message| %>
             <li><%= message %></li>
@@ -12,17 +12,17 @@
     <% end %>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :title, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.text_field :title, placeholder: "Post title", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :title, t("posts.form.title"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.text_field :title, placeholder: t("posts.form.title_placeholder"), style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :game_id, "Game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.label :game_id, t("posts.form.game"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
 
       <input
         type="text"
         id="game-search"
-        placeholder="Search a game..."
+        placeholder="<%= t("posts.form.search_game") %>"
         autocomplete="off"
         value="<%= post.game&.name %>"
         style="width:100%; padding:0.5rem;"
@@ -34,28 +34,28 @@
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :platforms, "Platforms", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= render "shared/multiselect", name: "post[platforms][]", options: Post::PLATFORMS, selected: post.platforms, placeholder: "Select platform(s)" %>
+      <%= f.label :platforms, t("posts.form.platforms"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= render "shared/multiselect", name: "post[platforms][]", options: Post::PLATFORMS, selected: post.platforms, placeholder: t("posts.form.select_platforms") %>
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :language, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :language, Post::LANGUAGES, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :language, t("posts.form.language"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :language, Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :post_type, Post::TYPES, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :post_type, t("posts.form.type"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :post_type, Post::TYPES.map { |type| [t("post_types.#{type}"), type] }, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
     </div>
 
     <div style="margin-bottom: 2rem;">
-      <%= f.label :slot, style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.number_field :slot, placeholder: "Number of players needed", style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :slot, t("posts.form.slot"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.number_field :slot, placeholder: t("posts.form.slot_placeholder"), style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
     </div>
 
     <div style="display: flex; gap: 0.5rem;">
       <%= f.submit class: "btn" %>
-      <%= link_to "Cancel", posts_path, class: "btn btn-secondary" %>
+      <%= link_to t("posts.form.cancel"), posts_path, class: "btn btn-secondary" %>
     </div>
   <% end %>
 </div>

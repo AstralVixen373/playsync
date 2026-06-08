@@ -1,4 +1,4 @@
-<h2>Profile</h2>
+<h2><%= t("devise.registrations.edit.title") %></h2>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <div id="error-notification">
@@ -14,19 +14,19 @@
     <%= f.input :username, required: false, autofocus: true %>
 
     <fieldset data-controller="preferences" style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem; margin: 1rem 0;">
-      <legend style="font-weight: bold; padding: 0 0.5rem;">🎮 Filter preferences</legend>
+      <legend style="font-weight: bold; padding: 0 0.5rem;">🎮 <%= t("devise.registrations.edit.filter_preferences") %></legend>
       <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;">
         <p style="color: #888; font-size: 0.85rem; margin-top: 0;">
-          These pre-fill the search and the new-post form. Leave empty for no preference.
+          <%= t("devise.registrations.edit.filter_hint") %>
         </p>
-        <%= button_tag "Reset filters", type: "button",
+        <%= button_tag t("devise.registrations.edit.reset_filters"), type: "button",
               data: { action: "preferences#reset" },
               style: "border: none; background: none; color: #007bff; cursor: pointer; padding: 0; white-space: nowrap;" %>
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred games</label>
-        <input type="text" id="profile-game-search" placeholder="Search a game..."
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_games") %></label>
+        <input type="text" id="profile-game-search" placeholder="<%= t("devise.registrations.edit.search_game") %>"
                autocomplete="off"
                style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;">
         <div id="profile-game-results"></div>
@@ -45,29 +45,31 @@
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred platforms</label>
-        <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: "No preference", include_hidden: true %>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_platforms") %></label>
+        <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred types</label>
-        <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: "No preference", include_hidden: true %>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_types") %></label>
+        <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
       </div>
 
       <%= f.input :preferred_language,
-                  collection: Post::LANGUAGES,
-                  include_blank: "No preference",
-                  label: "Preferred language" %>
+                  collection: Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] },
+                  label_method: :first,
+                  value_method: :last,
+                  include_blank: t("devise.registrations.edit.no_preference"),
+                  label: t("devise.registrations.edit.preferred_language") %>
     </fieldset>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Update profile" %>
+    <%= f.button :submit, t("devise.registrations.edit.submit") %>
   </div>
 <% end %>
 
 <div style="margin-top: 2rem;">
-  <%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-secondary" %>
+  <%= link_to t("devise.registrations.edit.sign_out"), destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-secondary" %>
 </div>
 
 <script>

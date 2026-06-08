@@ -2,6 +2,14 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  LOCALE_MAP = {
+    "English" => :en,
+    "French"  => :fr,
+    "Spanish" => :es,
+    "German"  => :de
+  }.freeze
+
+  before_action :set_locale
   before_action :authenticate_user!
   include Pundit::Authorization
 
@@ -29,6 +37,14 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_locale
+    I18n.locale = if user_signed_in? && LOCALE_MAP.key?(current_user.preferred_language)
+      LOCALE_MAP[current_user.preferred_language]
+    else
+      I18n.default_locale
+    end
+  end
 
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^settings$)/

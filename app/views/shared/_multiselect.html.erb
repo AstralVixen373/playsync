@@ -11,11 +11,13 @@
       <input type="hidden" name="<%= name %>" value="">
     <% end %>
     <% options.each do |opt| %>
+      <% opt_label = opt.is_a?(Array) ? opt[0] : opt %>
+      <% opt_value = opt.is_a?(Array) ? opt[1] : opt %>
       <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.4rem; cursor: pointer;">
-        <input type="checkbox" name="<%= name %>" value="<%= opt %>"
-               <%= "checked" if Array(selected).include?(opt) %>
+        <input type="checkbox" name="<%= name %>" value="<%= opt_value %>"
+               <%= "checked" if Array(selected).include?(opt_value) %>
                data-action="multiselect#update">
-        <%= opt %>
+        <%= opt_label %>
       </label>
     <% end %>
   </div>

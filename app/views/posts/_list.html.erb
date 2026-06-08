@@ -6,6 +6,6 @@
       <% end %>
     </div>
   <% else %>
-    <p style="text-align: center; color: #999; padding: 3rem;">No posts available right now. <%= link_to "Create one!", new_post_path %></p>
+    <p style="text-align: center; color: #999; padding: 3rem;"><%= t("posts.list.empty") %> <%= link_to t("posts.list.create_one"), new_post_path %></p>
   <% end %>
 </div>

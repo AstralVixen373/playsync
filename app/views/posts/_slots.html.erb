@@ -1,8 +1,8 @@
 <span id="<%= "#{dom_id(post)}_slots" %>">
   <% if post.full? %>
-    <strong>🎯 0 places available</strong>
-    <span style="background: #dc3545; color: white; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 4px; margin-left: 0.4rem;">FULL</span>
+    <strong>🎯 <%= t("posts.slots.full") %></strong>
+    <span style="background: #dc3545; color: white; font-size: 0.75rem; padding: 0.1rem 0.5rem; border-radius: 4px; margin-left: 0.4rem;"><%= t("posts.slots.full_badge") %></span>
   <% else %>
-    <strong>🎯 <%= post.remaining_slots %> place<%= post.remaining_slots == 1 ? "" : "s" %> available</strong>
+    <strong>🎯 <%= t("posts.slots.available", count: post.remaining_slots) %></strong>
   <% end %>
 </span>

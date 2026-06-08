@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   patch "settings/email",    to: "settings#update_email",    as: :settings_email
   patch "settings/password", to: "settings#update_password", as: :settings_password
   patch "settings/theme",    to: "settings#update_theme",    as: :settings_theme
+  patch "settings/language", to: "settings#update_language", as: :settings_language
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
