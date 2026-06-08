@@ -1,3 +1,6 @@
+<%= turbo_stream_from @chat %>
+
+
 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; height: 90vh;">
   <!-- Sidebar: Post Info -->
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; overflow-y: auto;">
@@ -31,10 +34,10 @@
     <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
 
     <!-- Messages Container -->
-    <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid #e0e0e0;">
+    <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid #e0e0e0;" id="messages">
       <% if @messages.any? %>
         <% @messages.each do |message| %>
-          <%= render "messages/message", message: message %>
+          <%= render "messages/message", message: message, current_user: current_user %>
         <% end %>
       <% else %>
         <p style="color: #999; text-align: center;">No messages yet. Start the conversation!</p>

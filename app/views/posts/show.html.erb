@@ -1,4 +1,6 @@
 <%= turbo_stream_from @post %>
+<%= turbo_stream_from @chat %>
+
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
   <!-- Post Details -->
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem;">
@@ -57,7 +59,7 @@
     <% if @is_member && @chat %>
       <%= render "posts/voice", post: @post %>
 
-      <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;">
+      <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;" id="messages" data-controller="scroll" data-scroll-target="messages">
         <% if @chat.messages.any? %>
           <% @chat.messages.each do |message| %>
             <%= render "messages/message", message: message %>
@@ -67,12 +69,9 @@
         <% end %>
       </div>
 
-      <%= form_with model: [@chat, @message], url: chat_messages_path(@chat) do |f| %>
-        <div style="display: flex; gap: 0.5rem;">
-          <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 60px;" %>
-          <%= f.submit "Send", class: "btn", style: "align-self: flex-end;" %>
-        </div>
-      <% end %>
+      <div id="form_container">
+        <%= render "posts/chat_form", chat: @chat, message: @message %>
+      </div>
     <% else %>
       <p style="color: #999; text-align: center; padding: 2rem;">
         <% if @post.full? %>
