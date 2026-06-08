@@ -32,29 +32,48 @@ body {
   flex-shrink: 0;
 }
 
-// Logo zone — no border, no box, no animation
+// Logo zone — App Store style icon + wordmark
 .ps-sidebar__logo {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.7rem;
   text-decoration: none;
-  padding: 0 0.25rem;
+  padding: 0 0.15rem;
   margin-bottom: 1.75rem;
 
+  // White rounded "app icon" tile that the logo sits on top of
+  .ps-sidebar__logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
   .ps-sidebar__logo-img {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    border-radius: 8px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
     object-fit: contain;
   }
 
   .ps-sidebar__logo-name {
-    font-size: 1.05rem;
-    font-weight: 800;
+    font-size: 1.4rem;
+    font-weight: 500;
     font-family: $headers-font;
-    color: white;
-    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: -0.01em;
+    line-height: 1;
+
+    strong {
+      font-weight: 800;
+      color: white;
+    }
   }
 }
 
@@ -98,6 +117,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 0 0.15rem 0.25rem; // slight breathing room of purple around the CTA
 }
 
 .ps-sidebar__user {
@@ -134,18 +154,18 @@ body {
   }
 }
 
-// Light sweep: traverses once every ~6s, ~1.1s crossing (18% of cycle)
-// Opacity fades in/out over 0.18s — no hard pop
-@keyframes ps-cta-sweep {
-  0%    { transform: skewX(-20deg) translateX(-200%); opacity: 0; }
-  3%    { opacity: 1; }
-  15%   { opacity: 1; }
-  18%   { transform: skewX(-20deg) translateX(450%);  opacity: 0; }
-  100%  { transform: skewX(-20deg) translateX(450%);  opacity: 0; }
+// Slow sheen sweep across the solid button — a quiet highlight that keeps it alive.
+// The sweep happens in the first ~22% of the cycle, then the highlight rests fully
+// off-screen for the remainder so the loop restart is never visible (no hard cut).
+@keyframes ps-cta-sheen {
+  0%   { transform: translateX(-160%) skewX(-18deg); }
+  42%  { transform: translateX(260%)  skewX(-18deg); }
+  100% { transform: translateX(260%)  skewX(-18deg); }
 }
 
 .ps-sidebar__cta {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -153,53 +173,67 @@ body {
   gap: 0.5rem;
   width: 100%;
   box-sizing: border-box;
-  padding: 0.7rem 0.75rem;
-  border-radius: 12px;
+  padding: 0.9rem 0.6rem;
+  border-radius: 14px;
   text-decoration: none;
   white-space: nowrap;
 
-  background: $brand-panel;
-  color: $brand-sidebar !important;
+  // Solid brand-purple gradient — high contrast against the muted sidebar
+  background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff !important;
 
   font-family: $headers-font;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   letter-spacing: 0.01em;
 
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.15s;
+  // Colored glow lifts it off the surface; inset highlight gives a crisp top edge
+  box-shadow:
+    0 8px 20px rgba($purple, 0.45),
+    0 2px 6px rgba($purple-dark, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
 
-  // Diagonal sheen band — 40% wide, taller than button to cover skew gaps
-  &::after {
+  .fa-bolt {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55));
+  }
+
+  // Diagonal sheen that sweeps across, then rests off-screen before the next pass
+  &::before {
     content: '';
     position: absolute;
-    top: -10%;
+    z-index: 1;
+    top: -20%;
     left: 0;
-    width: 40%;
-    height: 120%;
+    width: 45%;
+    height: 140%; // taller than the button so the skewed edges never clip inside
     background: linear-gradient(
-      to right,
-      transparent       0%,
-      rgba(255,255,255,0.06) 20%,
-      rgba(255,255,255,0.62) 50%,
-      rgba(255,255,255,0.06) 80%,
-      transparent       100%
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.10) 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      rgba(255, 255, 255, 0.10) 65%,
+      transparent 100%
     );
-    transform: skewX(-20deg) translateX(-200%);
-    animation: ps-cta-sweep 6s ease-in-out infinite;
+    // Soft-in/soft-out sweep; the long rest tail lives in the keyframes
+    animation: ps-cta-sheen 3.4s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+    animation-delay: 1s;
     pointer-events: none;
   }
 
   &:hover {
-    background: darken($brand-panel, 5%);
-    color: $brand-sidebar !important;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.13);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    filter: saturate(1.08);
+    box-shadow:
+      0 12px 28px rgba($purple, 0.55),
+      0 3px 8px rgba($purple-dark, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     transition-duration: 0.08s;
   }
 }
@@ -255,11 +289,11 @@ body {
   text-decoration: none;
   padding: 0.45rem 1.1rem;
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.12);
+  background: #A1A9DD;
   flex-shrink: 0;
   transition: background 0.15s;
 
-  &:hover { background: rgba(0, 0, 0, 0.2); }
+  &:hover { background: darken(#A1A9DD, 8%); }
 }
 
 .ps-main__inner {

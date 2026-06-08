@@ -47,8 +47,10 @@
 
         <aside class="ps-sidebar">
           <%= link_to root_path, class: "ps-sidebar__logo" do %>
-            <%= image_tag "playsync-logo.png", alt: "PlaySync", class: "ps-sidebar__logo-img" %>
-            <span class="ps-sidebar__logo-name">PlaySync</span>
+            <span class="ps-sidebar__logo-icon">
+              <%= image_tag "playsync-logo.png", alt: "PlaySync", class: "ps-sidebar__logo-img" %>
+            </span>
+            <span class="ps-sidebar__logo-name"><strong>Play</strong>Sync</span>
           <% end %>
           <nav class="ps-sidebar__nav">
             <%= link_to posts_path, class: "ps-sidebar__link #{request.path == '/' || request.path.start_with?('/posts') ? 'active' : ''}" do %>

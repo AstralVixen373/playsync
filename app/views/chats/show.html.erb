@@ -6,7 +6,7 @@
     <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
       <h3 style="margin-bottom: 0.5rem;"><%= @chat.post.title %></h3>
       <p><strong>Game:</strong> <%= @chat.post.game %></p>
-      <p><strong>Platform:</strong> <%= @chat.post.platforms.join(", ") %></p>
+      <p><strong>Platform:</strong> <%= platform_list(@chat.post.platforms) %></p>
       <p><strong>Language:</strong> <%= @chat.post.language %></p>
       <p><strong>Type:</strong> <%= @chat.post.post_type %></p>
       <p><strong>Slots:</strong> <%= @chat.post.slot %></p>

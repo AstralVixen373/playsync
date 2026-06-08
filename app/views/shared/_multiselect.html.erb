@@ -1,12 +1,15 @@
-<%# locals: (name:, options:, selected: [], placeholder: "All", include_hidden: false) %>
-<div data-controller="multiselect" data-multiselect-placeholder-value="<%= placeholder %>" style="position: relative;">
+<%# locals: (name:, options:, selected: [], placeholder: "All", include_hidden: false, single: false) %>
+<div data-controller="multiselect"
+     data-multiselect-placeholder-value="<%= placeholder %>"
+     data-multiselect-single-value="<%= single %>"
+     style="position: relative;">
   <button type="button" data-multiselect-target="toggle" data-action="multiselect#toggle"
           style="width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; background: #fff; text-align: left; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
   </button>
 
   <div data-multiselect-target="panel" hidden
        style="position: absolute; z-index: 20; left: 0; min-width: 160px; margin-top: 4px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 0.35rem; box-shadow: 0 8px 24px rgba(0,0,0,0.12); max-height: 240px; overflow-y: auto;">
-    <% if include_hidden %>
+    <% if single || include_hidden %>
       <%# Ensures an empty value is submitted so the field can be cleared. %>
       <input type="hidden" name="<%= name %>" value="">
     <% end %>
@@ -17,6 +20,7 @@
                <%= "checked" if Array(selected).include?(opt) %>
                data-action="multiselect#update"
                style="accent-color: #8C97DF; width: 15px; height: 15px; cursor: pointer;">
+        <%= option_icon(opt) %>
         <%= opt %>
       </label>
     <% end %>

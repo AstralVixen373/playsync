@@ -29,6 +29,39 @@
   &::placeholder { color: #aaa; }
 }
 
+// Autocomplete dropdown — floats over the page instead of pushing content down.
+#filter-game-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  min-width: 100%;
+  max-width: 320px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #eceaf3;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  // Hide the box entirely when there are no results (JS empties innerHTML).
+  &:empty { display: none; }
+
+  > div {
+    padding: 0.55rem 0.9rem !important;
+    font-size: 0.85rem;
+    color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.1s;
+
+    &:hover { background: rgba($purple, 0.08); color: $purple; }
+    & + div { border-top: 1px solid #f3f4f6; }
+  }
+}
+
 [data-multiselect-target="toggle"] {
   padding: 0.4rem 0.9rem !important;
   border: 1.5px solid #e0e0e0 !important;
@@ -49,20 +82,6 @@
 [data-multiselect-target="panel"] {
   border-radius: 12px !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
-}
-
-.ps-filter-select {
-  padding: 0.4rem 0.9rem;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 20px;
-  background: white;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #555;
-  outline: none;
-  cursor: pointer;
-
-  &:focus { border-color: $purple; }
 }
 
 .ps-filter-reset {
@@ -126,23 +145,25 @@
   a { color: $purple; }
 }
 
-// Post card
+// Post card — matchmaking-style layout: identity + info on the left,
+// status & primary action on the right. Scannable in under a second.
 .ps-card {
   background: white;
-  border-radius: 14px;
-  padding: 1rem;
+  border-radius: 16px;
+  padding: 1.1rem 1.2rem;
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
+  align-items: stretch;
+  gap: 1rem;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
   position: relative;
   overflow: hidden;
-  transition: box-shadow 0.15s, transform 0.15s;
-  border: 1.5px solid transparent;
+  transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s;
+  border: 1.5px solid #eceaf3;
 
   &:hover {
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 22px rgba($purple, 0.12);
     transform: translateY(-1px);
+    border-color: rgba($purple, 0.25);
   }
 
   &--expired {
@@ -171,145 +192,292 @@
   &--full    { background: $orange; color: white; }
 }
 
-// Game cover placeholder
+// Game cover (ZONE 1 — identity). Stretches to the full card height so its
+// bottom edge lines up with the info column — keeps the card balanced.
 .ps-card__cover {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  border-radius: 10px;
+  width: 92px;
+  min-width: 92px;
+  min-height: 124px;
+  align-self: stretch;
+  border-radius: 12px;
   background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 1.5rem;
+  font-size: 2.2rem;
   font-weight: 800;
   font-family: $headers-font;
   user-select: none;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba($purple, 0.28);
+  overflow: hidden;
+
+  @media (max-width: 480px) {
+    width: 72px;
+    min-width: 72px;
+    font-size: 1.8rem;
+  }
+
+  // When a real IGDB cover is shown, drop the gradient/glow so the artwork
+  // sits flush in the rounded box.
+  &--art {
+    background: #1a1a2e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+}
+
+.ps-card__cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .ps-card__body {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .ps-card__top {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-bottom: 0.2rem;
   flex-wrap: wrap;
 }
 
-// Type badge
+// Type badge (CHILL / FUN / COMPETITIVE)
 .ps-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   border-radius: 20px;
-  padding: 0.1rem 0.55rem;
+  padding: 0.2rem 0.6rem;
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+
+  img, i { display: block; }
 
   &--competitive { background: rgba($purple, 0.12); color: $purple; }
   &--chill       { background: rgba(#3B82F6, 0.12); color: #3B82F6; }
   &--fun         { background: rgba($orange, 0.14); color: darken($orange, 8%); }
 }
 
-// Status badge
-.ps-status-badge {
-  display: inline-block;
-  border-radius: 20px;
-  padding: 0.1rem 0.55rem;
-  font-size: 0.68rem;
-  font-weight: 600;
-
-  &--open     { background: #d4edda; color: #155724; }
-  &--finished { background: #e2e3e5; color: #383d41; }
-}
-
+// ZONE 1 — title (prominent) + description (muted)
 .ps-card__title {
-  font-size: 0.92rem;
-  font-weight: 700;
+  font-size: 1.12rem;
+  font-weight: 800;
   color: #1a1a2e;
-  margin: 0 0 0.1rem;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: $headers-font;
+  line-height: 1.2;
 }
 
-.ps-card__game {
-  font-size: 0.78rem;
+.ps-card__desc {
+  font-size: 0.82rem;
   color: #9ca3af;
-  margin: 0 0 0.35rem;
+  margin: -0.35rem 0 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.ps-card__meta {
+// ZONE 2 — primary info: language + player count
+.ps-card__info {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.75rem;
-  color: #777;
+  gap: 1.1rem;
   flex-wrap: wrap;
 }
 
-// Action column (right side)
-.ps-card__actions {
+.ps-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+
+  img, i { display: block; }
+  i { color: #9ca3af; font-size: 0.9rem; }
+
+  // The slots partial ("<strong>x/y</strong> players") renders inline here.
+  span { font-weight: 600; }
+  strong { font-weight: 800; color: #1a1a2e; }
+}
+
+// ZONE 3 — session tag chips (platforms + crossplay)
+.ps-card__chips {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.ps-chip {
+  display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  height: 28px;
+  padding: 0 0.65rem;
+  border-radius: 9px;
+  background: #f6f7f9;
+  border: 1px solid #e6e7ec;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  img, i { display: block; }
+
+  &--crossplay {
+    background: rgba($purple, 0.1);
+    border-color: rgba($purple, 0.2);
+    color: $purple;
+    i { color: $purple; }
+  }
+}
+
+// ZONE 6 — secondary info: creation time, de-emphasised
+.ps-card__time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.1rem;
+  font-size: 0.72rem;
+  color: #b6bac3;
+  font-weight: 500;
+
+  i { font-size: 0.72rem; }
+}
+
+// Right column — ZONE 4 (status) + ZONE 5 (action) + owner controls
+.ps-card__aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.6rem;
   flex-shrink: 0;
 
   form { margin: 0; }
 }
 
-.ps-card__chevron {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba($purple, 0.08);
+.ps-card__aside-top {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: $purple;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.15s;
+  gap: 0.6rem;
+}
+
+// ZONE 4 — prominent status pill
+.ps-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  .ps-status__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  &--open {
+    background: rgba($green, 0.16);
+    color: darken($green, 28%);
+    .ps-status__dot { background: $green; }
+  }
+
+  &--finished {
+    background: #e9eaee;
+    color: #6b7280;
+    .ps-status__dot { background: #9ca3af; }
+  }
+}
+
+// ZONE 5 — primary action button (Join / View)
+.ps-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border-radius: 11px;
   font-size: 0.85rem;
-  padding: 0;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid rgba($purple, 0.25);
+  background: rgba($purple, 0.06);
+  color: $purple;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  white-space: nowrap;
+
+  i { font-size: 0.78rem; }
 
   &:hover {
-    background: rgba($purple, 0.18);
+    background: rgba($purple, 0.12);
     color: $purple;
+    transform: translateY(-1px);
   }
 
   &--join {
-    background: $purple;
+    background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
+    border-color: transparent;
     color: white;
+    box-shadow: 0 4px 12px rgba($purple, 0.3);
 
-    &:hover { background: $purple-mid; color: white; }
+    &:hover {
+      color: white;
+      box-shadow: 0 6px 16px rgba($purple, 0.4);
+    }
   }
 }
 
 .ps-card__owner-actions {
   display: flex;
-  gap: 0.25rem;
+  gap: 0.35rem;
 
   a {
-    font-size: 0.68rem;
-    padding: 0.15rem 0.4rem;
-    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+
+    i { font-size: 0.68rem; }
 
     &.ps-edit   { background: #f3f4f6; color: #6b7280; &:hover { background: #e5e7eb; } }
     &.ps-delete { background: rgba(#dc3545, 0.08); color: #dc3545; &:hover { background: rgba(#dc3545, 0.16); } }
+  }
+}
+
+// On narrow cards, let the action column wrap under the body
+@media (max-width: 480px) {
+  .ps-card { flex-wrap: wrap; }
+  .ps-card__aside {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
   }
 }

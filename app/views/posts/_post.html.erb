@@ -1,9 +1,11 @@
 <%# Renders one post card. `current_user` is passed as a local (nil in Turbo
     broadcasts) so this partial never relies on request/Pundit state. %>
-<% member  = current_user && post.member?(current_user) %>
-<% owner   = current_user && post.user == current_user %>
-<% expired = post.created_at < 1.hour.ago %>
-<% full    = post.full? %>
+<% member    = current_user && post.member?(current_user) %>
+<% owner     = current_user && post.user == current_user %>
+<% expired   = post.created_at < 1.hour.ago %>
+<% full      = post.full? %>
+<% platforms = Array(post.platforms) %>
+<% crossplay = platforms.size > 1 %>
 
 <div id="<%= dom_id(post) %>" class="ps-card <%= 'ps-card--expired' if expired %> <%= 'ps-card--full' if full && !expired %>">
 
@@ -13,47 +15,77 @@
     <div class="ps-card__banner ps-card__banner--full">FULL</div>
   <% end %>
 
-  <div class="ps-card__cover">
-    <%= post.game.name.first.upcase %>
+  <%# ZONE 1 — Identity: game cover (IGDB) with a letter placeholder fallback %>
+  <div class="ps-card__cover <%= 'ps-card__cover--art' if post.game.cover? %>">
+    <% if post.game.cover? %>
+      <%= image_tag post.game.cover_url, alt: post.game.name, loading: "lazy", class: "ps-card__cover-img" %>
+    <% else %>
+      <%= post.game.name.first.upcase %>
+    <% end %>
   </div>
 
   <div class="ps-card__body">
     <div class="ps-card__top">
-      <span class="ps-badge ps-badge--<%= post.post_type.downcase %>"><%= post.post_type %></span>
-      <span class="ps-status-badge ps-status-badge--<%= post.status %>"><%= post.status.capitalize %></span>
+      <span class="ps-badge ps-badge--<%= post.post_type.downcase %>">
+        <%= option_icon(post.post_type, size: 13) %><%= post.post_type %>
+      </span>
     </div>
+
     <h3 class="ps-card__title"><%= post.title %></h3>
-    <p class="ps-card__game"><%= post.game.name %></p>
-    <div class="ps-card__meta">
-      <%= render "posts/slots", post: post %>
-      <span>·</span>
-      <span><%= post.platforms.join(", ") %></span>
-      <span>·</span>
-      <span><%= time_ago_in_words(post.created_at) %> ago</span>
+    <p class="ps-card__desc"><%= post.game.name %></p>
+
+    <%# ZONE 2 — Primary info: language + player count %>
+    <div class="ps-card__info">
+      <span class="ps-info">
+        <%= option_icon(post.language, size: 14) %>
+        <%= language_label(post.language) %>
+      </span>
+      <span class="ps-info ps-info--players">
+        <i class="fa-solid fa-user-group"></i>
+        <%= render "posts/slots", post: post %>
+      </span>
+    </div>
+
+    <%# ZONE 3 — Session tags: platform chips (+ crossplay) %>
+    <div class="ps-card__chips">
+      <% platforms.each do |name| %>
+        <span class="ps-chip"><%= platform_icon(name, size: 14) %><%= name %></span>
+      <% end %>
+      <% if crossplay %>
+        <span class="ps-chip ps-chip--crossplay">
+          <i class="fa-solid fa-gamepad"></i>Crossplay
+        </span>
+      <% end %>
+    </div>
+
+    <%# ZONE 6 — Secondary info: creation time, de-emphasised %>
+    <div class="ps-card__time">
+      <i class="fa-regular fa-clock"></i>
+      <%= time_ago_in_words(post.created_at) %> ago
     </div>
   </div>
 
-  <div class="ps-card__actions">
-    <% if member || owner %>
-      <%= link_to post_path(id: post.id), class: "ps-card__chevron" do %>
-        <i class="fa-solid fa-chevron-right"></i>
-      <% end %>
-    <% elsif current_user %>
-      <%= button_to join_post_path(post), method: :post, class: "ps-card__chevron ps-card__chevron--join" do %>
-        <i class="fa-solid fa-arrow-right-to-bracket"></i>
-      <% end %>
-    <% else %>
-      <%= link_to post_path(id: post.id), class: "ps-card__chevron" do %>
-        <i class="fa-solid fa-chevron-right"></i>
-      <% end %>
-    <% end %>
+  <%# ZONE 4 + 5 — Status + primary action %>
+  <div class="ps-card__aside">
+    <div class="ps-card__aside-top">
+      <span class="ps-status ps-status--<%= post.status %>">
+        <span class="ps-status__dot"></span><%= post.status.capitalize %>
+      </span>
 
-    <% if owner %>
-      <div class="ps-card__owner-actions">
-        <%= link_to "Edit", edit_post_path(id: post.id), class: "ps-edit" %>
-        <%= link_to "Del", post_path(post.id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "ps-delete" %>
-      </div>
-    <% end %>
+      <% if member || owner %>
+        <%= link_to post_path(id: post.id), class: "ps-action" do %>
+          View <i class="fa-solid fa-arrow-right"></i>
+        <% end %>
+      <% elsif current_user %>
+        <%= button_to join_post_path(post), method: :post, class: "ps-action ps-action--join" do %>
+          Join <i class="fa-solid fa-arrow-right"></i>
+        <% end %>
+      <% else %>
+        <%= link_to post_path(id: post.id), class: "ps-action" do %>
+          View <i class="fa-solid fa-arrow-right"></i>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 
 </div>
