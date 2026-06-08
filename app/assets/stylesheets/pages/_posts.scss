@@ -1,0 +1,315 @@
+// Posts page & card styles
+
+// Filter bar — single line, no wrap
+.ps-filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: 0.75rem;
+}
+
+.ps-filter-game-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ps-filter-pill-input {
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #444;
+  outline: none;
+  min-width: 150px;
+
+  &:focus { border-color: $purple; }
+  &::placeholder { color: #aaa; }
+}
+
+[data-multiselect-target="toggle"] {
+  padding: 0.4rem 0.9rem !important;
+  border: 1.5px solid #e0e0e0 !important;
+  border-radius: 20px !important;
+  background: white !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: #555 !important;
+  white-space: nowrap;
+  text-align: left !important;
+
+  &:hover {
+    border-color: $purple !important;
+    color: $purple !important;
+  }
+}
+
+[data-multiselect-target="panel"] {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+.ps-filter-select {
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 20px;
+  background: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #555;
+  outline: none;
+  cursor: pointer;
+
+  &:focus { border-color: $purple; }
+}
+
+.ps-filter-reset {
+  font-size: 0.82rem;
+  color: #999;
+  text-decoration: none;
+  padding: 0.4rem 0.5rem;
+  align-self: center;
+
+  &:hover { color: $purple; }
+}
+
+// Game chips
+.ps-game-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.ps-game-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba($purple, 0.1);
+  color: $purple;
+  border-radius: 12px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $purple;
+    font-size: 0.9rem;
+    padding: 0;
+    line-height: 1;
+  }
+}
+
+// Cards grid
+.ps-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 780px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ps-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #aaa;
+  font-size: 0.95rem;
+  grid-column: 1 / -1;
+
+  a { color: $purple; }
+}
+
+// Post card
+.ps-card {
+  background: white;
+  border-radius: 14px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.15s, transform 0.15s;
+  border: 1.5px solid transparent;
+
+  &:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &--expired {
+    filter: grayscale(60%);
+    opacity: 0.7;
+  }
+
+  &--full {
+    border-color: #e8a87c;
+  }
+}
+
+.ps-card__banner {
+  position: absolute;
+  top: 14px;
+  right: -28px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 2.5rem;
+  transform: rotate(35deg);
+  pointer-events: none;
+  z-index: 1;
+
+  &--expired { background: #6c757d; color: white; }
+  &--full    { background: $orange; color: white; }
+}
+
+// Game cover placeholder
+.ps-card__cover {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: $headers-font;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.ps-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ps-card__top {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
+  flex-wrap: wrap;
+}
+
+// Type badge
+.ps-badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  &--competitive { background: rgba($purple, 0.12); color: $purple; }
+  &--chill       { background: rgba(#3B82F6, 0.12); color: #3B82F6; }
+  &--fun         { background: rgba($orange, 0.14); color: darken($orange, 8%); }
+}
+
+// Status badge
+.ps-status-badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 0.1rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  &--open     { background: #d4edda; color: #155724; }
+  &--finished { background: #e2e3e5; color: #383d41; }
+}
+
+.ps-card__title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: $headers-font;
+}
+
+.ps-card__game {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin: 0 0 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ps-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: #777;
+  flex-wrap: wrap;
+}
+
+// Action column (right side)
+.ps-card__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+
+  form { margin: 0; }
+}
+
+.ps-card__chevron {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba($purple, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $purple;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+  font-size: 0.85rem;
+  padding: 0;
+
+  &:hover {
+    background: rgba($purple, 0.18);
+    color: $purple;
+  }
+
+  &--join {
+    background: $purple;
+    color: white;
+
+    &:hover { background: $purple-mid; color: white; }
+  }
+}
+
+.ps-card__owner-actions {
+  display: flex;
+  gap: 0.25rem;
+
+  a {
+    font-size: 0.68rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+
+    &.ps-edit   { background: #f3f4f6; color: #6b7280; &:hover { background: #e5e7eb; } }
+    &.ps-delete { background: rgba(#dc3545, 0.08); color: #dc3545; &:hover { background: rgba(#dc3545, 0.16); } }
+  }
+}

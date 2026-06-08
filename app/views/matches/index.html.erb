@@ -1,4 +1,7 @@
-<h1 style="margin-bottom: 2rem;">My Matches</h1>
+<% content_for :page_title do %>
+  <h1>My Matches</h1>
+  <p>Your sessions in progress and finished</p>
+<% end %>
 
 <%= form_with url: my_matches_path, method: :get,
               data: { controller: "form", action: "change->form#submit" } do |f| %>
