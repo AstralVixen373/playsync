@@ -60,10 +60,6 @@
               <i class="fa-solid fa-heart"></i>
               <span><%= t("nav.my_matches") %></span>
             <% end %>
-            <%= link_to edit_user_registration_path, class: "ps-sidebar__link #{request.path == edit_user_registration_path ? 'active' : ''}" do %>
-              <i class="fa-solid fa-user"></i>
-              <span><%= t("nav.profile") %></span>
-            <% end %>
             <%= link_to settings_path, class: "ps-sidebar__link #{request.path.start_with?('/settings') ? 'active' : ''}" do %>
               <i class="fa-solid fa-gear"></i>
               <span><%= t("nav.settings") %></span>
@@ -71,8 +67,15 @@
           </nav>
 
           <div class="ps-sidebar__footer">
-            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-sidebar__logout" do %>
-              <i class="fa-solid fa-right-from-bracket"></i> <%= t("nav.sign_out") %>
+            <%= link_to edit_user_registration_path, class: "ps-sidebar__profile #{request.path == edit_user_registration_path ? 'active' : ''}" do %>
+              <span class="ps-sidebar__avatar">
+                <% if current_user.avatar.attached? %>
+                  <%= image_tag current_user.avatar, alt: t("nav.profile") %>
+                <% else %>
+                  <%= (current_user.username.presence || current_user.email).first.upcase %>
+                <% end %>
+              </span>
+              <span class="ps-sidebar__profile-name"><%= current_user.username.presence || current_user.email %></span>
             <% end %>
           </div>
         </aside>
@@ -82,8 +85,8 @@
             <div class="ps-topbar__title">
               <%= yield(:page_title) %>
             </div>
-            <%= link_to new_post_path, class: "ps-topbar__cta" do %>
-              <i class="fa-solid fa-bolt"></i> Create announcement
+            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-topbar__signout" do %>
+              <i class="fa-solid fa-right-from-bracket"></i> <%= t("nav.sign_out") %>
             <% end %>
           </div>
 
