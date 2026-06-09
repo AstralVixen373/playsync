@@ -74,6 +74,10 @@ class Post < ApplicationRecord
     open? && !full? && !expired?
   end
 
+  def kicked?(user)
+    kicked_user_ids.include?(user.id)
+  end
+  
   def member?(other_user)
     return false if other_user.nil?
 

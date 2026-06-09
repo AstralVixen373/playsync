@@ -77,6 +77,7 @@ es:
       not_authorized: "No estás autorizado para realizar esta acción."
       kicked: "El jugador ha sido eliminado de la partida."
       kick_failed: "No se pudo eliminar a este jugador."
+      kick_banned: "Has sido eliminado de esta partida y no puedes volver a unirte."
     index:
       title: "Encontrar compañeros"
       create: "Crear publicación"
@@ -123,6 +124,7 @@ es:
       you_created: "Tú creaste esta partida."
       kick: "Expulsar"
       kick_confirm: "¿Eliminar a este jugador de la partida?"
+      kicked_out: "Has sido eliminado de esta partida."
       leave_match: "Abandonar partida"
       leave_confirm: "¿Abandonar esta partida?"
       full: "Completo"

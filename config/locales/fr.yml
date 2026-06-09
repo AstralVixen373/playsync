@@ -77,6 +77,7 @@ fr:
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
       kicked: "Le joueur a été retiré du match."
       kick_failed: "Impossible de retirer ce joueur."
+      kick_banned: "Tu as été retiré de ce match et ne peux pas le rejoindre à nouveau."
     index:
       title: "Trouver des coéquipiers"
       create: "Créer une annonce"
@@ -123,6 +124,7 @@ fr:
       you_created: "Vous avez créé ce match."
       kick: "Exclure"
       kick_confirm: "Retirer ce joueur du match ?"
+      kicked_out: "Tu as été retiré de ce match."
       leave_match: "Quitter le match"
       leave_confirm: "Quitter ce match ?"
       full: "Complet"

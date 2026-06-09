@@ -51,6 +51,8 @@
           <% end %>
         <% elsif @is_member %>
           <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: t("posts.show.leave_confirm") } %>
+        <% elsif @post.kicked?(current_user) %>
+          <span style="color: #dc3545; align-self: center;"><%= t("posts.show.kicked_out") %></span>
         <% elsif @post.full? %>
           <button class="btn" disabled style="opacity: 0.6; cursor: not-allowed;"><%= t("posts.show.full") %></button>
         <% else %>

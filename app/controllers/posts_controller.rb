@@ -7,7 +7,7 @@ class PostsController < ApplicationController
     # Show every open post — full and stale ones stay on the board with their
     # own styling (see posts/_post) instead of vanishing; only the Join action
     # is gated. This lets people tell OPEN / FULL / EXPIRED apart at a glance.
-    @posts = policy_scope(Post).open.includes(:user, :game).order(created_at: :desc)
+    @posts = policy_scope(Post).open.where("? <> ALL(kicked_user_ids)", current_user.id).includes(:user, :game).order(created_at: :desc)
 
     # On a fresh visit (no `committed` flag) the filters default to the user's
     # saved preferences. Once the user touches the form, `committed` is set and
@@ -96,6 +96,8 @@ class PostsController < ApplicationController
 
       if chat.users.exists?(current_user.id)
         notice = t("posts.notices.already_member", locale: :en)
+      elsif post.kicked?(current_user)
+        alert = t("posts.notices.kick_banned")
       elsif post.expired?
         alert = t("posts.notices.expired", locale: :en)
       elsif post.full?
@@ -157,6 +159,7 @@ class PostsController < ApplicationController
     end
 
     @post.chat.users.delete(target)
+    @post.update!(kicked_user_ids: @post.kicked_user_ids | [target.id])
     @post.reload
     broadcast_post_changes(@post)
 
