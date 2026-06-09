@@ -68,12 +68,10 @@
   <%# ZONE 4 + 5 — Status + primary action %>
   <div class="ps-card__aside">
     <div class="ps-card__aside-top">
-      <% if expired %>
-        <%# Expired posts stay visible but never advertise themselves as "Open". %>
-        <span class="ps-status ps-status--expired">
-          <span class="ps-status__dot"></span>Expired
-        </span>
-      <% else %>
+      <%# Expired and full posts are already flagged by their diagonal banner, so
+          we skip the status pill there to avoid a redundant (and, for full posts,
+          misleading green "Open") indicator. %>
+      <% unless expired || full %>
         <span class="ps-status ps-status--<%= post.status %>">
           <span class="ps-status__dot"></span><%= post.status.capitalize %>
         </span>
@@ -83,10 +81,8 @@
         <%= link_to post_path(id: post.id), class: "ps-action" do %>
           View <i class="fa-solid fa-arrow-right"></i>
         <% end %>
-      <% elsif current_user && expired %>
-        <span class="ps-action ps-action--disabled">Expired</span>
-      <% elsif current_user && full %>
-        <span class="ps-action ps-action--disabled">Full</span>
+      <% elsif current_user && (expired || full) %>
+        <%# No join action — the diagonal banner already conveys expired/full. %>
       <% elsif current_user %>
         <%= button_to join_post_path(post), method: :post, class: "ps-action ps-action--join" do %>
           Join <i class="fa-solid fa-arrow-right"></i>
