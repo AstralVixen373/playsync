@@ -258,7 +258,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_133635) do
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
-    t.string "theme", default: "light", null: false
     t.string "uid"
     t.datetime "updated_at", null: false
     t.string "username"
