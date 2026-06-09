@@ -176,17 +176,23 @@
   }
 }
 
+// Corner ribbon. A fixed-width band centred on the card's top-right corner and
+// rotated 45deg so both ends run off the edges and get clipped by the card's
+// `overflow: hidden` — leaving a clean diagonal strip with no stray rectangle.
 .ps-card__banner {
   position: absolute;
-  top: 14px;
-  right: -28px;
+  top: 20px;
+  right: -56px;
+  width: 170px;
+  text-align: center;
   font-size: 0.65rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 0.2rem 2.5rem;
-  transform: rotate(35deg);
+  padding: 0.22rem 0;
+  transform: rotate(45deg);
   pointer-events: none;
   z-index: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
 
   &--expired { background: #6c757d; color: white; }
   &--full    { background: $orange; color: white; }
