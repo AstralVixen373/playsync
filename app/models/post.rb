@@ -62,6 +62,19 @@ class Post < ApplicationRecord
     members_count >= capacity
   end
 
+  # Stale open post: still visible (with an "expired" look) but no longer joinable.
+  def expired?
+    created_at.present? && created_at < EXPIRY.ago
+  end
+
+  # A post can be joined while it's open, has room, and hasn't gone stale.
+  def joinable?
+    open? && !full? && !expired?
+  end
+
+  def kicked?(user)
+    kicked_user_ids.include?(user.id)
+  end
   def member?(other_user)
     return false if other_user.nil?
 

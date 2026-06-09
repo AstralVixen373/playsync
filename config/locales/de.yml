@@ -76,6 +76,7 @@ de:
       not_authorized: "Du bist nicht berechtigt, diese Aktion auszuführen."
       kicked: "Der Spieler wurde aus dem Match entfernt."
       kick_failed: "Dieser Spieler konnte nicht entfernt werden."
+      kick_banned: "Du wurdest aus diesem Match entfernt und kannst nicht erneut beitreten."
     index:
       title: "Mitspieler finden"
       create: "Beitrag erstellen"
@@ -122,6 +123,7 @@ de:
       you_created: "Du hast dieses Match erstellt."
       kick: "Entfernen"
       kick_confirm: "Diesen Spieler aus dem Match entfernen?"
+      kicked_out: "Du wurdest aus diesem Match entfernt."
       leave_match: "Match verlassen"
       leave_confirm: "Dieses Match verlassen?"
       full: "Voll"
