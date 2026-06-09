@@ -1,5 +1,6 @@
 <%= turbo_stream_from @post %>
 <%= turbo_stream_from @chat %>
+<%= turbo_stream_from "user_chat" %>
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
   <!-- Post Details -->
@@ -24,12 +25,10 @@
     </div>
 
     <h3 style="margin-bottom: 1rem;">👥 <%= t("posts.show.participants") %></h3>
-    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;" id="chat_users">
       <% if @chat.users.any? %>
         <% @chat.users.each do |user| %>
-          <div style="padding: 0.5rem 0; border-bottom: 1px solid #dee2e6;">
-            <p style="margin: 0;"><%= user.username %></p>
-          </div>
+          <%= render "posts/chat_user", user: user %>
         <% end %>
       <% else %>
         <p style="color: rgba(33, 37, 41, .5);"><%= t("posts.show.no_participants") %></p>
