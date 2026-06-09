@@ -19,7 +19,7 @@
 
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #212529; }
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #212529; }
 
       .alert { padding: 0.85rem 1rem; margin-bottom: 1rem; border-radius: 8px; font-size: 0.9rem; }
       .alert-notice { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
@@ -71,8 +71,8 @@
           </nav>
 
           <div class="ps-sidebar__footer">
-            <%= link_to new_post_path, class: "ps-sidebar__cta" do %>
-              <i class="fa-solid fa-bolt"></i> Create announcement
+            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-sidebar__logout" do %>
+              <i class="fa-solid fa-right-from-bracket"></i> <%= t("nav.sign_out") %>
             <% end %>
           </div>
         </aside>
@@ -82,8 +82,8 @@
             <div class="ps-topbar__title">
               <%= yield(:page_title) %>
             </div>
-            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-topbar__logout" do %>
-              <%= t("nav.sign_out") %>
+            <%= link_to new_post_path, class: "ps-topbar__cta" do %>
+              <i class="fa-solid fa-bolt"></i> Create announcement
             <% end %>
           </div>
 

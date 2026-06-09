@@ -117,7 +117,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0 0.15rem 0.25rem; // slight breathing room of purple around the CTA
+  padding: 0 0.15rem 0.25rem; // slight breathing room around the footer action
 }
 
 .ps-sidebar__user {
@@ -163,29 +163,29 @@ body {
   100% { transform: translateX(260%)  skewX(-18deg); }
 }
 
-.ps-sidebar__cta {
+.ps-topbar__cta {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  width: 100%;
+  flex-shrink: 0;
   box-sizing: border-box;
-  padding: 0.9rem 0.6rem;
-  border-radius: 14px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
   text-decoration: none;
   white-space: nowrap;
 
-  // Solid brand-purple gradient — high contrast against the muted sidebar
+  // Solid brand-purple gradient — high contrast against the light panel
   background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
   border: 1px solid rgba(255, 255, 255, 0.22);
   color: #ffffff !important;
 
   font-family: $headers-font;
   font-weight: 800;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   letter-spacing: 0.01em;
 
   // Colored glow lifts it off the surface; inset highlight gives a crisp top edge
@@ -279,21 +279,29 @@ body {
   }
 }
 
-.ps-topbar__logout {
-  display: inline-flex;
+.ps-sidebar__logout {
+  display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: $headers-font;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
-  padding: 0.45rem 1.1rem;
-  border-radius: 10px;
-  background: #A1A9DD;
-  flex-shrink: 0;
-  transition: background 0.15s;
+  white-space: nowrap;
+  padding: 0.7rem 0.6rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: background 0.15s, color 0.15s;
 
-  &:hover { background: darken(#A1A9DD, 8%); }
+  &:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
 }
 
 .ps-main__inner {
