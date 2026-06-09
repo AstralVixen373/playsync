@@ -3,12 +3,14 @@
   <p>Find players to share your session</p>
 <% end %>
 
-<div class="ps-find">
+<div class="ps-find" data-controller="modal">
 
   <%# ── Create zone: "I want to create an announcement" ──────────────────── %>
+  <%# The CTA opens the creation form as a modal over the (blurred) board. The
+  <%# href stays a real link so it still works without JS (lands on /posts/new). %>
   <section class="ps-find__create">
     <span class="ps-find__label"><i class="fa-solid fa-bolt"></i> Got something to play?</span>
-    <%= link_to new_post_path, class: "ps-topbar__cta" do %>
+    <%= link_to new_post_path, class: "ps-topbar__cta", data: { action: "modal#open" } do %>
       <i class="fa-solid fa-bolt"></i> Create announcement
     <% end %>
   </section>
@@ -53,6 +55,27 @@
 
     <% end %>
   </section>
+
+  <%# ── Create-announcement modal ────────────────────────────────────────── %>
+  <%# Overlay blurs the board behind it; the form is the same partial used by
+  <%# the standalone /posts/new page so behaviour stays identical. %>
+  <div class="ps-modal" data-modal-target="overlay" data-action="click->modal#backdrop keydown.esc@window->modal#close" hidden>
+    <div class="ps-modal__card" role="dialog" aria-modal="true" aria-labelledby="ps-modal-title">
+      <header class="ps-modal__header">
+        <div>
+          <span class="ps-find__label"><i class="fa-solid fa-bolt"></i> Got something to play?</span>
+          <h2 class="ps-modal__title" id="ps-modal-title"><%= t("posts.new.title") %></h2>
+        </div>
+        <button type="button" class="ps-modal__close" data-action="modal#close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <div class="ps-modal__body">
+        <%= render "form", post: @post, modal: true %>
+      </div>
+    </div>
+  </div>
 
 </div>
 

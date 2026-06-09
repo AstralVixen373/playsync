@@ -1,61 +1,67 @@
-<div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; max-width: 600px; margin: 0 auto;">
-  <%= form_with model: post, local: true do |f| %>
-    <% if post.errors.any? %>
-      <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-        <h4><%= t("posts.form.errors", count: post.errors.count) %>:</h4>
-        <ul>
-          <% post.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+<%# locals: (post:, modal: false) %>
+<% modal = local_assigns.fetch(:modal, false) %>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :title, t("posts.form.title"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.text_field :title, placeholder: t("posts.form.title_placeholder"), style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+<%= form_with model: post, local: true, class: "ps-form" do |f| %>
+  <% if post.errors.any? %>
+    <div class="ps-form__errors">
+      <h4><%= t("posts.form.errors", count: post.errors.count) %></h4>
+      <ul>
+        <% post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
+  <% end %>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :game_id, t("posts.form.game"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+  <div class="ps-field">
+    <%= f.label :title, t("posts.form.title"), class: "ps-field__label" %>
+    <%= f.text_field :title, placeholder: t("posts.form.title_placeholder"), class: "ps-input" %>
+  </div>
 
+  <div class="ps-field">
+    <%= f.label :game_id, t("posts.form.game"), class: "ps-field__label" %>
+    <div class="ps-field__game">
       <input
         type="text"
         id="game-search"
+        class="ps-input"
         placeholder="<%= t("posts.form.search_game") %>"
         autocomplete="off"
         value="<%= post.game&.name %>"
-        style="width:100%; padding:0.5rem;"
       >
-
       <%= f.hidden_field :game_id, id: "game-id" %>
-
       <div id="game-results"></div>
     </div>
+  </div>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :platforms, t("posts.form.platforms"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= render "shared/multiselect", name: "post[platforms][]", options: Post::PLATFORMS, selected: post.platforms, placeholder: t("posts.form.select_platforms") %>
+  <div class="ps-field">
+    <%= f.label :platforms, t("posts.form.platforms"), class: "ps-field__label" %>
+    <%= render "shared/multiselect", name: "post[platforms][]", options: Post::PLATFORMS, selected: post.platforms, placeholder: t("posts.form.select_platforms") %>
+  </div>
+
+  <div class="ps-form__row">
+    <div class="ps-field">
+      <%= f.label :language, t("posts.form.language"), class: "ps-field__label" %>
+      <%= f.select :language, Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, {}, class: "ps-select" %>
     </div>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :language, t("posts.form.language"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :language, Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+    <div class="ps-field">
+      <%= f.label :post_type, t("posts.form.type"), class: "ps-field__label" %>
+      <%= f.select :post_type, Post::TYPES.map { |type| [t("post_types.#{type}"), type] }, {}, class: "ps-select" %>
     </div>
+  </div>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :post_type, t("posts.form.type"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :post_type, Post::TYPES.map { |type| [t("post_types.#{type}"), type] }, {}, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-    </div>
+  <div class="ps-field">
+    <%= f.label :slot, t("posts.form.slot"), class: "ps-field__label" %>
+    <%= f.number_field :slot, placeholder: t("posts.form.slot_placeholder"), class: "ps-input" %>
+  </div>
 
-    <div style="margin-bottom: 2rem;">
-      <%= f.label :slot, t("posts.form.slot"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.number_field :slot, placeholder: t("posts.form.slot_placeholder"), style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
-    </div>
-
-    <div style="display: flex; gap: 0.5rem;">
-      <%= f.submit class: "btn" %>
-      <%= link_to t("posts.form.cancel"), posts_path, class: "btn btn-secondary" %>
-    </div>
-  <% end %>
-</div>
+  <div class="ps-form__actions">
+    <% if modal %>
+      <button type="button" class="ps-form__cancel" data-action="modal#close"><%= t("posts.form.cancel") %></button>
+    <% else %>
+      <%= link_to t("posts.form.cancel"), posts_path, class: "ps-form__cancel" %>
+    <% end %>
+    <%= f.submit class: "ps-topbar__cta ps-form__submit" %>
+  </div>
+<% end %>

@@ -525,3 +525,211 @@
     justify-content: space-between;
   }
 }
+
+// ── Create / edit announcement — modal & form ────────────────────────────────
+// The form lives both as a fixed overlay above the board (index) and as a
+// statically-centred card (standalone new / edit page). Both share the card
+// chrome (.ps-modal__card) and the field styling (.ps-form).
+
+// Full-viewport backdrop that blurs the board behind it. Fades + lifts the card
+// in on open via the `.is-open` class toggled by the modal Stimulus controller.
+.ps-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4vh 1rem;
+  overflow-y: auto;
+  background: rgba($purple-dark, 0.32);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+
+  &[hidden] { display: none; }
+  &.is-open { opacity: 1; }
+}
+
+// Lock background scroll while the modal is open.
+body.ps-modal-open { overflow: hidden; }
+
+// White card holding the form. Reused by the standalone page (centred, no blur).
+.ps-modal__card {
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba($purple-dark, 0.28);
+  border: 1px solid #eceaf3;
+  // No `overflow: hidden` — the platforms / game-search dropdowns inside the
+  // form need to escape the card; the radius alone keeps the corners clean.
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.2s ease;
+
+  .ps-modal.is-open & { transform: translateY(0) scale(1); }
+}
+
+.ps-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem 0;
+}
+
+.ps-modal__title {
+  font-family: $headers-font;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  line-height: 1.2;
+  margin: 0.35rem 0 0;
+}
+
+.ps-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #6b7280;
+  background: #f3f4f6;
+  font-size: 1rem;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover { background: rgba($purple, 0.12); color: $purple; }
+}
+
+.ps-modal__body { padding: 1.25rem 1.75rem 1.75rem; }
+
+// Standalone /posts/new & /posts/edit — centre the same card on the panel.
+.ps-form-page {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 2rem;
+}
+
+// ── Form fields ──────────────────────────────────────────────────────────────
+.ps-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.ps-form__row {
+  display: flex;
+  gap: 1rem;
+
+  .ps-field { flex: 1; min-width: 0; }
+
+  @media (max-width: 480px) { flex-direction: column; gap: 1.1rem; }
+}
+
+.ps-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ps-field__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.ps-field__game { position: relative; }
+
+// Shared input / select look — rounded, purple focus ring matching the board.
+.ps-input,
+.ps-select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &::placeholder { color: #aaa; }
+  &:focus {
+    border-color: $purple;
+    box-shadow: 0 0 0 3px rgba($purple, 0.12);
+  }
+}
+
+.ps-select { cursor: pointer; appearance: auto; }
+
+// Game autocomplete dropdown inside the form (mirrors the filter dropdown).
+#game-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #eceaf3;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  &:empty { display: none; }
+
+  > div {
+    padding: 0.55rem 0.9rem !important;
+    font-size: 0.88rem;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.1s;
+
+    &:hover { background: rgba($purple, 0.08); color: $purple; }
+    & + div { border-top: 1px solid #f3f4f6; }
+  }
+}
+
+.ps-form__errors {
+  background: rgba(#dc3545, 0.08);
+  border: 1px solid rgba(#dc3545, 0.25);
+  color: #b91c1c;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+
+  h4 { margin: 0 0 0.4rem; font-size: 0.9rem; }
+  ul { margin: 0; padding-left: 1.1rem; }
+}
+
+.ps-form__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.ps-form__submit { border: none; cursor: pointer; }
+
+.ps-form__cancel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover { background: #f3f4f6; color: #1a1a2e; }
+}

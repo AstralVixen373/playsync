@@ -24,7 +24,9 @@ class PostsController < ApplicationController
                    .for_language(@selected_language)
 
     @selected_games = Game.where(id: @selected_game_ids)
-    @post = Post.new
+    # Pre-filled post backing the "Create announcement" modal rendered on the
+    # index — mirrors the standalone `new` action so the modal opens populated.
+    @post = prefilled_post
   end
 
   def show
@@ -36,15 +38,7 @@ class PostsController < ApplicationController
   end
 
   def new
-    # Pre-fill the form from the user's saved preferences. A post holds a single
-    # game / type / language, so we take the first preferred value for those;
-    # platforms is multi-valued so all preferred platforms are pre-selected.
-    @post = Post.new(
-      platforms: current_user.preferred_platforms,
-      post_type: current_user.preferred_post_types.first,
-      language: current_user.preferred_language,
-      game_id: current_user.preferred_game_ids.first
-    )
+    @post = prefilled_post
     authorize @post
   end
 
@@ -167,6 +161,18 @@ class PostsController < ApplicationController
   end
 
   private
+
+  # Pre-fill a new post from the user's saved preferences. A post holds a single
+  # game / type / language, so we take the first preferred value for those;
+  # platforms is multi-valued so all preferred platforms are pre-selected.
+  def prefilled_post
+    Post.new(
+      platforms: current_user.preferred_platforms,
+      post_type: current_user.preferred_post_types.first,
+      language: current_user.preferred_language,
+      game_id: current_user.preferred_game_ids.first
+    )
+  end
 
   # Push live updates whenever a member count changes (join / leave).
   # Broadcasts are shared by every subscriber, so they can't be personalised
