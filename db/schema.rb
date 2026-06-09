@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_09_071550) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_09_140031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_071550) do
     t.integer "igdb_id"
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "identities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "image"
+    t.string "nickname"
+    t.string "provider"
+    t.string "refresh_token"
+    t.string "token"
+    t.string "uid"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -261,6 +274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_071550) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chats", "posts"
+  add_foreign_key "identities", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "users"
   add_foreign_key "posts", "games"

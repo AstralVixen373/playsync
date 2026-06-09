@@ -79,9 +79,41 @@
   </div>
 <% end %>
 
-<a href="https://steamcommunity.com/profiles/<%= @user.steamid %>">Compte Steam</a>
-<a href="https://steamcommunity.com/profiles/<%= @user.twitchid %>">Compte Twitch</a>
-<%= render "devise/shared/accounts" %>
+<%- if devise_mapping.omniauthable? %>
+  <div class="auth-divider" aria-hidden="true"></div>
+
+  <div class="auth-provider-actions">
+    <% resource_class.omniauth_providers.each do |provider| %>
+      <% identity = current_user.identities %>
+
+      <% if current_user.identities.exists?(provider: "steam") && provider.to_s == "steam" %>
+        <p>Compte Steam de <%= current_user.identities[0][:nickname] %></p>
+        <a class="btn" href="https://steamcommunity.com/profiles/<%= current_user.identities[0][:uid] %>">Voir le compte Steam</a>
+      <% elsif provider.to_s == "steam" %>
+        <%= button_to user_steam_omniauth_authorize_path,
+              method: :post,
+              form: { data: { turbo: "false" } },
+              class: "auth-provider-form" do %>
+                <%= image_tag "https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png",
+                alt: "steam connection button", aria: { hidden: true }, class: "steam_logo" %>
+              <% end %>
+      <% end %>
+
+      <% if current_user.identities.exists?(provider: "twitch") && provider.to_s == "twitch" %>
+        <p>Compte Twitch de <%= current_user.identities[1][:nickname] %></p>
+        <a class="btn" href="https://www.twitch.tv/<%= current_user.identities[1][:nickname] %>">Voir le compte Twitch</a>
+      <% elsif provider.to_s == "twitch" %>
+        <%= button_to user_twitch_omniauth_authorize_path,
+              method: :post,
+              form: { data: { turbo: "false" } },
+              class: "auth-provider-form" do %>
+                <%= image_tag "twitch_emblem.png", alt: "Twitch connection button", aria: { hidden: true }, class: "twitch_logo" %>
+              <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
 
 <h3>Cancel my account</h3>
 
