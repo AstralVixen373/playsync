@@ -17,34 +17,3 @@
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
   <p><%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %></p>
 <% end %>
-
-<%- if devise_mapping.omniauthable? %>
-  <div class="auth-divider" aria-hidden="true"></div>
-
-  <div class="auth-provider-actions">
-    <% resource_class.omniauth_providers.each do |provider| %>
-      <% if provider.to_s == "steam" %>
-        <%= button_to user_steam_omniauth_authorize_path,
-              method: :post,
-              form: { data: { turbo: "false" } },
-              class: "auth-provider-form" do %>
-          <%= image_tag "https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png",
-                alt: "steam connection button",
-                aria: { hidden: true },
-                class: "steam_logo" %>
-        <% end %>
-      <% end %>
-      <% if provider.to_s == "twitch" %>
-        <%= button_to user_twitch_omniauth_authorize_path,
-              method: :post,
-              form: { data: { turbo: "false" } },
-              class: "auth-provider-form" do %>
-          <%= image_tag "twitch_emblem.png",
-                alt: "Twitch connection button",
-                aria: { hidden: true },
-                class: "twitch_logo" %>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-<% end %>

@@ -16,12 +16,13 @@ class User < ApplicationRecord
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
       if auth.provider.to_s == "steam"
-        user.email = "#{auth.uid}@steam.com" # Steam ne return pas de d'email; donc on le crée nous même via le uid Steam.
-      else
-        user.email = "#{auth.uid}@twitch.com" # Twitch ne return pas de d'email; donc on le crée nous même via le uid Twitch.
+        user.steamid = auth.uid
+        user.email = "#{auth.uid}@steam.com" # Steam ne retourne pas d'email; donc on le crée nous même via le uid.
+      elsif auth.provider.to_s == "twitch"
+        user.twitchid = auth.uid
+        user.email = "#{auth.uid}@twitch.com"
       end
-      user.password   = Devise.friendly_token[0, 20]
-      # user.avatar = auth.info.image # Commentaire provisoire jusqu'à avoir avatar_url en colonne de user
+      user.password = Devise.friendly_token[0, 20]
     end.tap(&:save!)
   end
 
