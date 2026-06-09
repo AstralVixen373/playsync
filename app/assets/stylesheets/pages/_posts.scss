@@ -1,5 +1,43 @@
 // Posts page & card styles
 
+// ── Find / create row ─────────────────────────────────────────────────────────
+// Two clearly separated zones: search an announcement (left) and create one
+// (right), divided so the two intents never read as one cluttered toolbar.
+// Stacked, left-aligned: search/filters on top, create action below — everything
+// flush to the same left edge as the "Find Teammates" title.
+.ps-find {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.ps-find__search {
+  min-width: 0;
+}
+
+.ps-find__create {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+// Small uppercase label that heads each zone
+.ps-find__label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8b8ba7;
+
+  i { color: $purple; }
+}
+
 // Filter bar — single line, no wrap
 .ps-filter-bar {
   display: flex;
