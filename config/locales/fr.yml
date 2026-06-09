@@ -70,6 +70,7 @@ fr:
       joined: "Tu as rejoint le match !"
       already_member: "Tu es déjà dans ce match."
       full: "Ce match est complet."
+      expired: "Ce match a expiré."
       left: "Tu as quitté le match."
       creator_cannot_leave: "Le créateur ne peut pas quitter son propre match."
       deleted: "Annonce supprimée."

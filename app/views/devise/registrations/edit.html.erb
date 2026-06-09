@@ -71,17 +71,3 @@
 <div style="margin-top: 2rem;">
   <%= link_to t("devise.registrations.edit.sign_out"), destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-secondary" %>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const errorFlash = document.getElementById("error-notification");
-
-    if (errorFlash && errorFlash.innerText.trim() !== "") {
-      setTimeout(() => {
-        errorFlash.style.transition = "opacity 0.5s ease";
-        errorFlash.style.opacity = "0";
-        setTimeout(() => { errorFlash.remove(); }, 500);
-      }, 5000);
-    }
-  });
-</script>

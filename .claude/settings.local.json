@@ -34,7 +34,21 @@
       "Bash(node -e \"const fs=require\\('fs'\\);const p='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\wsl.localhost\\\\\\\\\\\\\\\\ubuntu\\\\\\\\\\\\\\\\home\\\\\\\\\\\\\\\\kapp\\\\\\\\\\\\\\\\code\\\\\\\\\\\\\\\\MonsieurKapp\\\\\\\\\\\\\\\\playsync\\\\\\\\\\\\\\\\app\\\\\\\\\\\\\\\\assets\\\\\\\\\\\\\\\\stylesheets\\\\\\\\\\\\\\\\pages\\\\\\\\\\\\\\\\_posts.scss';\")",
       "Bash(cd \"\\\\\\\\\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\" 2>/dev/null; cat package.json 2>/dev/null | grep -A6 '\"scripts\"'; echo \"---gems---\"; grep -i \"sass\\\\|cssbundling\\\\|dartsass\" Gemfile 2>/dev/null)",
       "Bash(wsl -d ubuntu bash -lc \"cd /home/kapp/code/MonsieurKapp/playsync && bin/rails db:migrate 2>&1 | tail -30\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(ls \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\config\\\\locales\")",
+      "Bash(grep -rn \"default_locale\\\\|available_locales\\\\|i18n\" \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\config\")",
+      "Bash(grep -n \"notices:\" -A 9 \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\config\\\\locales\\\\fr.yml\")",
+      "Bash(ls \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\app\\\\javascript\\\\controllers\")",
+      "Bash(cat \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\config\\\\importmap.rb\")",
+      "Bash(grep -n \"error_notification\" \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\config\\\\initializers\\\\simple_form.rb\")",
+      "Bash(grep -n \"omniauth_callbacks\" -A 3 \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\config\\\\locales\\\\devise.en.yml\")",
+      "Bash(grep -rn \"notice:\\\\|alert:\\\\|flash\\\\[\" \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\app\\\\controllers\")",
+      "Bash(grep -rln \"DOMContentLoaded\" \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\\\\app\")",
+      "Bash(cd \"\\\\\\\\wsl.localhost\\\\ubuntu\\\\home\\\\kapp\\\\code\\\\MonsieurKapp\\\\playsync\")",
+      "Bash(which bundle *)",
+      "Bash(ls bin/)",
+      "Bash(cat .ruby-version)",
+      "Bash(bash -lc 'ruby -v && for f in app/controllers/posts_controller.rb app/controllers/settings_controller.rb app/controllers/users/omniauth_callbacks_controller.rb; do ruby -c \"$f\"; done')"
     ]
   }
 }

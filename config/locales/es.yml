@@ -70,6 +70,7 @@ es:
       joined: "¡Te has unido a la partida!"
       already_member: "Ya eres miembro de esta partida."
       full: "Esta partida está completa."
+      expired: "Esta partida ha expirado."
       left: "Has abandonado la partida."
       creator_cannot_leave: "El creador no puede abandonar su propia partida."
       deleted: "Publicación eliminada."

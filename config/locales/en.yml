@@ -70,6 +70,7 @@ en:
       joined: "You joined the match!"
       already_member: "You are already in this match."
       full: "This match is full."
+      expired: "This match has expired."
       left: "You left the match."
       creator_cannot_leave: "The creator cannot leave their own match."
       deleted: "Post deleted."

@@ -3,6 +3,8 @@ class Post < ApplicationRecord
   LANGUAGES = ["English", "French", "Spanish", "German", "Other"]
   TYPES = ["Chill", "Fun", "Competitive"]
   STATUSES = %w[open finished].freeze
+  # An open post is considered stale (no longer joinable) past this age.
+  EXPIRY = 1.hour
 
   # Declare the backing type explicitly so the enum resolves at class-load time
   # even before the DB schema is introspected. In production `eager_load = true`
@@ -60,6 +62,16 @@ class Post < ApplicationRecord
 
   def full?
     members_count >= capacity
+  end
+
+  # Stale open post: still visible (with an "expired" look) but no longer joinable.
+  def expired?
+    created_at.present? && created_at < EXPIRY.ago
+  end
+
+  # A post can be joined while it's open, has room, and hasn't gone stale.
+  def joinable?
+    open? && !full? && !expired?
   end
 
   def member?(other_user)

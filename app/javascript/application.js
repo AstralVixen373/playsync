@@ -7,20 +7,21 @@ import "bootstrap"
 import "./game_search"
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  const errorFlash = document.getElementById("error-notification");
+// Auto-dismiss the bottom-right flash popups (and form-error blocks) after 3s.
+// `turbo:load` fires on the initial load and after every Turbo navigation, so
+// flash messages set on redirects are caught too.
+const FLASH_DISMISS_DELAY = 3000;
 
-  // On vérifie si la notification contient bien du texte (si une erreur existe)
-  if (errorFlash && errorFlash.innerText.trim() !== "") {
+function autoDismissFlash() {
+  document.querySelectorAll(".alert, #error-notification").forEach((popup) => {
+    if (popup.innerText.trim() === "") return;
+
     setTimeout(() => {
-      // Effet de transition pour une disparition fluide
-      errorFlash.style.transition = "opacity 0.5s ease";
-      errorFlash.style.opacity = "0";
+      popup.style.transition = "opacity 0.5s ease";
+      popup.style.opacity = "0";
+      setTimeout(() => popup.remove(), 500);
+    }, FLASH_DISMISS_DELAY);
+  });
+}
 
-      // On retire complètement l'élément du DOM après l'effet
-      setTimeout(() => {
-        errorFlash.remove();
-      }, 500);
-    }, 5000); // 5000 ms = 5 secondes avant de commencer à disparaître
-  }
-});
+document.addEventListener("turbo:load", autoDismissFlash);

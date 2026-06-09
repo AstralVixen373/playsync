@@ -410,6 +410,12 @@
     color: #6b7280;
     .ps-status__dot { background: #9ca3af; }
   }
+
+  &--expired {
+    background: #e9eaee;
+    color: #6b7280;
+    .ps-status__dot { background: #9ca3af; }
+  }
 }
 
 // ZONE 5 — primary action button (Join / View)
@@ -446,6 +452,22 @@
     &:hover {
       color: white;
       box-shadow: 0 6px 16px rgba($purple, 0.4);
+    }
+  }
+
+  // Full / expired posts stay on the board but can't be joined.
+  &--disabled {
+    background: #e9eaee;
+    border-color: transparent;
+    color: #6b7280;
+    cursor: not-allowed;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+
+    &:hover {
+      background: #e9eaee;
+      color: #6b7280;
+      transform: none;
     }
   }
 }

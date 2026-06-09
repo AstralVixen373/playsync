@@ -13,7 +13,7 @@ class MatchesController < ApplicationController
                 .where.not(user_id: current_user.id)
                 .select(:id)
       )
-    ).includes(:user, :game)
+    ).includes(:user, :game, chat: :users)
 
     @posts = base.with_games(params[:game_id])
                  .with_platforms(params[:platform])

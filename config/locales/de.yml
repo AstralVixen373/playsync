@@ -70,6 +70,7 @@ de:
       joined: "Du bist dem Match beigetreten!"
       already_member: "Du bist bereits Mitglied dieses Matches."
       full: "Dieses Match ist voll."
+      expired: "Dieses Match ist abgelaufen."
       left: "Du hast das Match verlassen."
       creator_cannot_leave: "Der Ersteller kann sein eigenes Match nicht verlassen."
       deleted: "Beitrag gelöscht."

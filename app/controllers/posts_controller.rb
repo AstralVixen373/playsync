@@ -4,7 +4,10 @@ class PostsController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @posts = policy_scope(Post).open.with_free_slots.includes(:user, :game).order(created_at: :desc)
+    # Show every open post — full and stale ones stay on the board with their
+    # own styling (see posts/_post) instead of vanishing; only the Join action
+    # is gated. This lets people tell OPEN / FULL / EXPIRED apart at a glance.
+    @posts = policy_scope(Post).open.includes(:user, :game).order(created_at: :desc)
 
     # On a fresh visit (no `committed` flag) the filters default to the user's
     # saved preferences. Once the user touches the form, `committed` is set and
@@ -52,7 +55,7 @@ class PostsController < ApplicationController
       # The creator is the first member of the match (counts as 1/capacity).
       chat = @post.create_chat!
       chat.users << current_user
-      redirect_to post_path(@post), notice: t("posts.notices.created")
+      redirect_to post_path(@post), notice: t("posts.notices.created", locale: :en)
     else
       render :new, status: :unprocessable_entity
     end
@@ -77,7 +80,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     authorize @post
     @post.destroy
-    redirect_to posts_path(), notice: t("posts.notices.deleted"), status: :see_other
+    redirect_to my_matches_path, notice: t("posts.notices.deleted", locale: :en), status: :see_other
   end
 
   def join
@@ -92,12 +95,14 @@ class PostsController < ApplicationController
       chat = post.chat || post.create_chat!
 
       if chat.users.exists?(current_user.id)
-        notice = t("posts.notices.already_member")
+        notice = t("posts.notices.already_member", locale: :en)
+      elsif post.expired?
+        alert = t("posts.notices.expired", locale: :en)
       elsif post.full?
-        alert = t("posts.notices.full")
+        alert = t("posts.notices.full", locale: :en)
       else
         chat.users << current_user
-        notice = t("posts.notices.joined")
+        notice = t("posts.notices.joined", locale: :en)
       end
     end
 
@@ -124,7 +129,7 @@ class PostsController < ApplicationController
     authorize @post, :show?
 
     if @post.user == current_user
-      redirect_to post_path(@post), alert: t("posts.notices.creator_cannot_leave")
+      redirect_to post_path(@post), alert: t("posts.notices.creator_cannot_leave", locale: :en)
       return
     end
 
@@ -132,7 +137,7 @@ class PostsController < ApplicationController
     @post.reload
     broadcast_post_changes(@post)
 
-    redirect_to posts_path, notice: t("posts.notices.left")
+    redirect_to posts_path, notice: t("posts.notices.left", locale: :en)
   end
 
   private
@@ -143,13 +148,14 @@ class PostsController < ApplicationController
   # sees the generic "Join" card). The acting user is redirected and gets a
   # fresh, personalised page anyway.
   def broadcast_post_changes(post)
-    # Re-render the whole public list: full posts drop out, freed ones come
-    # back, counters stay fresh — without juggling append/remove/ordering.
+    # Re-render the whole public list: every open post stays (full/expired ones
+    # keep their styling), counters stay fresh — without juggling append/remove/
+    # ordering.
     Turbo::StreamsChannel.broadcast_replace_to(
       "posts",
       target: "posts_list",
       partial: "posts/list",
-      locals: { posts: Post.open.with_free_slots.includes(:user).order(created_at: :desc), current_user: nil }
+      locals: { posts: Post.open.includes(:user).order(created_at: :desc), current_user: nil }
     )
 
     # Refresh the slot counter on the post page for everyone watching it.
@@ -172,7 +178,7 @@ class PostsController < ApplicationController
   end
 
   def user_not_authorized
-    redirect_to root_path, alert: t("posts.notices.not_authorized")
+    redirect_to root_path, alert: t("posts.notices.not_authorized", locale: :en)
   end
 
   def post_params

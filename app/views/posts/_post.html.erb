@@ -2,7 +2,7 @@
     broadcasts) so this partial never relies on request/Pundit state. %>
 <% member    = current_user && post.member?(current_user) %>
 <% owner     = current_user && post.user == current_user %>
-<% expired   = post.created_at < 1.hour.ago %>
+<% expired   = post.expired? %>
 <% full      = post.full? %>
 <% platforms = Array(post.platforms) %>
 <% crossplay = platforms.size > 1 %>
@@ -68,14 +68,25 @@
   <%# ZONE 4 + 5 — Status + primary action %>
   <div class="ps-card__aside">
     <div class="ps-card__aside-top">
-      <span class="ps-status ps-status--<%= post.status %>">
-        <span class="ps-status__dot"></span><%= post.status.capitalize %>
-      </span>
+      <% if expired %>
+        <%# Expired posts stay visible but never advertise themselves as "Open". %>
+        <span class="ps-status ps-status--expired">
+          <span class="ps-status__dot"></span>Expired
+        </span>
+      <% else %>
+        <span class="ps-status ps-status--<%= post.status %>">
+          <span class="ps-status__dot"></span><%= post.status.capitalize %>
+        </span>
+      <% end %>
 
       <% if member || owner %>
         <%= link_to post_path(id: post.id), class: "ps-action" do %>
           View <i class="fa-solid fa-arrow-right"></i>
         <% end %>
+      <% elsif current_user && expired %>
+        <span class="ps-action ps-action--disabled">Expired</span>
+      <% elsif current_user && full %>
+        <span class="ps-action ps-action--disabled">Full</span>
       <% elsif current_user %>
         <%= button_to join_post_path(post), method: :post, class: "ps-action ps-action--join" do %>
           Join <i class="fa-solid fa-arrow-right"></i>
