@@ -20,6 +20,12 @@ class MatchesController < ApplicationController
                  .with_types(params[:post_type])
                  .for_language(params[:language])
                  .order(Arel.sql("CASE WHEN posts.status = 'open' THEN 0 ELSE 1 END"), created_at: :desc)
+
+    @favourited_ids = current_user.favourites.where(post_id: @posts).pluck(:post_id).to_set
+
+    if params[:favourites_only] == "1"
+      @posts = @posts.where(id: @favourited_ids.to_a)
+    end
   end
 
   def show

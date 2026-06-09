@@ -38,8 +38,13 @@
       <%= f.select :language, Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, { include_blank: t("matches.index.all"), selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
+    <div style="margin-bottom: 1rem;">
+      <%= f.label :favourites_only, t("matches.index.favourites_only"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.check_box :favourites_only, { checked: params[:favourites_only] == "1", style: "width: 1.2rem; height: 1.2rem; cursor: pointer;" }, "1", "0" %>
+    </div>
+
     <div style="margin-bottom: 1.5rem;">
-      <%= link_to t("matches.index.reset"), my_matches_path if params.values_at(:platform, :game, :post_type, :language).any?(&:present?) %>
+      <%= link_to t("matches.index.reset"), my_matches_path if params.values_at(:platform, :game, :post_type, :language, :favourites_only).any?(&:present?) %>
     </div>
 
   </div>
@@ -49,8 +54,22 @@
 <% if @posts.any? %>
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
     <% @posts.each do |post| %>
-      <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+      <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative;">
+        <% favourited = @favourited_ids.include?(post.id) %>
+        <% if favourited %>
+          <%= button_to post_favourite_path(post), method: :delete,
+                style: "position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; cursor: pointer; padding: 0; line-height: 1;",
+                title: t("matches.index.unfavourite") do %>
+            <i class="fa-solid fa-heart" style="color: #e74c3c; font-size: 1.2rem;"></i>
+          <% end %>
+        <% else %>
+          <%= button_to post_favourite_path(post), method: :post,
+                style: "position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; cursor: pointer; padding: 0; line-height: 1;",
+                title: t("matches.index.favourite") do %>
+            <i class="fa-regular fa-heart" style="color: #aaa; font-size: 1.2rem;"></i>
+          <% end %>
+        <% end %>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; padding-right: 2rem;">
           <h3 style="color: #333; margin: 0;"><%= post.title %></h3>
           <% if post.open? %>
             <span style="background: #d4edda; color: #155724; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">Open</span>

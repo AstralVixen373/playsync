@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       patch :finish
       delete :kick
     end
+    resource :favourite, only: [:create, :destroy]
     resources :chats, only: [:new, :create]
   end
 

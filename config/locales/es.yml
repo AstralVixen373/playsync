@@ -171,6 +171,9 @@ es:
       language_label: "Idioma"
       type_label: "Tipo"
       view: "Ver"
+      favourites_only: "Solo favoritos"
+      favourite: "Añadir a favoritos"
+      unfavourite: "Quitar de favoritos"
     show:
       back: "← Volver a mis partidas"
       posted_by: "Publicado por"

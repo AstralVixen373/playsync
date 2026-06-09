@@ -32,6 +32,7 @@ class Post < ApplicationRecord
   belongs_to :user
   belongs_to :game
   has_one :chat, dependent: :destroy
+  has_many :favourites, dependent: :destroy
 
   # Filtering scopes — each accepts a single value or an array, ignored when blank.
   scope :with_games,     ->(ids)    { where(game_id: ids) if ids.present? }

@@ -171,6 +171,9 @@ en:
       language_label: "Language"
       type_label: "Type"
       view: "View"
+      favourites_only: "Favourites only"
+      favourite: "Add to favourites"
+      unfavourite: "Remove from favourites"
     show:
       back: "← Back to My Matches"
       posted_by: "Posted by"

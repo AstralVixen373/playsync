@@ -171,6 +171,9 @@ de:
       language_label: "Sprache"
       type_label: "Typ"
       view: "Anzeigen"
+      favourites_only: "Nur Favoriten"
+      favourite: "Zu Favoriten hinzufügen"
+      unfavourite: "Aus Favoriten entfernen"
     show:
       back: "← Zurück zu meinen Matches"
       posted_by: "Gepostet von"
