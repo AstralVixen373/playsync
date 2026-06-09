@@ -74,6 +74,8 @@ fr:
       creator_cannot_leave: "Le créateur ne peut pas quitter son propre match."
       deleted: "Annonce supprimée."
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+      kicked: "Le joueur a été retiré du match."
+      kick_failed: "Impossible de retirer ce joueur."
     index:
       title: "Trouver des coéquipiers"
       create: "Créer une annonce"
@@ -118,6 +120,8 @@ fr:
       participants: "Participants"
       no_participants: "Aucun participant pour l'instant"
       you_created: "Vous avez créé ce match."
+      kick: "Exclure"
+      kick_confirm: "Retirer ce joueur du match ?"
       leave_match: "Quitter le match"
       leave_confirm: "Quitter ce match ?"
       full: "Complet"
@@ -174,6 +178,8 @@ fr:
       type: "Type"
       slots: "Places"
       participants: "Participants"
+      kick: "Exclure"
+      kick_confirm: "Retirer ce joueur du match ?"
       chat: "Chat"
       no_messages: "Aucun message pour l'instant."
 

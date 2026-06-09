@@ -74,6 +74,8 @@ en:
       creator_cannot_leave: "The creator cannot leave their own match."
       deleted: "Post deleted."
       not_authorized: "You are not authorized to perform this action."
+      kicked: "The player has been removed from the match."
+      kick_failed: "Could not remove this player."
     index:
       title: "Find Teammates"
       create: "Create Post"
@@ -118,6 +120,8 @@ en:
       participants: "Participants"
       no_participants: "No participants yet"
       you_created: "You created this match."
+      kick: "Kick"
+      kick_confirm: "Remove this player from the match?"
       leave_match: "Leave match"
       leave_confirm: "Leave this match?"
       full: "Full"
@@ -174,6 +178,8 @@ en:
       type: "Type"
       slots: "Slots"
       participants: "Participants"
+      kick: "Kick"
+      kick_confirm: "Remove this player from the match?"
       chat: "Chat"
       no_messages: "No messages yet."
 

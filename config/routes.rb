@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post :join
       delete :leave
       patch :finish
+      delete :kick
     end
     resources :chats, only: [:new, :create]
   end

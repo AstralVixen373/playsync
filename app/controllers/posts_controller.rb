@@ -135,6 +135,29 @@ class PostsController < ApplicationController
     redirect_to posts_path, notice: t("posts.notices.left")
   end
 
+  def kick
+    @post = Post.find(params[:id])
+    authorize @post
+
+    target = User.find_by(id: params[:user_id])
+
+    if target.nil? || !@post.chat&.users&.exists?(target.id)
+      redirect_to post_path(@post), alert: t("posts.notices.kick_failed")
+      return
+    end
+
+    if target == @post.user
+      redirect_to post_path(@post), alert: t("posts.notices.kick_failed")
+      return
+    end
+
+    @post.chat.users.delete(target)
+    @post.reload
+    broadcast_post_changes(@post)
+
+    redirect_to post_path(@post), notice: t("posts.notices.kicked")
+  end
+
   private
 
   # Push live updates whenever a member count changes (join / leave).

@@ -19,6 +19,10 @@ class PostPolicy < ApplicationPolicy
     update?
   end
 
+  def kick?
+    update?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

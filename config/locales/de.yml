@@ -74,6 +74,8 @@ de:
       creator_cannot_leave: "Der Ersteller kann sein eigenes Match nicht verlassen."
       deleted: "Beitrag gelöscht."
       not_authorized: "Du bist nicht berechtigt, diese Aktion auszuführen."
+      kicked: "Der Spieler wurde aus dem Match entfernt."
+      kick_failed: "Dieser Spieler konnte nicht entfernt werden."
     index:
       title: "Mitspieler finden"
       create: "Beitrag erstellen"
@@ -118,6 +120,8 @@ de:
       participants: "Teilnehmer"
       no_participants: "Noch keine Teilnehmer"
       you_created: "Du hast dieses Match erstellt."
+      kick: "Entfernen"
+      kick_confirm: "Diesen Spieler aus dem Match entfernen?"
       leave_match: "Match verlassen"
       leave_confirm: "Dieses Match verlassen?"
       full: "Voll"
@@ -174,6 +178,8 @@ de:
       type: "Typ"
       slots: "Plätze"
       participants: "Teilnehmer"
+      kick: "Entfernen"
+      kick_confirm: "Diesen Spieler aus dem Match entfernen?"
       chat: "Chat"
       no_messages: "Noch keine Nachrichten."
 
