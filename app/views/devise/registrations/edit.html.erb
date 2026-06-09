@@ -1,9 +1,9 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2><%= t("devise.registrations.edit.title") %></h2>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <div id="error-notification">
-  <%= f.error_notification %>
-</div>
+    <%= f.error_notification %>
+  </div>
 
   <div class="form-inputs">
     <% if resource.avatar.attachment&.persisted? %>
@@ -11,23 +11,22 @@
     <% end %>
     <%= f.input :avatar, as: :file, label: "Avatar", input_html: { accept: "image/*" } %>
 
-    <%= f.input :email, required: true, autofocus: true %>
     <%= f.input :username, required: false, autofocus: true %>
 
     <fieldset data-controller="preferences" style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem; margin: 1rem 0;">
-      <legend style="font-weight: bold; padding: 0 0.5rem;">🎮 Filter preferences</legend>
+      <legend style="font-weight: bold; padding: 0 0.5rem;">🎮 <%= t("devise.registrations.edit.filter_preferences") %></legend>
       <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;">
         <p style="color: #888; font-size: 0.85rem; margin-top: 0;">
-          These pre-fill the search and the new-post form. Leave empty for no preference.
+          <%= t("devise.registrations.edit.filter_hint") %>
         </p>
-        <%= button_tag "Reset filters", type: "button",
+        <%= button_tag t("devise.registrations.edit.reset_filters"), type: "button",
               data: { action: "preferences#reset" },
               style: "border: none; background: none; color: #007bff; cursor: pointer; padding: 0; white-space: nowrap;" %>
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred games</label>
-        <input type="text" id="profile-game-search" placeholder="Search a game..."
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_games") %></label>
+        <input type="text" id="profile-game-search" placeholder="<%= t("devise.registrations.edit.search_game") %>"
                autocomplete="off"
                style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;">
         <div id="profile-game-results"></div>
@@ -46,61 +45,43 @@
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred platforms</label>
-        <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: "No preference", include_hidden: true %>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_platforms") %></label>
+        <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
       </div>
 
       <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;">Preferred types</label>
-        <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: "No preference", include_hidden: true %>
+        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_types") %></label>
+        <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
       </div>
 
       <%= f.input :preferred_language,
-                  collection: Post::LANGUAGES,
-                  include_blank: "No preference",
-                  label: "Preferred language" %>
+                  collection: Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] },
+                  label_method: :first,
+                  value_method: :last,
+                  include_blank: t("devise.registrations.edit.no_preference"),
+                  label: t("devise.registrations.edit.preferred_language") %>
     </fieldset>
-
-    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
-    <% end %>
-
-    <%= f.input :password,
-                hint: "leave it blank if you don't want to change it",
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: false,
-                input_html: { autocomplete: "new-password" } %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Update" %>
+    <%= f.button :submit, t("devise.registrations.edit.submit") %>
   </div>
 <% end %>
 
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+<div style="margin-top: 2rem;">
+  <%= link_to t("devise.registrations.edit.sign_out"), destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-secondary" %>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const errorFlash = document.getElementById("error-notification");
 
-    // On vérifie si la notification contient bien du texte (si une erreur existe)
     if (errorFlash && errorFlash.innerText.trim() !== "") {
       setTimeout(() => {
-        // Effet de transition pour une disparition fluide
         errorFlash.style.transition = "opacity 0.5s ease";
         errorFlash.style.opacity = "0";
-
-        // On retire complètement l'élément du DOM après l'effet
-        setTimeout(() => {
-          errorFlash.remove();
-        }, 500);
-      }, 5000); // 5000 ms = 5 secondes avant de commencer à disparaître
+        setTimeout(() => { errorFlash.remove(); }, 500);
+      }, 5000);
     }
   });
 </script>

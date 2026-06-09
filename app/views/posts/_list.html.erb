@@ -7,7 +7,7 @@
     </div>
   <% else %>
     <div class="ps-cards-grid">
-      <p class="ps-empty">No announcements available right now. <%= link_to "Create one!", new_post_path %></p>
+      <p class="ps-empty"><%= t("posts.list.empty") %><%= link_to t("posts.list.create_one"), new_post_path %></p>
     </div>
   <% end %>
 </div>

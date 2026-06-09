@@ -52,7 +52,7 @@ class PostsController < ApplicationController
       # The creator is the first member of the match (counts as 1/capacity).
       chat = @post.create_chat!
       chat.users << current_user
-      redirect_to post_path(@post), notice: "Post créé avec succès."
+      redirect_to post_path(@post), notice: t("posts.notices.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -77,7 +77,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     authorize @post
     @post.destroy
-    redirect_to posts_path(), notice: "post deleted.", status: :see_other
+    redirect_to posts_path(), notice: t("posts.notices.deleted"), status: :see_other
   end
 
   def join
@@ -92,12 +92,12 @@ class PostsController < ApplicationController
       chat = post.chat || post.create_chat!
 
       if chat.users.exists?(current_user.id)
-        notice = "Tu es déjà dans ce match."
+        notice = t("posts.notices.already_member")
       elsif post.full?
-        alert = "Ce match est complet."
+        alert = t("posts.notices.full")
       else
         chat.users << current_user
-        notice = "Tu as rejoint le match !"
+        notice = t("posts.notices.joined")
       end
     end
 
@@ -124,7 +124,7 @@ class PostsController < ApplicationController
     authorize @post, :show?
 
     if @post.user == current_user
-      redirect_to post_path(@post), alert: "Le créateur ne peut pas quitter son propre match."
+      redirect_to post_path(@post), alert: t("posts.notices.creator_cannot_leave")
       return
     end
 
@@ -132,7 +132,7 @@ class PostsController < ApplicationController
     @post.reload
     broadcast_post_changes(@post)
 
-    redirect_to posts_path, notice: "Tu as quitté le match."
+    redirect_to posts_path, notice: t("posts.notices.left")
   end
 
   private
@@ -172,7 +172,7 @@ class PostsController < ApplicationController
   end
 
   def user_not_authorized
-    redirect_to root_path, alert: "You are not authorized to perform this action."
+    redirect_to root_path, alert: t("posts.notices.not_authorized")
   end
 
   def post_params

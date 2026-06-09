@@ -1,0 +1,74 @@
+<% content_for :title, t("settings.title") %>
+
+<div class="settings-page">
+  <h2><%= t("settings.title") %></h2>
+
+  <section class="settings-section">
+    <h3><%= t("settings.account.title") %></h3>
+
+    <div class="settings-subsection">
+      <h4><%= t("settings.account.change_email.title") %></h4>
+      <p class="settings-description"><%= t("settings.account.change_email.current") %>: <strong><%= current_user.email %></strong></p>
+      <%= form_with url: settings_email_path, method: :patch do |f| %>
+        <div class="settings-field">
+          <%= f.label :email, t("settings.account.change_email.new_email") %>
+          <%= f.email_field :email, name: "user[email]", class: "settings-input", required: true %>
+        </div>
+        <%= f.submit t("settings.account.change_email.submit"), class: "btn" %>
+      <% end %>
+    </div>
+
+    <hr class="settings-divider">
+
+    <div class="settings-subsection">
+      <h4><%= t("settings.account.change_password.title") %></h4>
+      <%= form_with url: settings_password_path, method: :patch do |f| %>
+        <div class="settings-field">
+          <%= f.label :current_password, t("settings.account.change_password.current_password") %>
+          <%= f.password_field :current_password, name: "user[current_password]", class: "settings-input", required: true %>
+        </div>
+        <div class="settings-field">
+          <%= f.label :password, t("settings.account.change_password.new_password") %>
+          <%= f.password_field :password, name: "user[password]", class: "settings-input", required: true, autocomplete: "new-password" %>
+        </div>
+        <div class="settings-field">
+          <%= f.label :password_confirmation, t("settings.account.change_password.confirm_password") %>
+          <%= f.password_field :password_confirmation, name: "user[password_confirmation]", class: "settings-input", required: true, autocomplete: "new-password" %>
+        </div>
+        <%= f.submit t("settings.account.change_password.submit"), class: "btn" %>
+      <% end %>
+    </div>
+
+    <hr class="settings-divider">
+
+    <div class="settings-subsection">
+      <h4><%= t("settings.account.delete_account.title") %></h4>
+      <p class="settings-description"><%= t("settings.account.delete_account.warning") %></p>
+      <%= button_to t("settings.account.delete_account.submit"),
+            registration_path(:user),
+            method: :delete,
+            data: { turbo_confirm: t("settings.account.delete_account.confirm") },
+            class: "btn btn-danger" %>
+    </div>
+  </section>
+
+  <section class="settings-section">
+    <h3><%= t("settings.theme.title") %></h3>
+    <p class="settings-placeholder">Here will be the theme feature</p>
+  </section>
+
+  <section class="settings-section">
+    <h3><%= t("settings.language.title") %></h3>
+    <p class="settings-description"><%= t("settings.language.description") %></p>
+    <div class="theme-options">
+      <% { "English" => "english", "French" => "french", "Spanish" => "spanish", "German" => "german" }.each do |lang, key| %>
+        <%= button_to settings_language_path,
+              method: :patch,
+              params: { language: lang },
+              class: "theme-option #{"theme-option--active" if current_user.preferred_language == lang}" do %>
+          <%= t("settings.language.languages.#{key}") %>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+</div>

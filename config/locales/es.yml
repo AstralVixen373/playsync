@@ -1,0 +1,202 @@
+es:
+  nav:
+    posts: "Publicaciones"
+    my_matches: "Mis partidas"
+    profile: "Perfil"
+    settings: "Ajustes"
+    sign_out: "Cerrar sesión"
+    sign_in: "Iniciar sesión"
+    sign_up: "Registrarse"
+
+  home:
+    title: "Bienvenido a PlaySync"
+    subtitle: "Encuentra tus compañeros de juego perfectos"
+    browse_posts: "Ver publicaciones"
+    create_post: "Crear publicación"
+
+  settings:
+    title: "Ajustes"
+    notices:
+      email_updated: "Correo electrónico actualizado con éxito."
+      password_updated: "Contraseña actualizada con éxito."
+      password_incorrect: "La contraseña actual es incorrecta."
+    account:
+      title: "Cuenta"
+      change_email:
+        title: "Cambiar correo electrónico"
+        current: "Actual"
+        new_email: "Nuevo correo electrónico"
+        submit: "Actualizar correo electrónico"
+      change_password:
+        title: "Cambiar contraseña"
+        current_password: "Contraseña actual"
+        new_password: "Nueva contraseña"
+        confirm_password: "Confirmar nueva contraseña"
+        submit: "Actualizar contraseña"
+      delete_account:
+        title: "Eliminar cuenta"
+        warning: "Esta acción es permanente y no se puede deshacer."
+        confirm: "¿Estás seguro? Esta acción no se puede deshacer."
+        submit: "Eliminar mi cuenta"
+    theme:
+      title: "Tema"
+      description: "Elige entre el modo claro y el modo oscuro."
+      light: "Claro"
+      dark: "Oscuro"
+    language:
+      title: "Idioma"
+      description: "Elige tu idioma preferido."
+      languages:
+        english: "Inglés"
+        french: "Francés"
+        spanish: "Español"
+        german: "Alemán"
+
+  post_types:
+    Chill: "Relajado"
+    Fun: "Diversión"
+    Competitive: "Competitivo"
+  
+  post_languages:
+    English: "Inglés"
+    French: "Francés"
+    Spanish: "Español"
+    German: "Alemán"
+    Other: "Otro"
+
+  posts:
+    notices:
+      created: "Publicación creada con éxito."
+      joined: "¡Te has unido a la partida!"
+      already_member: "Ya eres miembro de esta partida."
+      full: "Esta partida está completa."
+      left: "Has abandonado la partida."
+      creator_cannot_leave: "El creador no puede abandonar su propia partida."
+      deleted: "Publicación eliminada."
+      not_authorized: "No estás autorizado para realizar esta acción."
+    index:
+      title: "Encontrar compañeros"
+      create: "Crear publicación"
+      games: "Juegos"
+      search_game: "Buscar un juego..."
+      platform: "Plataforma"
+      type: "Tipo"
+      language: "Idioma"
+      all: "Todos"
+      reset: "Restablecer"
+    list:
+      empty: "No hay publicaciones disponibles ahora mismo."
+      create_one: "¡Crea una!"
+    new:
+      title: "Nueva publicación"
+    edit:
+      title: "Editar publicación"
+    form:
+      errors:
+        one: "1 error impidió guardar esta publicación"
+        other: "%{count} errores impidieron guardar esta publicación"
+      title: "Título"
+      title_placeholder: "Título de la publicación"
+      game: "Juego"
+      search_game: "Buscar un juego..."
+      platforms: "Plataformas"
+      select_platforms: "Seleccionar plataforma(s)"
+      language: "Idioma"
+      type: "Tipo"
+      slot: "Plazas"
+      slot_placeholder: "Número de jugadores necesarios"
+      cancel: "Cancelar"
+    show:
+      posted_by: "Publicado por"
+      you: "Tú"
+      game: "Juego"
+      platform: "Plataforma"
+      language: "Idioma"
+      type: "Tipo"
+      slots: "Plazas"
+      created: "Creado"
+      participants: "Participantes"
+      no_participants: "Sin participantes aún"
+      you_created: "Tú creaste esta partida."
+      leave_match: "Abandonar partida"
+      leave_confirm: "¿Abandonar esta partida?"
+      full: "Completo"
+      join_match: "Unirse a la partida"
+      edit: "Editar"
+      delete: "Eliminar"
+      delete_confirm: "¿Estás seguro?"
+      chat: "Chat"
+      no_messages: "Sin mensajes aún"
+      full_chat: "Esta partida está completa — el chat está reservado para sus miembros."
+      join_to_chat: "Únete a la partida para acceder al chat."
+      send: "Enviar"
+      type_message: "Escribe un mensaje..."
+    post:
+      posted_by: "Publicado por"
+      posted_ago: "Publicado hace %{time}"
+      you: "Tú"
+      open: "Abrir"
+      join: "Unirse"
+      edit: "Editar"
+      delete: "Eliminar"
+      delete_confirm: "¿Estás seguro?"
+    slots:
+      full: "0 plazas disponibles"
+      full_badge: "LLENO"
+      available:
+        one: "%{count} plaza disponible"
+        other: "%{count} plazas disponibles"
+
+  matches:
+    index:
+      title: "Mis partidas"
+      choose_game: "Elige tu juego"
+      search_game: "Buscar un juego..."
+      platform: "Plataforma"
+      type: "Tipo"
+      language: "Idioma"
+      all: "Todos"
+      reset: "Restablecer"
+      posted_by: "Publicado por"
+      you: "Tú"
+      game: "Juego"
+      platform_label: "Plataforma"
+      language_label: "Idioma"
+      type_label: "Tipo"
+      view: "Ver"
+    show:
+      back: "← Volver a mis partidas"
+      posted_by: "Publicado por"
+      you: "Tú"
+      game: "Juego"
+      platform: "Plataforma"
+      language: "Idioma"
+      type: "Tipo"
+      slots: "Plazas"
+      participants: "Participantes"
+      chat: "Chat"
+      no_messages: "Sin mensajes aún."
+
+  devise:
+    sessions:
+      new:
+        title: "Iniciar sesión"
+        submit: "Iniciar sesión"
+    registrations:
+      new:
+        title: "Registrarse"
+        submit: "Registrarse"
+        min_password: "%{count} caracteres mínimo"
+      edit:
+        title: "Perfil"
+        filter_preferences: "Preferencias de filtro"
+        filter_hint: "Estas rellenan previamente la búsqueda y el formulario de nueva publicación. Deja vacío para no tener preferencia."
+        reset_filters: "Restablecer filtros"
+        preferred_games: "Juegos preferidos"
+        search_game: "Buscar un juego..."
+        preferred_platforms: "Plataformas preferidas"
+        preferred_types: "Tipos preferidos"
+        preferred_language: "Idioma preferido"
+        no_preference: "Sin preferencia"
+        submit: "Actualizar perfil"
+        sign_out: "Cerrar sesión"

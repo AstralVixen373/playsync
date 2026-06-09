@@ -1,0 +1,202 @@
+fr:
+  nav:
+    posts: "Annonces"
+    my_matches: "Mes matchs"
+    profile: "Profil"
+    settings: "Paramètres"
+    sign_out: "Déconnexion"
+    sign_in: "Connexion"
+    sign_up: "Inscription"
+
+  home:
+    title: "Bienvenue sur PlaySync"
+    subtitle: "Trouvez vos coéquipiers de jeu parfaits"
+    browse_posts: "Voir les annonces"
+    create_post: "Créer une annonce"
+
+  settings:
+    title: "Paramètres"
+    notices:
+      email_updated: "E-mail mis à jour avec succès."
+      password_updated: "Mot de passe mis à jour avec succès."
+      password_incorrect: "Le mot de passe actuel est incorrect."
+    account:
+      title: "Compte"
+      change_email:
+        title: "Changer l'e-mail"
+        current: "Actuel"
+        new_email: "Nouvel e-mail"
+        submit: "Mettre à jour l'e-mail"
+      change_password:
+        title: "Changer le mot de passe"
+        current_password: "Mot de passe actuel"
+        new_password: "Nouveau mot de passe"
+        confirm_password: "Confirmer le nouveau mot de passe"
+        submit: "Mettre à jour le mot de passe"
+      delete_account:
+        title: "Supprimer le compte"
+        warning: "Cette action est permanente et ne peut pas être annulée."
+        confirm: "Êtes-vous sûr ? Cette action est irréversible."
+        submit: "Supprimer mon compte"
+    theme:
+      title: "Thème"
+      description: "Choisissez entre le mode clair et le mode sombre."
+      light: "Clair"
+      dark: "Sombre"
+    language:
+      title: "Langue"
+      description: "Choisissez votre langue préférée."
+      languages:
+        english: "Anglais"
+        french: "Français"
+        spanish: "Espagnol"
+        german: "Allemand"
+
+  post_types:
+    Chill: "Détendu"
+    Fun: "Fun"
+    Competitive: "Compétitif"
+  
+  post_languages:
+    English: "Anglais"
+    French: "Français"
+    Spanish: "Espagnol"
+    German: "Allemand"
+    Other: "Autre"
+
+  posts:
+    notices:
+      created: "Annonce créée avec succès."
+      joined: "Tu as rejoint le match !"
+      already_member: "Tu es déjà dans ce match."
+      full: "Ce match est complet."
+      left: "Tu as quitté le match."
+      creator_cannot_leave: "Le créateur ne peut pas quitter son propre match."
+      deleted: "Annonce supprimée."
+      not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+    index:
+      title: "Trouver des coéquipiers"
+      create: "Créer une annonce"
+      games: "Jeux"
+      search_game: "Rechercher un jeu..."
+      platform: "Plateforme"
+      type: "Type"
+      language: "Langue"
+      all: "Tous"
+      reset: "Réinitialiser"
+    list:
+      empty: "Aucune annonce disponible pour l'instant."
+      create_one: "Créez-en une !"
+    new:
+      title: "Nouvelle annonce"
+    edit:
+      title: "Modifier l'annonce"
+    form:
+      errors:
+        one: "1 erreur a empêché la sauvegarde de cette annonce"
+        other: "%{count} erreurs ont empêché la sauvegarde de cette annonce"
+      title: "Titre"
+      title_placeholder: "Titre de l'annonce"
+      game: "Jeu"
+      search_game: "Rechercher un jeu..."
+      platforms: "Plateformes"
+      select_platforms: "Sélectionner une/des plateforme(s)"
+      language: "Langue"
+      type: "Type"
+      slot: "Places"
+      slot_placeholder: "Nombre de joueurs nécessaires"
+      cancel: "Annuler"
+    show:
+      posted_by: "Posté par"
+      you: "Vous"
+      game: "Jeu"
+      platform: "Plateforme"
+      language: "Langue"
+      type: "Type"
+      slots: "Places"
+      created: "Créé"
+      participants: "Participants"
+      no_participants: "Aucun participant pour l'instant"
+      you_created: "Vous avez créé ce match."
+      leave_match: "Quitter le match"
+      leave_confirm: "Quitter ce match ?"
+      full: "Complet"
+      join_match: "Rejoindre le match"
+      edit: "Modifier"
+      delete: "Supprimer"
+      delete_confirm: "Êtes-vous sûr ?"
+      chat: "Chat"
+      no_messages: "Aucun message pour l'instant"
+      full_chat: "Ce match est complet — le chat est réservé à ses membres."
+      join_to_chat: "Rejoignez le match pour accéder au chat."
+      send: "Envoyer"
+      type_message: "Tapez un message..."
+    post:
+      posted_by: "Posté par"
+      posted_ago: "Publié il y a %{time}"
+      you: "Vous"
+      open: "Ouvrir"
+      join: "Rejoindre"
+      edit: "Modifier"
+      delete: "Supprimer"
+      delete_confirm: "Êtes-vous sûr ?"
+    slots:
+      full: "0 place disponible"
+      full_badge: "COMPLET"
+      available:
+        one: "%{count} place disponible"
+        other: "%{count} places disponibles"
+
+  matches:
+    index:
+      title: "Mes matchs"
+      choose_game: "Choisissez votre jeu"
+      search_game: "Rechercher un jeu..."
+      platform: "Plateforme"
+      type: "Type"
+      language: "Langue"
+      all: "Tous"
+      reset: "Réinitialiser"
+      posted_by: "Posté par"
+      you: "Vous"
+      game: "Jeu"
+      platform_label: "Plateforme"
+      language_label: "Langue"
+      type_label: "Type"
+      view: "Voir"
+    show:
+      back: "← Retour à mes matchs"
+      posted_by: "Posté par"
+      you: "Vous"
+      game: "Jeu"
+      platform: "Plateforme"
+      language: "Langue"
+      type: "Type"
+      slots: "Places"
+      participants: "Participants"
+      chat: "Chat"
+      no_messages: "Aucun message pour l'instant."
+
+  devise:
+    sessions:
+      new:
+        title: "Connexion"
+        submit: "Se connecter"
+    registrations:
+      new:
+        title: "Inscription"
+        submit: "S'inscrire"
+        min_password: "%{count} caractères minimum"
+      edit:
+        title: "Profil"
+        filter_preferences: "Préférences de filtre"
+        filter_hint: "Ces préférences pré-remplissent la recherche et le formulaire de nouvelle annonce. Laissez vide pour ne pas avoir de préférence."
+        reset_filters: "Réinitialiser les filtres"
+        preferred_games: "Jeux préférés"
+        search_game: "Rechercher un jeu..."
+        preferred_platforms: "Plateformes préférées"
+        preferred_types: "Types préférés"
+        preferred_language: "Langue préférée"
+        no_preference: "Pas de préférence"
+        submit: "Mettre à jour le profil"
+        sign_out: "Déconnexion"

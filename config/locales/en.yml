@@ -1,31 +1,202 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  nav:
+    posts: "Posts"
+    my_matches: "My Matches"
+    profile: "Profile"
+    settings: "Settings"
+    sign_out: "Sign Out"
+    sign_in: "Sign In"
+    sign_up: "Sign Up"
+
+  home:
+    title: "Welcome to PlaySync"
+    subtitle: "Find your perfect gaming teammates"
+    browse_posts: "Browse Posts"
+    create_post: "Create Post"
+
+  settings:
+    title: "Settings"
+    notices:
+      email_updated: "Email updated successfully."
+      password_updated: "Password updated successfully."
+      password_incorrect: "Current password is incorrect."
+    account:
+      title: "Account"
+      change_email:
+        title: "Change email"
+        current: "Current"
+        new_email: "New email"
+        submit: "Update email"
+      change_password:
+        title: "Change password"
+        current_password: "Current password"
+        new_password: "New password"
+        confirm_password: "Confirm new password"
+        submit: "Update password"
+      delete_account:
+        title: "Delete account"
+        warning: "This action is permanent and cannot be undone."
+        confirm: "Are you sure? This cannot be undone."
+        submit: "Delete my account"
+    theme:
+      title: "Theme"
+      description: "Choose between light and dark mode."
+      light: "Light"
+      dark: "Dark"
+    language:
+      title: "Language"
+      description: "Choose your preferred language."
+      languages:
+        english: "English"
+        french: "French"
+        spanish: "Spanish"
+        german: "German"
+
+  post_types:
+    Chill: "Chill"
+    Fun: "Fun"
+    Competitive: "Competitive"
+  
+  post_languages:
+    English: "English"
+    French: "French"
+    Spanish: "Spanish"
+    German: "German"
+    Other: "Other"
+
+  posts:
+    notices:
+      created: "Post created successfully."
+      joined: "You joined the match!"
+      already_member: "You are already in this match."
+      full: "This match is full."
+      left: "You left the match."
+      creator_cannot_leave: "The creator cannot leave their own match."
+      deleted: "Post deleted."
+      not_authorized: "You are not authorized to perform this action."
+    index:
+      title: "Find Teammates"
+      create: "Create Post"
+      games: "Games"
+      search_game: "Search a game..."
+      platform: "Platform"
+      type: "Type"
+      language: "Language"
+      all: "All"
+      reset: "Reset"
+    list:
+      empty: "No posts available right now."
+      create_one: "Create one!"
+    new:
+      title: "Create New Post"
+    edit:
+      title: "Edit Post"
+    form:
+      errors:
+        one: "1 error prevented this post from being saved"
+        other: "%{count} errors prevented this post from being saved"
+      title: "Title"
+      title_placeholder: "Post title"
+      game: "Game"
+      search_game: "Search a game..."
+      platforms: "Platforms"
+      select_platforms: "Select platform(s)"
+      language: "Language"
+      type: "Type"
+      slot: "Slot"
+      slot_placeholder: "Number of players needed"
+      cancel: "Cancel"
+    show:
+      posted_by: "Posted by"
+      you: "You"
+      game: "Game"
+      platform: "Platform"
+      language: "Language"
+      type: "Type"
+      slots: "Slots"
+      created: "Created"
+      participants: "Participants"
+      no_participants: "No participants yet"
+      you_created: "You created this match."
+      leave_match: "Leave match"
+      leave_confirm: "Leave this match?"
+      full: "Full"
+      join_match: "Join match"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirm: "Are you sure?"
+      chat: "Chat"
+      no_messages: "No messages yet"
+      full_chat: "This match is full — chat is reserved for its members."
+      join_to_chat: "Join the match to access the chat."
+      send: "Send"
+      type_message: "Type a message..."
+    post:
+      posted_by: "Posted by"
+      posted_ago: "Posted %{time} ago"
+      you: "You"
+      open: "Open"
+      join: "Join"
+      edit: "Edit"
+      delete: "Delete"
+      delete_confirm: "Are you sure?"
+    slots:
+      full: "0 places available"
+      full_badge: "FULL"
+      available:
+        one: "%{count} place available"
+        other: "%{count} places available"
+
+  matches:
+    index:
+      title: "My Matches"
+      choose_game: "Choose your game"
+      search_game: "Search a game..."
+      platform: "Platform"
+      type: "Type"
+      language: "Language"
+      all: "All"
+      reset: "Reset"
+      posted_by: "Posted by"
+      you: "You"
+      game: "Game"
+      platform_label: "Platform"
+      language_label: "Language"
+      type_label: "Type"
+      view: "View"
+    show:
+      back: "← Back to My Matches"
+      posted_by: "Posted by"
+      you: "You"
+      game: "Game"
+      platform: "Platform"
+      language: "Language"
+      type: "Type"
+      slots: "Slots"
+      participants: "Participants"
+      chat: "Chat"
+      no_messages: "No messages yet."
+
+  devise:
+    sessions:
+      new:
+        title: "Log in"
+        submit: "Log in"
+    registrations:
+      new:
+        title: "Sign up"
+        submit: "Sign up"
+        min_password: "%{count} characters minimum"
+      edit:
+        title: "Profile"
+        filter_preferences: "Filter preferences"
+        filter_hint: "These pre-fill the search and the new-post form. Leave empty for no preference."
+        reset_filters: "Reset filters"
+        preferred_games: "Preferred games"
+        search_game: "Search a game..."
+        preferred_platforms: "Preferred platforms"
+        preferred_types: "Preferred types"
+        preferred_language: "Preferred language"
+        no_preference: "No preference"
+        submit: "Update profile"
+        sign_out: "Sign Out"

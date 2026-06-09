@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-  <h1>My Matches</h1>
+  <h1><%= t("matches.index.title") %></h1>
   <p>Your sessions in progress and finished</p>
 <% end %>
 
@@ -8,14 +8,14 @@
   <div style="display: flex; gap: 15px; align-items: flex-end;">
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :game_id, "Choose your game", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.label :game_id, t("matches.index.choose_game"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
 
       <input
         type="text"
         id="filter-game-search"
-        placeholder="Search a game..."
+        placeholder="<%= t("matches.index.search_game") %>"
         autocomplete="off"
-        style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;"
+        style="width:100%; padding:0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;"
       >
 
       <%= f.hidden_field :game_id, id: "filter-game-id" %>
@@ -24,22 +24,22 @@
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :platform, "Platform", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :platform, Post::PLATFORMS, { include_blank: "All", selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :platform, t("matches.index.platform"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :platform, Post::PLATFORMS, { include_blank: t("matches.index.all"), selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :post_type, "Type", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :post_type, Post::TYPES, { include_blank: "All", selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :post_type, t("matches.index.type"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :post_type, Post::TYPES.map { |type| [t("post_types.#{type}"), type] }, { include_blank: t("matches.index.all"), selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1rem;">
-      <%= f.label :language, "Language", style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :language, Post::LANGUAGES, { include_blank: "All", selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;" %>
+      <%= f.label :language, t("matches.index.language"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+      <%= f.select :language, Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, { include_blank: t("matches.index.all"), selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
     </div>
 
     <div style="margin-bottom: 1.5rem;">
-      <%= link_to "Reset", my_matches_path if params.values_at(:platform, :game, :post_type, :language).any?(&:present?) %>
+      <%= link_to t("matches.index.reset"), my_matches_path if params.values_at(:platform, :game, :post_type, :language).any?(&:present?) %>
     </div>
 
   </div>
@@ -61,18 +61,18 @@
         <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
           <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
           <% if post.user == current_user %>
-            <span style="background: #007bff; color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;">You</span>
+            <span style="background: #007bff; color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;"><%= t("matches.index.you") %></span>
           <% end %>
         </p>
 
         <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-          <p><strong>🎮 Game:</strong> <%= post.game.name %></p>
-          <p><strong>🖥️ Platform:</strong> <%= platform_list(post.platforms) %></p>
-          <p><strong>🌐 Language:</strong> <%= post.language %></p>
-          <p><strong>👥 Type:</strong> <%= post.post_type %></p>
+          <p><strong>🎮 <%= t("matches.index.game") %>:</strong> <%= post.game.name %></p>
+          <p><strong>🖥️ <%= t("matches.index.platform_label") %>:</strong> <%= platform_list(post.platforms) %></p>
+          <p><strong>🌐 <%= t("matches.index.language_label") %>:</strong> <%= post.language %></p>
+          <p><strong>👥 <%= t("matches.index.type_label") %>:</strong> <%= post.post_type %></p>
         </div>
 
-        <%= link_to "View", post_path(post), class: "btn", style: "width: 100%; text-align: center; display: block;" %>
+        <%= link_to t("matches.index.view"), post_path(post), class: "btn", style: "width: 100%; text-align: center; display: block;" %>
       </div>
     <% end %>
   </div>
