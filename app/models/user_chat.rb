@@ -8,7 +8,7 @@ class UserChat < ApplicationRecord
   private
 
   def broadcast_append_to_user_chat
-    broadcast_append_to "user_chat", target: "chat_users", partial: "posts/chat_user", locals: { user: user }
+    broadcast_append_to "user_chat", target: "chat_users", partial: "posts/chat_user", locals: { user: user, post: chat.post }
     update_players_slot
   end
 
