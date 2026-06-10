@@ -1,6 +1,16 @@
 <%= turbo_stream_from @post %>
 <%= turbo_stream_from @chat %>
 <%= turbo_stream_from "user_chat" %>
+<style>
+.kick_button_<%= current_user.id %> {
+  display: none;
+}
+<% if @post.user != current_user %>
+.kick_button {
+  display: none;
+}
+<% end %>
+</style>
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
   <!-- Post Details -->
@@ -28,16 +38,7 @@
     <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;" id="chat_users">
       <% if @chat.users.any? %>
         <% @chat.users.each do |user| %>
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #dee2e6;">
-            <p style="margin: 0;"><%= user.username %></p>
-            <% if @post.user == current_user && user != current_user %>
-              <%= button_to t("posts.show.kick"), kick_post_path(@post, user_id: user.id),
-                method: :delete,
-                data: { turbo_confirm: t("posts.show.kick_confirm") },
-                style: "background: #dc3545; color: white; border: none; border-radius: 4px; padding: 0.2rem 0.6rem; font-size: 0.8rem; cursor: pointer;" %>
-            <% end %>
-          </div>
-          <%#= render "posts/chat_user", user: user %>
+        <%= render "posts/chat_user", user: user, post: @post %>
         <% end %>
       <% else %>
         <p style="color: rgba(33, 37, 41, .5);"><%= t("posts.show.no_participants") %></p>
@@ -45,7 +46,7 @@
     </div>
 
     <% if user_signed_in? %>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem;">
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem;" id="post_footer">
         <% if @post.user == current_user %>
           <span style="align-self: center; color: #666;"><%= t("posts.show.you_created") %></span>
           <% if @post.open? && policy(@post).finish? %>
@@ -54,7 +55,7 @@
         <% elsif @is_member %>
           <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: t("posts.show.leave_confirm") } %>
         <% elsif @post.kicked?(current_user) %>
-          <span style="color: #dc3545; align-self: center;"><%= t("posts.show.kicked_out") %></span>
+          <%= render "posts/kicked_out" %>
         <% elsif @post.full? %>
           <button class="btn" disabled style="opacity: 0.6; cursor: not-allowed;"><%= t("posts.show.full") %></button>
         <% else %>
@@ -72,10 +73,11 @@
   </div>
 
   <!-- Chat Section -->
-  <div style="background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;">
+  <div style="background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 2rem; display: flex; flex-direction: column;" id="chat_container">
     <h2 style="margin-bottom: 1rem;">💬 <%= t("posts.show.chat") %></h2>
-
-    <% if @is_member && @chat %>
+    <% if @post.kicked?(current_user) %>
+      <%= render "posts/kicked_out" %>
+    <% elsif @is_member && @chat %>
       <%= render "posts/voice", post: @post %>
 
       <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; max-height: 400px;" id="messages" data-controller="scroll" data-scroll-target="messages">

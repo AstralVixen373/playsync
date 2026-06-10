@@ -129,7 +129,7 @@ class PostsController < ApplicationController
       return
     end
 
-    @post.chat&.users&.delete(current_user)
+    UserChat.find_by(chat: @post.chat, user: current_user).destroy
     @post.reload
     broadcast_post_changes(@post)
 
@@ -152,10 +152,23 @@ class PostsController < ApplicationController
       return
     end
 
-    @post.chat.users.delete(target)
+    # @post.chat.users.delete(target)
+    UserChat.find_by(chat: @post.chat, user: target).destroy
     @post.update!(kicked_user_ids: @post.kicked_user_ids | [target.id])
     @post.reload
     broadcast_post_changes(@post)
+
+    Turbo::StreamsChannel.broadcast_update_to(
+      @post,
+      target: "post_footer",
+      partial: "posts/kicked_out"
+    )
+
+    Turbo::StreamsChannel.broadcast_update_to(
+      @post,
+      target: "chat_container",
+      partial: "posts/kicked_out"
+    )
 
     redirect_to post_path(@post), notice: t("posts.notices.kicked")
   end
