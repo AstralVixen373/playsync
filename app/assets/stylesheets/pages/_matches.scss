@@ -32,13 +32,13 @@
 
   &.is-active {
     color: white;
-    background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+    background: $btn-gradient;
     border-color: rgba(255, 255, 255, 0.18);
     box-shadow: 0 6px 16px rgba($purple, 0.4), 0 2px 5px rgba($purple-dark, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 
     &:hover {
       color: white;
-      background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+      background: $btn-gradient;
       filter: brightness(1.05);
       box-shadow: 0 10px 22px rgba($purple, 0.5), 0 3px 8px rgba($purple-dark, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
@@ -189,7 +189,7 @@
   i { font-size: 0.78rem; }
 
   &--primary {
-    background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+    background: $btn-gradient;
     border-color: rgba(255, 255, 255, 0.18);
     color: white;
     box-shadow: 0 6px 16px rgba($purple, 0.4), 0 2px 5px rgba($purple-dark, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);

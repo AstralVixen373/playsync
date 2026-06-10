@@ -18,3 +18,8 @@ $purple-light: #EDE9FF;
 $brand-sidebar: #8C97DF;
 $brand-bg:      #E0E4FC;
 $brand-panel:   #E1E4FC;
+
+// Primary button / active-state gradient. A softer, slightly desaturated take
+// on the purple — the stops sit closer together and lean toward the lavender UI
+// so the buttons read as harmonised rather than neon-contrasty.
+$btn-gradient: linear-gradient(135deg, #8E72E0 0%, #735BC8 100%);

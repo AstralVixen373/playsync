@@ -469,31 +469,44 @@
   text-decoration: none;
   cursor: pointer;
   border: 1.5px solid rgba($purple, 0.25);
-  background: rgba($purple, 0.06);
+  background: linear-gradient(180deg, rgba($purple, 0.10) 0%, rgba($purple, 0.04) 100%);
   color: $purple;
   transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
   white-space: nowrap;
+  // Subtle raised look: soft drop shadow + inner top highlight.
+  box-shadow: 0 2px 5px rgba($purple, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
   i { font-size: 0.78rem; }
 
   &:hover {
-    background: rgba($purple, 0.12);
+    background: linear-gradient(180deg, rgba($purple, 0.16) 0%, rgba($purple, 0.08) 100%);
     color: $purple;
     transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba($purple, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  // Press the button back down on click.
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba($purple, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 
   &--join {
-    background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
-    border-color: transparent;
+    // Matches the raised, "puffy" look of the active My Matches tab
+    // (.ps-tab.is-active): lighter gradient, subtle white edge and a layered
+    // shadow (outer glow + drop + inner highlight).
+    background: $btn-gradient;
+    border-color: rgba(255, 255, 255, 0.18);
     color: white;
-    box-shadow: 0 4px 12px rgba($purple, 0.3);
+    box-shadow: 0 6px 16px rgba($purple, 0.4), 0 2px 5px rgba($purple-dark, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 
     // Keep (and brighten) the gradient on hover — otherwise the base
     // .ps-action:hover background would override it with a flat, washed-out fill.
     &:hover {
-      background: linear-gradient(135deg, lighten($purple, 7%) 0%, lighten($purple-mid, 5%) 100%);
+      background: $btn-gradient;
       color: white;
-      box-shadow: 0 6px 18px rgba($purple, 0.45);
+      filter: brightness(1.05);
+      box-shadow: 0 10px 22px rgba($purple, 0.5), 0 3px 8px rgba($purple-dark, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
   }
 }

@@ -90,7 +90,8 @@
       "Bash(ls app/assets/images/platforms/)",
       "Bash(sed -n '1,10p' app/models/post.rb)",
       "Bash(rm -f tmp/e2e_profile.rb)",
-      "Bash(grep -rn \"class:.*btn\\\\|class=\\\\\"btn\\\\|\\\\\"btn\" app/views/matches/)"
+      "Bash(grep -rn \"class:.*btn\\\\|class=\\\\\"btn\\\\|\\\\\"btn\" app/views/matches/)",
+      "Bash(bundle exec *)"
     ]
   }
 }

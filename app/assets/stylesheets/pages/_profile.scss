@@ -128,7 +128,7 @@ $ps-profile-head-height: 1.4rem;
   justify-content: center;
   border: 3px solid #fff;
   border-radius: 50%;
-  background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+  background: $btn-gradient;
   color: #fff;
   cursor: pointer;
   font-size: 0.8rem;

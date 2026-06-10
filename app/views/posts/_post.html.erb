@@ -79,7 +79,7 @@
 
       <% if post.member?(current_user) || post.user == current_user %>
         <%= link_to post_path(id: post.id), class: "ps-action" do %>
-          VIEW <i class="fa-solid fa-arrow-right"></i>
+          View <i class="fa-solid fa-arrow-right"></i>
         <% end %>
       <% elsif expired || full %>
         <%# No join action — the diagonal banner already conveys expired/full. %>

@@ -76,7 +76,12 @@
                   <%= (current_user.username.presence || current_user.email).first.upcase %>
                 <% end %>
               </span>
-              <span class="ps-sidebar__profile-name"><%= current_user.username.presence || current_user.email %></span>
+              <span class="ps-sidebar__profile-text">
+                <span class="ps-sidebar__profile-name"><%= current_user.username.presence || current_user.email %></span>
+                <span class="ps-sidebar__profile-hint">
+                  <%= t("nav.view_profile") %><i class="fa-solid fa-arrow-right"></i>
+                </span>
+              </span>
             <% end %>
           </div>
         </aside>
