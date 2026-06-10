@@ -1,0 +1,112 @@
+<%# Renders one "My Matches" card. Mirrors posts/_post layout (cover · body)
+    so it shares the Annonces design system, but carries the My-Matches actions:
+    favourite heart + View, then Edit/Delete (owner) or Leave (participant).
+    All handlers/routes are the existing ones — this partial is presentation only. %>
+<% owner     = current_user && post.user == current_user %>
+<% member    = current_user && post.chat&.users&.include?(current_user) %>
+<% platforms = Array(post.platforms) %>
+<% crossplay = platforms.size > 1 %>
+
+<div id="<%= dom_id(post) %>" class="ps-card ps-card--match <%= 'ps-card--favourite' if favourited %>">
+
+  <%# Favourite heart — reuses the existing favourite create/destroy route. %>
+  <div class="ps-card__fav">
+    <% if favourited %>
+      <%= button_to post_favourite_path(post), method: :delete,
+            class: "ps-fav-btn is-active", title: t("matches.index.unfavourite") do %>
+        <i class="fa-solid fa-heart"></i>
+      <% end %>
+    <% else %>
+      <%= button_to post_favourite_path(post), method: :post,
+            class: "ps-fav-btn", title: t("matches.index.favourite") do %>
+        <i class="fa-regular fa-heart"></i>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# ZONE 1 — Identity: game cover (IGDB) with a letter placeholder fallback %>
+  <div class="ps-card__cover <%= 'ps-card__cover--art' if post.game.cover? %>">
+    <% if post.game.cover? %>
+      <%= image_tag post.game.cover_url, alt: post.game.name, loading: "lazy", class: "ps-card__cover-img" %>
+    <% else %>
+      <%= post.game.name.first.upcase %>
+    <% end %>
+  </div>
+
+  <div class="ps-card__body">
+    <div class="ps-card__top">
+      <span class="ps-badge ps-badge--<%= post.post_type.downcase %>">
+        <%= option_icon(post.post_type, size: 13) %><%= post.post_type %>
+      </span>
+      <% if post.open? %>
+        <span class="ps-status ps-status--open">
+          <span class="ps-status__dot"></span><%= t("matches.index.tabs.current") %>
+        </span>
+      <% else %>
+        <span class="ps-status ps-status--finished">
+          <span class="ps-status__dot"></span><%= t("matches.index.tabs.finished") %>
+        </span>
+      <% end %>
+    </div>
+
+    <h3 class="ps-card__title"><%= post.title %></h3>
+    <p class="ps-card__desc"><%= post.game.name %></p>
+
+    <%# ZONE 2 — Primary info: language + player count %>
+    <div class="ps-card__info">
+      <span class="ps-info">
+        <%= option_icon(post.language, size: 14) %>
+        <%= language_label(post.language) %>
+      </span>
+      <span class="ps-info ps-info--players">
+        <i class="fa-solid fa-user-group"></i>
+        <%= render "posts/slots", post: post %>
+      </span>
+    </div>
+
+    <%# ZONE 3 — Session tags: platform chips (+ crossplay) %>
+    <div class="ps-card__chips">
+      <% platforms.each do |name| %>
+        <span class="ps-chip"><%= platform_icon(name, size: 14) %><%= name %></span>
+      <% end %>
+      <% if crossplay %>
+        <span class="ps-chip ps-chip--crossplay">
+          <i class="fa-solid fa-gamepad"></i>Crossplay
+        </span>
+      <% end %>
+    </div>
+
+    <%# ZONE 6 — Secondary info: creation time, de-emphasised %>
+    <div class="ps-card__time">
+      <i class="fa-regular fa-clock"></i>
+      <%= time_ago_in_words(post.created_at) %> ago
+    </div>
+  </div>
+
+  <%# ZONE 5 — Actions: a right-hand column (fills the horizontal space and keeps
+      button widths sensible). Primary "View", then role-based controls. %>
+  <div class="ps-match-aside">
+    <%= link_to post_path(post), class: "ps-match-btn ps-match-btn--primary" do %>
+      <%= t("matches.index.view") %> <i class="fa-solid fa-arrow-right"></i>
+    <% end %>
+
+    <% if owner %>
+      <div class="ps-match-aside__row">
+        <% if policy(post).edit? %>
+          <%= link_to t("posts.show.edit"), edit_post_path(id: post.id),
+                class: "ps-match-btn ps-match-btn--secondary" %>
+        <% end %>
+        <% if policy(post).destroy? %>
+          <%= link_to t("posts.show.delete"), post_path(post),
+                data: { turbo_method: :delete, turbo_confirm: t("posts.show.delete_confirm") },
+                class: "ps-match-btn ps-match-btn--danger" %>
+        <% end %>
+      </div>
+    <% elsif member %>
+      <%= button_to t("posts.show.leave_match"), leave_post_path(post), method: :delete,
+            class: "ps-match-btn ps-match-btn--secondary",
+            data: { turbo_confirm: t("posts.show.leave_confirm") } %>
+    <% end %>
+  </div>
+
+</div>

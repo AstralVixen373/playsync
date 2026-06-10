@@ -3,6 +3,7 @@
   <p>Find players to share your session</p>
 <% end %>
 
+<% content_for :page_header do %>
 <div class="ps-find" data-controller="modal">
 
   <%# ── Create zone: "I want to create an announcement" ──────────────────── %>
@@ -78,6 +79,7 @@
   </div>
 
 </div>
+<% end %>
 
 <%= turbo_stream_from "posts" %>
 <%= render "posts/list", posts: @posts, current_user: current_user %>

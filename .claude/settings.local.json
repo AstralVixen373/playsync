@@ -48,7 +48,27 @@
       "Bash(which bundle *)",
       "Bash(ls bin/)",
       "Bash(cat .ruby-version)",
-      "Bash(bash -lc 'ruby -v && for f in app/controllers/posts_controller.rb app/controllers/settings_controller.rb app/controllers/users/omniauth_callbacks_controller.rb; do ruby -c \"$f\"; done')"
+      "Bash(bash -lc 'ruby -v && for f in app/controllers/posts_controller.rb app/controllers/settings_controller.rb app/controllers/users/omniauth_callbacks_controller.rb; do ruby -c \"$f\"; done')",
+      "Bash(git branch *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(git fetch *)",
+      "Bash(git rev-list *)",
+      "Bash(ssh -o StrictHostKeyChecking=accept-new -T git@github.com)",
+      "Read(//c/Users/Kapp/.ssh/**)",
+      "Bash(gh auth *)",
+      "PowerShell(git fetch origin 2>&1)",
+      "PowerShell(if \\($?\\) { \"FETCH OK\" } else { \"FETCH FAILED\" })",
+      "Bash(sed -n '30,60p' app/helpers/application_helper.rb)",
+      "Bash(sed -n '15,55p' app/helpers/platforms_helper.rb)",
+      "Bash(awk '/^ matches:/,/^ [a-z_]+:/' config/locales/en.yml)",
+      "Bash(ruby -e 'require \"yaml\"; %w[en fr es de].each{|l| YAML.load_file\\(\"config/locales/#{l}.yml\"\\); puts \"#{l} OK\"}')",
+      "Bash(python3 -c ' *)",
+      "Bash(command -v ruby)",
+      "Bash(command -v ruby3.0)",
+      "Read(//c/Users/Kapp/.rbenv/shims/**)",
+      "Bash(~/.rbenv/bin/rbenv version *)",
+      "Read(//c/Users/Kapp/**)",
+      "Bash(bash -lc 'ruby -ryaml -e \"%w[en fr es de].each{|l| YAML.load_file\\(%\\(config/locales/#{l}.yml\\)\\); puts %\\(#{l} OK\\)}\"')"
     ]
   }
 }

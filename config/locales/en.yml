@@ -174,6 +174,23 @@ en:
       favourites_only: "Favourites only"
       favourite: "Add to favourites"
       unfavourite: "Remove from favourites"
+      subtitle: "Your sessions and matches"
+      filter_label: "Filter your matches"
+      all_games: "All games"
+      all_platforms: "All platforms"
+      all_types: "All types"
+      all_languages: "All languages"
+      tabs:
+        current: "In progress"
+        favourites: "Favourites"
+        finished: "Finished"
+      favourites_sidebar: "My favourites"
+      see_all_favourites: "See all my favourites"
+      no_favourites: "No favourites yet."
+      empty:
+        current: "No matches in progress."
+        favourites: "No favourite matches yet."
+        finished: "No finished matches yet."
     show:
       back: "← Back to My Matches"
       posted_by: "Posted by"

@@ -7,7 +7,7 @@ class PostsController < ApplicationController
     # Show every open post — full and stale ones stay on the board with their
     # own styling (see posts/_post) instead of vanishing; only the Join action
     # is gated. This lets people tell OPEN / FULL / EXPIRED apart at a glance.
-    @posts = policy_scope(Post).open.where("? <> ALL(kicked_user_ids)", current_user.id).includes(:user, :game).order(created_at: :desc)
+    base = policy_scope(Post).open.where("? <> ALL(kicked_user_ids)", current_user.id)
 
     # On a fresh visit (no `committed` flag) the filters default to the user's
     # saved preferences. Once the user touches the form, `committed` is set and
@@ -18,10 +18,22 @@ class PostsController < ApplicationController
     @selected_post_types = committed ? clean_filter(params[:post_types]) : current_user.preferred_post_types
     @selected_language   = committed ? params[:language].presence        : current_user.preferred_language
 
-    @posts = @posts.with_games(@selected_game_ids)
+    filtered = base.with_games(@selected_game_ids)
                    .with_platforms(@selected_platforms)
                    .with_types(@selected_post_types)
                    .for_language(@selected_language)
+
+    # The default (non-committed) view pre-filters the board by saved
+    # preferences. Keep the user's own open announcements on it regardless, so a
+    # freshly created post never silently disappears from the board. When the
+    # user is actively filtering, their explicit choice is honoured as-is.
+    @posts = if committed
+               filtered
+             else
+               base.where(id: filtered.select(:id)).or(base.where(user_id: current_user.id))
+             end
+
+    @posts = @posts.includes(:user, :game).order(created_at: :desc)
 
     @selected_games = Game.where(id: @selected_game_ids)
     # Pre-filled post backing the "Create announcement" modal rendered on the
