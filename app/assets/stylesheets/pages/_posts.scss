@@ -488,9 +488,12 @@
     color: white;
     box-shadow: 0 4px 12px rgba($purple, 0.3);
 
+    // Keep (and brighten) the gradient on hover — otherwise the base
+    // .ps-action:hover background would override it with a flat, washed-out fill.
     &:hover {
+      background: linear-gradient(135deg, lighten($purple, 7%) 0%, lighten($purple-mid, 5%) 100%);
       color: white;
-      box-shadow: 0 6px 16px rgba($purple, 0.4);
+      box-shadow: 0 6px 18px rgba($purple, 0.45);
     }
   }
 }

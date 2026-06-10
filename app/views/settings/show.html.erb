@@ -1,74 +1,160 @@
 <% content_for :title, t("settings.title") %>
 
-<div class="settings-page">
-  <h2><%= t("settings.title") %></h2>
+<% content_for :page_title do %>
+  <h1><%= t("settings.title") %></h1>
+  <p><%= t("settings.subtitle") %></p>
+<% end %>
 
-  <section class="settings-section">
-    <h3><%= t("settings.account.title") %></h3>
+<div class="ps-settings">
 
-    <div class="settings-subsection">
-      <h4><%= t("settings.account.change_email.title") %></h4>
-      <p class="settings-description"><%= t("settings.account.change_email.current") %>: <strong><%= current_user.email %></strong></p>
-      <%= form_with url: settings_email_path, method: :patch do |f| %>
-        <div class="settings-field">
-          <%= f.label :email, t("settings.account.change_email.new_email") %>
-          <%= f.email_field :email, name: "user[email]", class: "settings-input", required: true %>
+  <div class="ps-settings__grid">
+
+    <%# ── Connected accounts (Steam / Twitch) ──────────────────────────── %>
+    <section class="ps-settings__group">
+      <h2 class="ps-settings__section-label"><%= t("settings.connections.title") %></h2>
+
+      <div class="ps-settings__card">
+        <p class="ps-settings__hint"><%= t("settings.connections.description") %></p>
+
+        <%# Steam %>
+        <% steam = current_user.identities.find_by(provider: "steam") %>
+        <div class="ps-settings__provider ps-settings__provider--steam">
+          <span class="ps-settings__provider-logo"><i class="fa-brands fa-steam"></i></span>
+          <div class="ps-settings__provider-info">
+            <span class="ps-settings__provider-name">Steam</span>
+            <% if steam %>
+              <span class="ps-settings__provider-status is-connected">
+                <i class="fa-solid fa-circle-check"></i>
+                <%= t("settings.connections.connected_as") %> <strong><%= steam.nickname %></strong>
+              </span>
+            <% else %>
+              <span class="ps-settings__provider-status"><%= t("settings.connections.not_connected") %></span>
+            <% end %>
+          </div>
+          <div class="ps-settings__provider-action">
+            <% if steam %>
+              <a target="_blank" rel="noopener" class="ps-settings__provider-link"
+                 href="https://steamcommunity.com/id/<%= steam.nickname %>">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <%= t("settings.connections.view_account") %>
+              </a>
+            <% else %>
+              <%= button_to user_steam_omniauth_authorize_path, method: :post,
+                    form: { data: { turbo: "false" } },
+                    class: "ps-settings__connect ps-settings__connect--steam" do %>
+                <i class="fa-brands fa-steam"></i> <%= t("settings.connections.connect") %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-        <%= f.submit t("settings.account.change_email.submit"), class: "btn" %>
-      <% end %>
-    </div>
 
-    <hr class="settings-divider">
-
-    <div class="settings-subsection">
-      <h4><%= t("settings.account.change_password.title") %></h4>
-      <%= form_with url: settings_password_path, method: :patch do |f| %>
-        <div class="settings-field">
-          <%= f.label :current_password, t("settings.account.change_password.current_password") %>
-          <%= f.password_field :current_password, name: "user[current_password]", class: "settings-input", required: true %>
+        <%# Twitch %>
+        <% twitch = current_user.identities.find_by(provider: "twitch") %>
+        <div class="ps-settings__provider ps-settings__provider--twitch">
+          <span class="ps-settings__provider-logo"><i class="fa-brands fa-twitch"></i></span>
+          <div class="ps-settings__provider-info">
+            <span class="ps-settings__provider-name">Twitch</span>
+            <% if twitch %>
+              <span class="ps-settings__provider-status is-connected">
+                <i class="fa-solid fa-circle-check"></i>
+                <%= t("settings.connections.connected_as") %> <strong><%= twitch.nickname %></strong>
+              </span>
+            <% else %>
+              <span class="ps-settings__provider-status"><%= t("settings.connections.not_connected") %></span>
+            <% end %>
+          </div>
+          <div class="ps-settings__provider-action">
+            <% if twitch %>
+              <a target="_blank" rel="noopener" class="ps-settings__provider-link"
+                 href="https://www.twitch.tv/<%= twitch.nickname %>">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <%= t("settings.connections.view_account") %>
+              </a>
+            <% else %>
+              <%= button_to user_twitch_omniauth_authorize_path, method: :post,
+                    form: { data: { turbo: "false" } },
+                    class: "ps-settings__connect ps-settings__connect--twitch" do %>
+                <i class="fa-brands fa-twitch"></i> <%= t("settings.connections.connect") %>
+              <% end %>
+            <% end %>
+          </div>
         </div>
-        <div class="settings-field">
-          <%= f.label :password, t("settings.account.change_password.new_password") %>
-          <%= f.password_field :password, name: "user[password]", class: "settings-input", required: true, autocomplete: "new-password" %>
-        </div>
-        <div class="settings-field">
-          <%= f.label :password_confirmation, t("settings.account.change_password.confirm_password") %>
-          <%= f.password_field :password_confirmation, name: "user[password_confirmation]", class: "settings-input", required: true, autocomplete: "new-password" %>
-        </div>
-        <%= f.submit t("settings.account.change_password.submit"), class: "btn" %>
-      <% end %>
-    </div>
+      </div>
+    </section>
 
-    <hr class="settings-divider">
+    <%# ── Email ─────────────────────────────────────────────────────────── %>
+    <section class="ps-settings__group">
+      <h2 class="ps-settings__section-label"><%= t("settings.account.change_email.title") %></h2>
 
-    <div class="settings-subsection">
-      <h4><%= t("settings.account.delete_account.title") %></h4>
-      <p class="settings-description"><%= t("settings.account.delete_account.warning") %></p>
-      <%= button_to t("settings.account.delete_account.submit"),
-            registration_path(:user),
-            method: :delete,
-            data: { turbo_confirm: t("settings.account.delete_account.confirm") },
-            class: "btn btn-danger" %>
-    </div>
-  </section>
-
-  <section class="settings-section">
-    <h3><%= t("settings.theme.title") %></h3>
-    <p class="settings-placeholder">Here will be the theme feature</p>
-  </section>
-
-  <section class="settings-section">
-    <h3><%= t("settings.language.title") %></h3>
-    <p class="settings-description"><%= t("settings.language.description") %></p>
-    <div class="theme-options">
-      <% { "English" => "english", "French" => "french", "Spanish" => "spanish", "German" => "german" }.each do |lang, key| %>
-        <%= button_to settings_language_path,
-              method: :patch,
-              params: { language: lang },
-              class: "theme-option #{"theme-option--active" if current_user.preferred_language == lang}" do %>
-          <%= t("settings.language.languages.#{key}") %>
+      <div class="ps-settings__card">
+        <p class="ps-settings__hint"><%= t("settings.account.change_email.current") %> :
+          <strong><%= current_user.email %></strong></p>
+        <%= form_with url: settings_email_path, method: :patch, class: "ps-settings__form" do |f| %>
+          <div class="ps-settings__field">
+            <%= f.label :email, t("settings.account.change_email.new_email") %>
+            <%= f.email_field :email, name: "user[email]", class: "ps-settings__input", required: true %>
+          </div>
+          <%= f.submit t("settings.account.change_email.submit"), class: "btn ps-settings__submit" %>
         <% end %>
-      <% end %>
-    </div>
-  </section>
+      </div>
+    </section>
+
+    <%# ── Language ──────────────────────────────────────────────────────── %>
+    <section class="ps-settings__group">
+      <h2 class="ps-settings__section-label"><%= t("settings.language.title") %></h2>
+
+      <div class="ps-settings__card">
+        <p class="ps-settings__hint"><%= t("settings.language.description") %></p>
+        <div class="ps-settings__langs">
+          <% { "English" => "english", "French" => "french", "Spanish" => "spanish", "German" => "german" }.each do |lang, key| %>
+            <%= button_to settings_language_path,
+                  method: :patch,
+                  params: { language: lang },
+                  class: "ps-settings__lang #{"is-active" if current_user.preferred_language == lang}" do %>
+              <%= option_icon(lang) %>
+              <span><%= t("settings.language.languages.#{key}") %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+
+    <%# ── Password ──────────────────────────────────────────────────────── %>
+    <section class="ps-settings__group">
+      <h2 class="ps-settings__section-label"><%= t("settings.account.change_password.title") %></h2>
+
+      <div class="ps-settings__card">
+        <%= form_with url: settings_password_path, method: :patch, class: "ps-settings__form" do |f| %>
+          <div class="ps-settings__field">
+            <%= f.label :current_password, t("settings.account.change_password.current_password") %>
+            <%= f.password_field :current_password, name: "user[current_password]", class: "ps-settings__input", required: true %>
+          </div>
+          <div class="ps-settings__field">
+            <%= f.label :password, t("settings.account.change_password.new_password") %>
+            <%= f.password_field :password, name: "user[password]", class: "ps-settings__input", required: true, autocomplete: "new-password" %>
+          </div>
+          <div class="ps-settings__field">
+            <%= f.label :password_confirmation, t("settings.account.change_password.confirm_password") %>
+            <%= f.password_field :password_confirmation, name: "user[password_confirmation]", class: "ps-settings__input", required: true, autocomplete: "new-password" %>
+          </div>
+          <%= f.submit t("settings.account.change_password.submit"), class: "btn ps-settings__submit" %>
+        <% end %>
+      </div>
+    </section>
+
+    <%# ── Delete account (full width, kept last) ─────────────────────────── %>
+    <section class="ps-settings__group ps-settings__group--full">
+      <h2 class="ps-settings__section-label ps-settings__section-label--danger"><%= t("settings.account.delete_account.title") %></h2>
+
+      <div class="ps-settings__card ps-settings__card--danger">
+        <p class="ps-settings__hint"><%= t("settings.account.delete_account.warning") %></p>
+        <%= button_to t("settings.account.delete_account.submit"),
+              registration_path(:user),
+              method: :delete,
+              data: { turbo_confirm: t("settings.account.delete_account.confirm") },
+              class: "btn btn-danger" %>
+      </div>
+    </section>
+
+  </div>
 </div>

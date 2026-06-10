@@ -16,6 +16,7 @@ en:
 
   settings:
     title: "Settings"
+    subtitle: "Manage your account and connections"
     notices:
       email_updated: "Email updated successfully."
       password_updated: "Password updated successfully."
@@ -38,11 +39,17 @@ en:
         warning: "This action is permanent and cannot be undone."
         confirm: "Are you sure? This cannot be undone."
         submit: "Delete my account"
-    theme:
-      title: "Theme"
-      description: "Choose between light and dark mode."
-      light: "Light"
-      dark: "Dark"
+    connections:
+      title: "Connected accounts"
+      description: "Link your Steam and Twitch accounts to your PlaySync account."
+      connected_as: "Connected as"
+      not_connected: "Not connected"
+      view_account: "View account"
+      connect: "Connect"
+    sign_out:
+      title: "Sign out"
+      description: "Sign out of your PlaySync account."
+      submit: "Sign out"
     language:
       title: "Language"
       description: "Choose your preferred language."
@@ -218,6 +225,21 @@ en:
         min_password: "%{count} characters minimum"
       edit:
         title: "Profile"
+        subtitle: "Manage your information and preferences"
+        avatar_section: "Avatar"
+        avatar_hint: "Set your avatar. JPG, PNG or GIF. 2 MB max."
+        choose_avatar: "Choose a file"
+        remove_avatar: "Remove"
+        username_section: "Username"
+        username_label: "Username"
+        platform_ids: "Platform IDs"
+        platform_ids_hint: "Add your usernames per platform so teammates can add you."
+        platform_handles:
+          pc: "PC username (Steam, Battle.net…)"
+          ps5: "PSN ID"
+          xbox: "Gamertag"
+          nintendo_switch: "Friend code"
+          mobile: "Username"
         filter_preferences: "Filter preferences"
         filter_hint: "These pre-fill the search and the new-post form. Leave empty for no preference."
         reset_filters: "Reset filters"

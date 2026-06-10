@@ -1,141 +1,159 @@
-<h2><%= t("devise.registrations.edit.title") %></h2>
+<% content_for :page_title do %>
+  <h1><%= t("devise.registrations.edit.title") %></h1>
+  <p><%= t("devise.registrations.edit.subtitle") %></p>
+<% end %>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+<% avatar_initial = (resource.username.presence || resource.email).first.upcase %>
+
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name),
+      html: { method: :put, class: "ps-profile" }) do |f| %>
+
   <div id="error-notification">
     <%= f.error_notification %>
   </div>
 
-  <div class="form-inputs">
-    <% if resource.avatar.attachment&.persisted? %>
-      <%= image_tag resource.avatar, class: "rounded-circle mb-2", style: "width: 120px; height: 120px;", alt: "Current avatar" %>
-    <% end %>
-    <%= f.input :avatar, as: :file, label: "Avatar", input_html: { accept: "image/*" } %>
+  <div class="ps-profile__grid">
 
-    <%= f.input :username, required: false, autofocus: true %>
+    <%# ── Avatar ────────────────────────────────────────────────────────── %>
+    <section class="ps-profile__group" data-controller="avatar" data-avatar-initial-value="<%= avatar_initial %>">
+      <h2 class="ps-profile__section-label"><%= t("devise.registrations.edit.avatar_section") %></h2>
 
-    <fieldset data-controller="preferences" style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem; margin: 1rem 0;">
-      <legend style="font-weight: bold; padding: 0 0.5rem;">🎮 <%= t("devise.registrations.edit.filter_preferences") %></legend>
-      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;">
-        <p style="color: #888; font-size: 0.85rem; margin-top: 0;">
-          <%= t("devise.registrations.edit.filter_hint") %>
-        </p>
-        <%= button_tag t("devise.registrations.edit.reset_filters"), type: "button",
-              data: { action: "preferences#reset" },
-              style: "border: none; background: none; color: #007bff; cursor: pointer; padding: 0; white-space: nowrap;" %>
+      <div class="ps-profile__card ps-profile__avatar-card">
+        <div class="ps-profile__avatar">
+          <span class="ps-profile__avatar-img" data-avatar-target="preview">
+            <% if resource.avatar.attached? %>
+              <%= image_tag resource.avatar, alt: "Avatar" %>
+            <% else %>
+              <%= avatar_initial %>
+            <% end %>
+          </span>
+          <button type="button" class="ps-profile__avatar-badge"
+                  data-action="avatar#choose"
+                  aria-label="<%= t("devise.registrations.edit.choose_avatar") %>">
+            <i class="fa-solid fa-camera"></i>
+          </button>
+        </div>
+
+        <div class="ps-profile__avatar-info">
+          <h3><%= resource.username.presence || resource.email %></h3>
+          <p><%= t("devise.registrations.edit.avatar_hint") %></p>
+          <div class="ps-profile__avatar-actions">
+            <button type="button" class="btn" data-action="avatar#choose">
+              <%= t("devise.registrations.edit.choose_avatar") %>
+            </button>
+            <button type="button" class="ps-profile__btn-outline" data-action="avatar#remove">
+              <%= t("devise.registrations.edit.remove_avatar") %>
+            </button>
+          </div>
+        </div>
+
+        <%= f.file_field :avatar, accept: "image/*", class: "ps-profile__file",
+              data: { avatar_target: "input", action: "avatar#preview" } %>
+        <input type="hidden" name="user[remove_avatar]" value="" data-avatar-target="removeFlag">
       </div>
+    </section>
 
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_games") %></label>
-        <input type="text" id="profile-game-search" placeholder="<%= t("devise.registrations.edit.search_game") %>"
-               autocomplete="off"
-               style="width:100%; padding:0.5rem; border: 1px solid #e0e0e0; border-radius: 4px;">
-        <div id="profile-game-results"></div>
-        <div id="profile-game-chips" data-field="user[preferred_game_ids][]"
-             style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
-          <%# Always submit at least an empty value so games can be cleared. %>
-          <input type="hidden" name="user[preferred_game_ids][]" value="">
-          <% resource.preferred_games.each do |game| %>
-            <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: #eef; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
-              <input type="hidden" name="user[preferred_game_ids][]" value="<%= game.id %>">
-              <%= game.name %>
-              <button type="button" class="game-chip-remove" style="border: none; background: none; cursor: pointer; font-weight: bold;">×</button>
-            </span>
+    <%# ── Username ──────────────────────────────────────────────────────── %>
+    <section class="ps-profile__group">
+      <h2 class="ps-profile__section-label"><%= t("devise.registrations.edit.username_section") %></h2>
+
+      <div class="ps-profile__card ps-profile__field-card">
+        <div class="ps-profile__field">
+          <label for="user_username"><%= t("devise.registrations.edit.username_label") %></label>
+          <%= f.text_field :username, id: "user_username", class: "ps-profile__input", autofocus: true %>
+        </div>
+        <% if resource.username.present? %>
+          <i class="fa-solid fa-check ps-profile__check" aria-hidden="true"></i>
+        <% end %>
+      </div>
+    </section>
+
+    <%# ── Platform IDs (Gamertag, PSN ID, …) ────────────────────────────── %>
+    <section class="ps-profile__group">
+      <h2 class="ps-profile__section-label"><%= t("devise.registrations.edit.platform_ids") %></h2>
+
+      <div class="ps-profile__card">
+        <p class="ps-profile__card-hint"><%= t("devise.registrations.edit.platform_ids_hint") %></p>
+
+        <div class="ps-profile__platforms">
+          <% Post::PLATFORMS.each do |platform| %>
+            <% field_id = "user_platform_handle_#{PlatformsHelper::PLATFORM_HANDLE_SLUGS[platform]}" %>
+            <div class="ps-profile__platform">
+              <span class="ps-profile__platform-icon"><%= platform_icon(platform, size: 22) %></span>
+              <label class="ps-profile__platform-name" for="<%= field_id %>"><%= platform %></label>
+              <input type="text"
+                     id="<%= field_id %>"
+                     name="user[platform_handles][<%= platform %>]"
+                     value="<%= resource.platform_handle(platform) %>"
+                     placeholder="<%= platform_handle_label(platform) %>"
+                     autocomplete="off"
+                     class="ps-profile__input ps-profile__platform-input">
+            </div>
           <% end %>
         </div>
       </div>
+    </section>
 
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_platforms") %></label>
-        <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
+    <%# ── Filter preferences ────────────────────────────────────────────── %>
+    <section class="ps-profile__group" data-controller="preferences">
+      <div class="ps-profile__group-head">
+        <h2 class="ps-profile__section-label"><%= t("devise.registrations.edit.filter_preferences") %></h2>
+        <%= button_tag t("devise.registrations.edit.reset_filters"), type: "button",
+              data: { action: "preferences#reset" }, class: "ps-profile__reset" %>
       </div>
 
-      <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.5rem; font-weight: bold;"><%= t("devise.registrations.edit.preferred_types") %></label>
-        <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
+      <div class="ps-profile__card">
+        <p class="ps-profile__card-hint"><%= t("devise.registrations.edit.filter_hint") %></p>
+
+        <div class="ps-profile__field">
+          <label><%= t("devise.registrations.edit.preferred_games") %></label>
+          <input type="text" id="profile-game-search" placeholder="<%= t("devise.registrations.edit.search_game") %>"
+                 autocomplete="off" class="ps-profile__input">
+          <div id="profile-game-results"></div>
+          <div id="profile-game-chips" data-field="user[preferred_game_ids][]"
+               style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+            <%# Always submit at least an empty value so games can be cleared. %>
+            <input type="hidden" name="user[preferred_game_ids][]" value="">
+            <% resource.preferred_games.each do |game| %>
+              <span class="game-chip" style="display: inline-flex; align-items: center; gap: 0.3rem; background: #eef; border-radius: 12px; padding: 0.15rem 0.6rem; font-size: 0.85rem;">
+                <input type="hidden" name="user[preferred_game_ids][]" value="<%= game.id %>">
+                <%= game.name %>
+                <button type="button" class="game-chip-remove" style="border: none; background: none; cursor: pointer; font-weight: bold;">×</button>
+              </span>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="ps-profile__field">
+          <label><%= t("devise.registrations.edit.preferred_platforms") %></label>
+          <%= render "shared/multiselect", name: "user[preferred_platforms][]", options: Post::PLATFORMS, selected: resource.preferred_platforms, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
+        </div>
+
+        <div class="ps-profile__field">
+          <label><%= t("devise.registrations.edit.preferred_types") %></label>
+          <%= render "shared/multiselect", name: "user[preferred_post_types][]", options: Post::TYPES, selected: resource.preferred_post_types, placeholder: t("devise.registrations.edit.no_preference"), include_hidden: true %>
+        </div>
+
+        <div class="ps-profile__field">
+          <label><%= t("devise.registrations.edit.preferred_language") %></label>
+          <div class="ps-profile__input-wrap">
+            <%= render "shared/multiselect",
+                  name: "user[preferred_language]",
+                  options: Post::LANGUAGES,
+                  selected: resource.preferred_language,
+                  placeholder: t("devise.registrations.edit.no_preference"),
+                  single: true %>
+            <% if resource.preferred_language.present? %>
+              <i class="fa-solid fa-check ps-profile__check ps-profile__check--inline" aria-hidden="true"></i>
+            <% end %>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <%= f.input :preferred_language,
-                  collection: Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] },
-                  label_method: :first,
-                  value_method: :last,
-                  include_blank: t("devise.registrations.edit.no_preference"),
-                  label: t("devise.registrations.edit.preferred_language") %>
-    </fieldset>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, t("devise.registrations.edit.submit") %>
+  <div class="ps-profile__actions">
+    <%= f.button :submit, t("devise.registrations.edit.submit"), class: "btn ps-profile__submit" %>
   </div>
 <% end %>
-
-<div style="margin-top: 2rem;">
-  <%= link_to t("devise.registrations.edit.sign_out"), destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-secondary" %>
-</div>
-
-<%- if devise_mapping.omniauthable? %>
-  <div class="auth-divider" aria-hidden="true"></div>
-
-  <div class="auth-provider-actions">
-    <% resource_class.omniauth_providers.each do |provider| %>
-
-<% steam_identity = current_user.identities.find_by(provider: "steam") %>
-
-<% if steam_identity && provider.to_s == "steam" %>
-<p>Compte Steam de <%= steam_identity.nickname %></p>
-<a target="_blank" class="btn" href="https://steamcommunity.com/id/<%= steam_identity.nickname %>">
-Voir le compte Steam
-</a>
-      <% elsif provider.to_s == "steam" %>
-        <%= button_to user_steam_omniauth_authorize_path,
-              method: :post,
-              form: { data: { turbo: "false" } },
-              class: "auth-provider-form" do %>
-                <%= image_tag "https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png",
-                alt: "steam connection button", aria: { hidden: true }, class: "steam_logo" %>
-              <% end %>
-      <% end %>
-
-<% twitch_identity = current_user.identities.find_by(provider: "twitch") %>
-
-<% if twitch_identity && provider.to_s == "twitch" %>
-<p>Compte Twitch de <%= twitch_identity.nickname %></p>
-<a target="_blank" class="btn" href="https://www.twitch.tv/<%= twitch_identity.nickname %>">
-Voir le compte Twitch
-</a>
-      <% elsif provider.to_s == "twitch" %>
-        <%= button_to user_twitch_omniauth_authorize_path,
-              method: :post,
-              form: { data: { turbo: "false" } },
-              class: "auth-provider-form" do %>
-                <%= image_tag "twitch_emblem.png", alt: "Twitch connection button", aria: { hidden: true }, class: "twitch_logo" %>
-              <% end %>
-      <% end %>
-    <% end %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const errorFlash = document.getElementById("error-notification");
-
-    // On vérifie si la notification contient bien du texte (si une erreur existe)
-    if (errorFlash && errorFlash.innerText.trim() !== "") {
-      setTimeout(() => {
-        // Effet de transition pour une disparition fluide
-        errorFlash.style.transition = "opacity 0.5s ease";
-        errorFlash.style.opacity = "0";
-
-        // On retire complètement l'élément du DOM après l'effet
-        setTimeout(() => {
-          errorFlash.remove();
-        }, 500);
-      }, 5000); // 5000 ms = 5 secondes avant de commencer à disparaître
-    }
-  });
-</script>

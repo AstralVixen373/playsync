@@ -16,6 +16,7 @@ de:
 
   settings:
     title: "Einstellungen"
+    subtitle: "Verwalte dein Konto und deine Verbindungen"
     notices:
       email_updated: "E-Mail erfolgreich aktualisiert."
       password_updated: "Passwort erfolgreich aktualisiert."
@@ -38,11 +39,17 @@ de:
         warning: "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden."
         confirm: "Bist du sicher? Diese Aktion kann nicht rückgängig gemacht werden."
         submit: "Mein Konto löschen"
-    theme:
-      title: "Design"
-      description: "Wähle zwischen hellem und dunklem Modus."
-      light: "Hell"
-      dark: "Dunkel"
+    connections:
+      title: "Verbundene Konten"
+      description: "Verknüpfe deine Steam- und Twitch-Konten mit deinem PlaySync-Konto."
+      connected_as: "Verbunden als"
+      not_connected: "Nicht verbunden"
+      view_account: "Konto ansehen"
+      connect: "Verbinden"
+    sign_out:
+      title: "Abmelden"
+      description: "Melde dich von deinem PlaySync-Konto ab."
+      submit: "Abmelden"
     language:
       title: "Sprache"
       description: "Wähle deine bevorzugte Sprache."
@@ -218,6 +225,21 @@ de:
         min_password: "%{count} Zeichen minimum"
       edit:
         title: "Profil"
+        subtitle: "Verwalte deine Informationen und Präferenzen"
+        avatar_section: "Avatar"
+        avatar_hint: "Lege deinen Avatar fest. JPG, PNG oder GIF. Max. 2 MB."
+        choose_avatar: "Datei auswählen"
+        remove_avatar: "Entfernen"
+        username_section: "Benutzername"
+        username_label: "Benutzername"
+        platform_ids: "Plattform-IDs"
+        platform_ids_hint: "Gib deine Benutzernamen pro Plattform an, damit Mitspieler dich hinzufügen können."
+        platform_handles:
+          pc: "PC-Name (Steam, Battle.net…)"
+          ps5: "PSN-ID"
+          xbox: "Gamertag"
+          nintendo_switch: "Freundescode"
+          mobile: "Benutzername"
         filter_preferences: "Filterpräferenzen"
         filter_hint: "Diese füllen die Suche und das neue Beitragsformular vor. Leer lassen für keine Präferenz."
         reset_filters: "Filter zurücksetzen"
