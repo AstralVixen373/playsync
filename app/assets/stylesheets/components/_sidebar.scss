@@ -262,12 +262,38 @@ body {
 
 .ps-main {
   flex: 1;
+  min-width: 0;
   background: $brand-panel;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 2rem);
-  overflow: hidden;
+  // Fixed-height panel that scrolls internally, so the header band below can
+  // stay pinned with position: sticky (an overflow:hidden ancestor would break
+  // sticky). The sidebar keeps its own full height alongside.
+  height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+// Sticky header band — sits at the top of the scrolling panel and holds the
+// page title plus the page-specific header zone (filters / tabs).
+.ps-main__head {
+  position: sticky;
+  top: 0;
+  // Above the sidebar (z-index 100) so the create-announcement modal — which
+  // lives inside this band on /posts — can overlay the whole screen. The band
+  // never overlaps the sidebar horizontally, so the high z-index is harmless.
+  z-index: 110;
+  background: $brand-panel;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 8px 14px -10px rgba($purple-dark, 0.28);
+}
+
+.ps-main__head-zone {
+  padding: 1rem 1.5rem 1.25rem;
+
+  // The page header zone (.ps-find) supplies its own bottom spacing via this
+  // padding, so drop its standalone bottom margin here.
+  .ps-find { margin-bottom: 0; }
 }
 
 // Top bar: title (left) + logout (right)

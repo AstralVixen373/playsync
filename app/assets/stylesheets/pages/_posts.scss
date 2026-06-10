@@ -239,9 +239,10 @@
 // Game cover (ZONE 1 — identity). Stretches to the full card height so its
 // bottom edge lines up with the info column — keeps the card balanced.
 .ps-card__cover {
-  width: 92px;
-  min-width: 92px;
-  min-height: 124px;
+  width: 132px;
+  min-width: 132px;
+  min-height: 168px;
+  max-height: 220px;
   align-self: stretch;
   border-radius: 12px;
   background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
@@ -258,8 +259,8 @@
   overflow: hidden;
 
   @media (max-width: 480px) {
-    width: 72px;
-    min-width: 72px;
+    width: 96px;
+    min-width: 96px;
     font-size: 1.8rem;
   }
 
@@ -552,8 +553,10 @@
   &.is-open { opacity: 1; }
 }
 
-// Lock background scroll while the modal is open.
+// Lock background scroll while the modal is open. The scrolling element is now
+// the main panel (.ps-main), so lock that too — not just the body.
 body.ps-modal-open { overflow: hidden; }
+body.ps-modal-open .ps-main { overflow: hidden; }
 
 // White card holding the form. Reused by the standalone page (centred, no blur).
 .ps-modal__card {

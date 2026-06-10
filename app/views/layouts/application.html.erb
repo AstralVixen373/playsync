@@ -81,12 +81,23 @@
         </aside>
 
         <main class="ps-main">
-          <div class="ps-topbar">
-            <div class="ps-topbar__title">
-              <%= yield(:page_title) %>
+          <%# Sticky header band: page title + (optional) page-specific header
+              zone (filters/tabs) supplied via content_for(:page_header). Stays
+              pinned while the cards below scroll inside .ps-main. %>
+          <div class="ps-main__head">
+            <div class="ps-topbar">
+              <div class="ps-topbar__title">
+                <%= yield(:page_title) %>
+              </div>
+              <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-topbar__signout" do %>
+                <i class="fa-solid fa-right-from-bracket"></i> <%= t("nav.sign_out") %>
+              <% end %>
             </div>
-            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "ps-topbar__signout" do %>
-              <i class="fa-solid fa-right-from-bracket"></i> <%= t("nav.sign_out") %>
+
+            <% if content_for?(:page_header) %>
+              <div class="ps-main__head-zone">
+                <%= yield(:page_header) %>
+              </div>
             <% end %>
           </div>
 

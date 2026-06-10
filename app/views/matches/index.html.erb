@@ -1,111 +1,160 @@
 <% content_for :page_title do %>
   <h1><%= t("matches.index.title") %></h1>
-  <p>Your sessions in progress and finished</p>
+  <p><%= t("matches.index.subtitle") %></p>
 <% end %>
 
-<%= form_with url: my_matches_path, method: :get,
-              data: { controller: "form", action: "change->form#submit" } do |f| %>
-  <div style="display: flex; gap: 15px; align-items: flex-end;">
+<%# ── In-view partitioning ──────────────────────────────────────────────────
+    The controller hands us every match (owned + joined) as @posts plus the set
+    of favourited ids. Tabs are derived here — no extra queries, no controller
+    change. `tab` is read from the URL so the active tab survives Turbo reloads
+    (the controller safely ignores the unknown :tab param). %>
+<%
+  tab = params[:tab].to_s
+  tab = "current" unless %w[current favourites finished].include?(tab)
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :game_id, t("matches.index.choose_game"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
+  all_matches    = @posts.to_a
+  open_matches     = all_matches.select(&:open?)
+  finished_matches = all_matches.reject(&:open?)
+  favourite_matches = all_matches.select { |p| @favourited_ids.include?(p.id) }
 
-      <input
-        type="text"
-        id="filter-game-search"
-        placeholder="<%= t("matches.index.search_game") %>"
-        autocomplete="off"
-        style="width:100%; padding:0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;"
-      >
+  visible_matches = case tab
+                    when "favourites" then favourite_matches
+                    when "finished"   then finished_matches
+                    else                   open_matches
+                    end
 
-      <%= f.hidden_field :game_id, id: "filter-game-id" %>
+  # The game currently filtered on, resolved from already-loaded matches (no
+  # extra query) so the search pill can show it as a chip. Single value to match
+  # the controller's `params[:game_id]`.
+  selected_game = all_matches.map(&:game).find { |g| g.id.to_s == params[:game_id].to_s }
+%>
 
-      <div id="filter-game-results"></div>
-    </div>
+<% content_for :page_header do %>
+<div class="ps-find">
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :platform, t("matches.index.platform"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :platform, Post::PLATFORMS, { include_blank: t("matches.index.all"), selected: params[:platform] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
-    </div>
+  <%# ── Tabs ──────────────────────────────────────────────────────────────── %>
+  <nav class="ps-tabs">
+    <%= link_to my_matches_path(tab: "current"), class: "ps-tab #{'is-active' if tab == 'current'}" do %>
+      <%= t("matches.index.tabs.current") %>
+      <span class="ps-tab__count"><%= open_matches.size %></span>
+    <% end %>
+    <%= link_to my_matches_path(tab: "favourites"), class: "ps-tab #{'is-active' if tab == 'favourites'}" do %>
+      <i class="fa-solid fa-heart"></i> <%= t("matches.index.tabs.favourites") %>
+      <span class="ps-tab__count"><%= favourite_matches.size %></span>
+    <% end %>
+    <%= link_to my_matches_path(tab: "finished"), class: "ps-tab #{'is-active' if tab == 'finished'}" do %>
+      <%= t("matches.index.tabs.finished") %>
+      <span class="ps-tab__count"><%= finished_matches.size %></span>
+    <% end %>
+  </nav>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :post_type, t("matches.index.type"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :post_type, Post::TYPES.map { |type| [t("post_types.#{type}"), type] }, { include_blank: t("matches.index.all"), selected: params[:post_type] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
-    </div>
+  <%# ── Filters ───────────────────────────────────────────────────────────── %>
+  <%# Same components as the Annonces board (game-search pill + shared/multiselect
+      with its flag/platform icons), wired to the single-value params the matches
+      controller already reads (game_id / platform / post_type / language).
+      `single: true` makes each multiselect behave like a radio. Auto-submit on change. %>
+  <section class="ps-find__search">
+    <span class="ps-find__label">
+      <i class="fa-solid fa-magnifying-glass"></i> <%= t("matches.index.filter_label") %>
+    </span>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :language, t("matches.index.language"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.select :language, Post::LANGUAGES.map { |l| [t("post_languages.#{l}"), l] }, { include_blank: t("matches.index.all"), selected: params[:language] }, style: "width: 100%; padding: 0.5rem; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; color: #212529;" %>
-    </div>
+    <%= form_with url: my_matches_path, method: :get,
+                  data: { controller: "form", action: "change->form#submit" } do |f| %>
+      <%= hidden_field_tag :tab, tab %>
 
-    <div style="margin-bottom: 1rem;">
-      <%= f.label :favourites_only, t("matches.index.favourites_only"), style: "display: block; margin-bottom: 0.5rem; font-weight: bold;" %>
-      <%= f.check_box :favourites_only, { checked: params[:favourites_only] == "1", style: "width: 1.2rem; height: 1.2rem; cursor: pointer;" }, "1", "0" %>
-    </div>
+      <div class="ps-filter-bar">
 
-    <div style="margin-bottom: 1.5rem;">
-      <%= link_to t("matches.index.reset"), my_matches_path if params.values_at(:platform, :game, :post_type, :language, :favourites_only).any?(&:present?) %>
-    </div>
+        <%# Game search — same pill + autocomplete as the Annonces board. The
+            chips container's `data-field` is the single `game_id` the matches
+            controller filters on (Annonces uses the multi `game_ids[]`). %>
+        <div class="ps-filter-game-wrapper">
+          <input type="text" id="filter-game-search"
+                 placeholder="🎮 <%= t('matches.index.all_games') %>"
+                 autocomplete="off"
+                 class="ps-filter-pill-input">
+          <div id="filter-game-results"></div>
+        </div>
 
-  </div>
-<% end %>
+        <%= render "shared/multiselect", name: "platform",  options: Post::PLATFORMS, selected: params[:platform],  placeholder: "🖥️ #{t('matches.index.all_platforms')}",  single: true %>
+        <%= render "shared/multiselect", name: "post_type", options: Post::TYPES,     selected: params[:post_type], placeholder: "👥 #{t('matches.index.all_types')}",      single: true %>
+        <%= render "shared/multiselect", name: "language",  options: Post::LANGUAGES, selected: params[:language],   placeholder: "🌐 #{t('matches.index.all_languages')}",  single: true %>
 
-
-<% if @posts.any? %>
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
-    <% @posts.each do |post| %>
-      <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative;">
-        <% favourited = @favourited_ids.include?(post.id) %>
-        <% if favourited %>
-          <%= button_to post_favourite_path(post), method: :delete,
-                style: "position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; cursor: pointer; padding: 0; line-height: 1;",
-                title: t("matches.index.unfavourite") do %>
-            <i class="fa-solid fa-heart" style="color: #e74c3c; font-size: 1.2rem;"></i>
-          <% end %>
-        <% else %>
-          <%= button_to post_favourite_path(post), method: :post,
-                style: "position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none; cursor: pointer; padding: 0; line-height: 1;",
-                title: t("matches.index.favourite") do %>
-            <i class="fa-regular fa-heart" style="color: #aaa; font-size: 1.2rem;"></i>
-          <% end %>
+        <% if params.values_at(:game_id, :platform, :post_type, :language).any?(&:present?) %>
+          <%= link_to t("matches.index.reset"), my_matches_path(tab: tab), class: "ps-filter-reset" %>
         <% end %>
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; padding-right: 2rem;">
-          <h3 style="color: #333; margin: 0;"><%= post.title %></h3>
-          <% if post.open? %>
-            <span style="background: #d4edda; color: #155724; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">Open</span>
-          <% else %>
-            <span style="background: #e2e3e5; color: #383d41; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">Finished</span>
-          <% end %>
-        </div>
-        <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
-          <strong>Posted by:</strong> <%= post.user.username.presence || post.user.email %>
-          <% if post.user == current_user %>
-            <span style="background: #007bff; color: white; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 4px; margin-left: 0.4rem;"><%= t("matches.index.you") %></span>
-          <% end %>
-        </p>
+      </div>
 
-        <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-          <p><strong>🎮 <%= t("matches.index.game") %>:</strong> <%= post.game.name %></p>
-          <p><strong>🖥️ <%= t("matches.index.platform_label") %>:</strong> <%= platform_list(post.platforms) %></p>
-          <p><strong>🌐 <%= t("matches.index.language_label") %>:</strong> <%= post.language %></p>
-          <p><strong>👥 <%= t("matches.index.type_label") %>:</strong> <%= post.post_type %></p>
-        </div>
-
-        <%= link_to t("matches.index.view"), post_path(post), class: "btn", style: "width: 100%; text-align: center; display: block; margin-bottom: 0.5rem;" %>
-
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <% if post.user == current_user %>
-            <% if policy(post).edit? %>
-              <%= link_to t("posts.show.edit"), edit_post_path(id: post.id), class: "btn btn-secondary", style: "flex: 1; text-align: center;" %>
-            <% end %>
-            <% if policy(post).destroy? %>
-              <%= link_to t("posts.show.delete"), post_path(post), data: { turbo_method: :delete, turbo_confirm: t("posts.show.delete_confirm") }, class: "btn btn-danger", style: "flex: 1; text-align: center;" %>
-            <% end %>
-          <% elsif post.chat&.users&.include?(current_user) %>
-            <%= button_to t("posts.show.leave_match"), leave_post_path(post), method: :delete, class: "btn btn-secondary", style: "flex: 1;", data: { turbo_confirm: t("posts.show.leave_confirm") } %>
-          <% end %>
-        </div>
+      <%# Selected game chip — rendered server-side like the Annonces board so it
+          survives reloads; the JS picker auto-submits on add/remove. %>
+      <div id="filter-game-chips" data-field="game_id" class="ps-game-chips" style="margin-bottom: 0;">
+        <% if selected_game %>
+          <span class="ps-game-chip">
+            <%= hidden_field_tag "game_id", selected_game.id %>
+            <%= selected_game.name %>
+            <button type="button" class="game-chip-remove">×</button>
+          </span>
+        <% end %>
       </div>
     <% end %>
-  </div>
+  </section>
+
+</div>
 <% end %>
+
+<%# ── Board + favourites rail ────────────────────────────────────────────── %>
+<div class="ps-matches-layout">
+
+  <div class="ps-matches-main">
+    <% if visible_matches.any? %>
+      <div class="ps-cards-grid">
+        <% visible_matches.each do |post| %>
+          <%= render "matches/match",
+                post: post,
+                current_user: current_user,
+                favourited: @favourited_ids.include?(post.id) %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="ps-empty"><%= t("matches.index.empty.#{tab}") %></p>
+    <% end %>
+  </div>
+
+  <%# Right rail — compact favourites list. Reuses existing routes only. %>
+  <aside class="ps-fav-rail">
+    <h2 class="ps-fav-rail__title"><%= t("matches.index.favourites_sidebar") %></h2>
+
+    <% if favourite_matches.any? %>
+      <ul class="ps-fav-list">
+        <% favourite_matches.each do |post| %>
+          <li class="ps-fav-item">
+            <%= link_to post_path(post), class: "ps-fav-item__link" do %>
+              <span class="ps-fav-item__thumb <%= 'ps-fav-item__thumb--art' if post.game.cover? %>">
+                <% if post.game.cover? %>
+                  <%= image_tag post.game.cover_url, alt: post.game.name, loading: "lazy" %>
+                <% else %>
+                  <%= post.game.name.first.upcase %>
+                <% end %>
+              </span>
+              <span class="ps-fav-item__text">
+                <span class="ps-fav-item__name"><%= post.title %></span>
+                <span class="ps-fav-item__game"><%= post.game.name %></span>
+              </span>
+            <% end %>
+            <%= button_to post_favourite_path(post), method: :delete,
+                  class: "ps-fav-btn is-active", title: t("matches.index.unfavourite") do %>
+              <i class="fa-solid fa-heart"></i>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+
+      <% if tab != "favourites" %>
+        <%= link_to t("matches.index.see_all_favourites"),
+              my_matches_path(tab: "favourites"), class: "ps-fav-rail__more" %>
+      <% end %>
+    <% else %>
+      <p class="ps-fav-rail__empty"><%= t("matches.index.no_favourites") %></p>
+    <% end %>
+  </aside>
+
+</div>

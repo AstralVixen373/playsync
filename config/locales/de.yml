@@ -174,6 +174,23 @@ de:
       favourites_only: "Nur Favoriten"
       favourite: "Zu Favoriten hinzufügen"
       unfavourite: "Aus Favoriten entfernen"
+      subtitle: "Deine Sessions und Matches"
+      filter_label: "Matches filtern"
+      all_games: "Alle Spiele"
+      all_platforms: "Alle Plattformen"
+      all_types: "Alle Typen"
+      all_languages: "Alle Sprachen"
+      tabs:
+        current: "Laufend"
+        favourites: "Favoriten"
+        finished: "Beendet"
+      favourites_sidebar: "Meine Favoriten"
+      see_all_favourites: "Alle Favoriten ansehen"
+      no_favourites: "Noch keine Favoriten."
+      empty:
+        current: "Keine laufenden Matches."
+        favourites: "Noch keine Favoriten-Matches."
+        finished: "Noch keine beendeten Matches."
     show:
       back: "← Zurück zu meinen Matches"
       posted_by: "Gepostet von"

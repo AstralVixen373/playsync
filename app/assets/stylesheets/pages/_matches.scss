@@ -1,0 +1,331 @@
+// My Matches page — reuses the Annonces design system (.ps-card, .ps-badge,
+// .ps-chip, .ps-status, .ps-filter-bar …) and only adds what's specific to this
+// page: the tabs, the role-based action buttons, and the favourites rail.
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+.ps-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.ps-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.05rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #6b7280;
+  background: transparent;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  i { font-size: 0.82rem; }
+
+  &:hover {
+    color: $purple;
+    background: rgba($purple, 0.06);
+  }
+
+  &.is-active {
+    color: white;
+    background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
+    box-shadow: 0 4px 12px rgba($purple, 0.3);
+  }
+}
+
+.ps-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba($purple, 0.12);
+  color: $purple;
+
+  .ps-tab.is-active & {
+    background: rgba(white, 0.25);
+    color: white;
+  }
+}
+
+// The filter bar (game search pill + multiselects) inherits the Annonces
+// styling from pages/_posts.scss — no per-control overrides needed here.
+
+// ── Layout: board + favourites rail ───────────────────────────────────────────
+.ps-matches-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.25rem;
+  align-items: start;
+
+  @media (max-width: 1080px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ps-matches-main { min-width: 0; }
+
+// The board on this page is a single column inside the two-column layout, so the
+// cards stack vertically and stretch full width.
+.ps-matches-main .ps-cards-grid {
+  grid-template-columns: 1fr;
+}
+
+// ── Match card ─────────────────────────────────────────────────────────────
+// Full-width horizontal card: bigger cover (left) · info (centre, grows) ·
+// actions (right column). The right column soaks up the horizontal space so the
+// card no longer leaves a wide empty gap and the buttons stay a sensible width.
+.ps-card--match {
+  align-items: center;
+  gap: 1.25rem;
+
+  .ps-card__body { gap: 0.5rem; }
+
+  // Cover sizing is shared with the Annonces board (.ps-card__cover in
+  // pages/_posts.scss) so both pages show the game art at the same size.
+
+  // Narrow screens: let the action column drop below the cover + info.
+  @media (max-width: 720px) {
+    flex-wrap: wrap;
+  }
+}
+
+// Favourited match — warm highlight, echoing how the Annonces board tints FULL
+// cards. A tinted border + faint wash makes liked matches pop at a glance.
+.ps-card--favourite {
+  border-color: rgba($red, 0.4);
+  background: linear-gradient(135deg, #ffffff 0%, rgba($red, 0.05) 100%);
+
+  &:hover {
+    border-color: rgba($red, 0.55);
+    box-shadow: 0 6px 22px rgba($red, 0.14);
+  }
+}
+
+// Right-hand action column.
+.ps-match-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 230px;
+  flex-shrink: 0;
+
+  form { margin: 0; }
+
+  @media (max-width: 720px) {
+    width: 100%;
+  }
+}
+
+.ps-match-aside__row {
+  display: flex;
+  gap: 0.5rem;
+
+  .ps-match-btn { flex: 1; }
+}
+
+// Favourite heart, pinned to the card's top-right corner.
+.ps-card__fav {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+
+  form { margin: 0; }
+}
+
+.ps-fav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(white, 0.85);
+  color: #c2c6cf;
+  cursor: pointer;
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: color 0.15s, background 0.15s, transform 0.1s;
+
+  &:hover  { color: $red; background: white; transform: scale(1.08); }
+  &.is-active { color: $red; }
+}
+
+.ps-match-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  border-radius: 11px;
+  border: 1.5px solid transparent;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+
+  i { font-size: 0.78rem; }
+
+  &--primary {
+    background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba($purple, 0.3);
+
+    &:hover { color: white; box-shadow: 0 6px 16px rgba($purple, 0.4); transform: translateY(-1px); }
+  }
+
+  &--secondary {
+    background: #f3f4f6;
+    color: #4b5563;
+
+    &:hover { background: #e5e7eb; color: #1a1a2e; }
+  }
+
+  &--danger {
+    background: rgba($red, 0.08);
+    color: $red;
+
+    &:hover { background: rgba($red, 0.16); color: $red; }
+  }
+}
+
+// ── Favourites rail ────────────────────────────────────────────────────────────
+.ps-fav-rail {
+  background: white;
+  border: 1.5px solid #eceaf3;
+  border-radius: 16px;
+  padding: 1.1rem 1.15rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+.ps-fav-rail__title {
+  font-family: $headers-font;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8b8ba7;
+  margin: 0 0 0.9rem;
+}
+
+.ps-fav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ps-fav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 10px;
+  transition: background 0.12s;
+
+  &:hover { background: rgba($purple, 0.05); }
+
+  form { margin: 0; }
+}
+
+.ps-fav-item__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.45rem 0.5rem;
+  text-decoration: none;
+}
+
+.ps-fav-item__thumb {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
+  color: white;
+  font-family: $headers-font;
+  font-size: 1rem;
+  font-weight: 800;
+  overflow: hidden;
+
+  &--art { background: #1a1a2e; }
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+}
+
+.ps-fav-item__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ps-fav-item__name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ps-fav-item__game {
+  font-size: 0.74rem;
+  color: #9ca3af;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// The rail's heart is smaller and untinted by default (sits on white).
+.ps-fav-item .ps-fav-btn {
+  width: 30px;
+  height: 30px;
+  font-size: 0.9rem;
+  background: transparent;
+  flex-shrink: 0;
+
+  &:hover { background: rgba($red, 0.08); }
+}
+
+.ps-fav-rail__more {
+  display: block;
+  margin-top: 0.85rem;
+  padding: 0.55rem;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: $purple;
+  background: rgba($purple, 0.06);
+  transition: background 0.15s;
+
+  &:hover { background: rgba($purple, 0.12); }
+}
+
+.ps-fav-rail__empty {
+  font-size: 0.83rem;
+  color: #b6bac3;
+  text-align: center;
+  padding: 0.5rem 0;
+}
