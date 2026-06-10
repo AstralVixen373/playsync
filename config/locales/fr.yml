@@ -16,6 +16,7 @@ fr:
 
   settings:
     title: "Paramètres"
+    subtitle: "Gérez votre compte et vos connexions"
     notices:
       email_updated: "E-mail mis à jour avec succès."
       password_updated: "Mot de passe mis à jour avec succès."
@@ -38,11 +39,17 @@ fr:
         warning: "Cette action est permanente et ne peut pas être annulée."
         confirm: "Êtes-vous sûr ? Cette action est irréversible."
         submit: "Supprimer mon compte"
-    theme:
-      title: "Thème"
-      description: "Choisissez entre le mode clair et le mode sombre."
-      light: "Clair"
-      dark: "Sombre"
+    connections:
+      title: "Comptes connectés"
+      description: "Liez vos comptes Steam et Twitch à votre compte PlaySync."
+      connected_as: "Connecté en tant que"
+      not_connected: "Non connecté"
+      view_account: "Voir le compte"
+      connect: "Connecter"
+    sign_out:
+      title: "Déconnexion"
+      description: "Déconnectez-vous de votre compte PlaySync."
+      submit: "Déconnexion"
     language:
       title: "Langue"
       description: "Choisissez votre langue préférée."
@@ -218,6 +225,21 @@ fr:
         min_password: "%{count} caractères minimum"
       edit:
         title: "Profil"
+        subtitle: "Gérez vos informations et préférences"
+        avatar_section: "Avatar"
+        avatar_hint: "Définissez votre avatar. JPG, PNG ou GIF. 2 Mo max."
+        choose_avatar: "Choisir un fichier"
+        remove_avatar: "Supprimer"
+        username_section: "Username"
+        username_label: "Nom d'utilisateur"
+        platform_ids: "Identifiants de plateforme"
+        platform_ids_hint: "Renseignez vos pseudos par plateforme pour que vos coéquipiers puissent vous ajouter."
+        platform_handles:
+          pc: "Pseudo PC (Steam, Battle.net…)"
+          ps5: "PSN ID"
+          xbox: "Gamertag"
+          nintendo_switch: "Code ami"
+          mobile: "Pseudo"
         filter_preferences: "Préférences de filtre"
         filter_hint: "Ces préférences pré-remplissent la recherche et le formulaire de nouvelle annonce. Laissez vide pour ne pas avoir de préférence."
         reset_filters: "Réinitialiser les filtres"

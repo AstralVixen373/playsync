@@ -19,4 +19,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render :edit, status: :unprocessable_entity
     end
   end
+
+  protected
+
+  # Stay on the profile page after a successful update instead of bouncing to
+  # the app root (Devise's default).
+  def after_update_path_for(_resource)
+    edit_user_registration_path
+  end
 end

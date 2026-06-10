@@ -14,6 +14,23 @@ module PlatformsHelper
     "Mobile" => "fa-solid fa-mobile-screen-button"
   }.freeze
 
+  # i18n-safe slug for each platform, used to key the per-platform handle
+  # labels (Gamertag, PSN ID …) without spaces in the translation keys.
+  PLATFORM_HANDLE_SLUGS = {
+    "PC"              => "pc",
+    "PS5"             => "ps5",
+    "Xbox"            => "xbox",
+    "Nintendo Switch" => "nintendo_switch",
+    "Mobile"          => "mobile"
+  }.freeze
+
+  # The localized identifier label for a platform's handle field (e.g. "Xbox"
+  # => "Gamertag"). Falls back to the platform name.
+  def platform_handle_label(platform)
+    slug = PLATFORM_HANDLE_SLUGS[platform]
+    slug ? t("devise.registrations.edit.platform_handles.#{slug}") : platform
+  end
+
   # Returns the icon markup for a platform (a brand <img> or a Font Awesome
   # <i>), sized to `size` px, or nil when the name isn't a known platform.
   def platform_icon(name, size: 16)

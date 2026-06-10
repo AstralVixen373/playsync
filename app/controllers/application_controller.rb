@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :avatar])
 
     # For additional in app/views/devise/registrations/edit.html.erb
-    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :avatar, :preferred_language, { preferred_game_ids: [], preferred_platforms: [], preferred_post_types: [] }])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :avatar, :remove_avatar, :preferred_language, { preferred_game_ids: [], preferred_platforms: [], preferred_post_types: [], platform_handles: Post::PLATFORMS }])
   end
 
   private

@@ -1,101 +1,267 @@
-.settings-page h2 {
-  font-size: 1.75rem;
-  margin-bottom: 2rem;
-  color: #212529;
+// Settings page — same card vocabulary as the Profile page: light lavender
+// panel, white rounded cards, purple accents, with dedicated styling for the
+// connected-account (Steam / Twitch) rows.
+
+.ps-settings {
+  max-width: 1280px;
 }
 
-.settings-section {
+// Two-column grid of labelled cards. Cells in the same row stretch to equal
+// height so the cards line up top and bottom; collapses to one column on
+// narrow screens.
+.ps-settings__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1.5rem 1.75rem;
+}
+
+.ps-settings__group {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// A section that always spans the full width of the grid (e.g. delete account).
+.ps-settings__group--full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 880px) {
+  .ps-settings__grid { grid-template-columns: 1fr; }
+}
+
+// Small uppercase label heading each section (ACCOUNT, CONNECTED ACCOUNTS …)
+.ps-settings__section-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #6b6b8a;
+  margin: 0 0 0.6rem 0.15rem;
+  font-family: $headers-font;
+
+  &--danger { color: $red; }
+}
+
+.ps-settings__card {
+  flex: 1;
   background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+  border: 1px solid #e7e7f2;
+  border-radius: 18px;
   padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  max-width: 600px;
+  box-shadow: 0 6px 18px -12px rgba($purple-dark, 0.4);
 
-  h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: 1rem;
+  & + & { margin-top: 1rem; }
+
+  &--danger {
+    border-color: rgba($red, 0.25);
+  }
+
+  &--row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 }
 
-.settings-subsection {
-  h4 {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: 0.5rem;
-  }
+.ps-settings__card-title {
+  font-family: $headers-font;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #1a1a2e;
+  margin: 0 0 0.4rem;
 }
 
-.settings-description {
-  color: rgba(33, 37, 41, .75);
-  font-size: 0.9rem;
+.ps-settings__hint {
+  font-size: 0.88rem;
+  color: #8b8ba7;
+  margin: 0 0 1.1rem;
+  max-width: 60ch;
+
+  strong { color: #4b4b63; }
+}
+
+// ── Forms ─────────────────────────────────────────────────────────────────────
+.ps-settings__field {
   margin-bottom: 1rem;
-}
-
-.settings-divider {
-  border: none;
-  border-top: 1px solid #dee2e6;
-  margin: 1.5rem 0;
-}
-
-.settings-field {
-  margin-bottom: 0.75rem;
 
   label {
     display: block;
     font-size: 0.85rem;
-    color: rgba(33, 37, 41, .75);
-    margin-bottom: 0.25rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 0.4rem;
   }
 }
 
-.settings-input {
+.ps-settings__input {
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid #e7e7f2;
+  border-radius: 12px;
   background: #fff;
-  color: #212529;
+  font-size: 0.95rem;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
 
   &:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+    border-color: $purple;
+    box-shadow: 0 0 0 3px rgba($purple, 0.12);
   }
 }
 
-.settings-placeholder {
-  color: rgba(33, 37, 41, .5);
-  font-size: 0.85rem;
-  font-style: italic;
+.ps-settings__submit {
+  margin-top: 0.25rem;
 }
 
-.theme-options {
+// ── Connected accounts (Steam / Twitch) ────────────────────────────────────────
+.ps-settings__provider {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ececf4;
+  border-radius: 14px;
+  background: #fcfcff;
+
+  & + & { margin-top: 0.75rem; }
 }
 
-.theme-option {
-  padding: 0.5rem 1.25rem;
-  border: 2px solid #dee2e6;
-  border-radius: 6px;
-  background: transparent;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: #212529;
-  transition: border-color 0.15s, background 0.15s;
+.ps-settings__provider-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+// Brand colours for the logo badge
+.ps-settings__provider--steam .ps-settings__provider-logo {
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+}
+.ps-settings__provider--twitch .ps-settings__provider-logo {
+  background: linear-gradient(135deg, #9146ff 0%, #772ce8 100%);
+}
+
+.ps-settings__provider-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.ps-settings__provider-name {
+  font-family: $headers-font;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #1a1a2e;
+}
+
+.ps-settings__provider-status {
+  font-size: 0.82rem;
+  color: #8b8ba7;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  strong { color: #4b4b63; font-weight: 700; }
+
+  &.is-connected { color: #4b4b63; }
+  &.is-connected i { color: $green; }
+}
+
+.ps-settings__provider-action { flex-shrink: 0; }
+
+// "View account" — subtle outline link
+.ps-settings__provider-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  border: 1.5px solid #e0e0ec;
+  border-radius: 10px;
+  background: #fff;
+  color: #4b4b63;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 
   &:hover {
-    border-color: #007bff;
+    border-color: #cfcfe0;
+    background: #faf9ff;
+    color: #1a1a2e;
   }
+}
 
-  &--active {
-    border-color: #007bff;
-    background: rgba(0, 123, 255, 0.08);
-    font-weight: 600;
+// "Connect" — brand-coloured call to action
+.ps-settings__connect {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 0.15s, transform 0.15s;
+
+  &:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  &--steam  { background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%); }
+  &--twitch { background: linear-gradient(135deg, #9146ff 0%, #772ce8 100%); }
+}
+
+// ── Language pills (with flags) ─────────────────────────────────────────────────
+// Center the hint + pills vertically so a short card stretched to match its
+// taller neighbour stays balanced instead of leaving a gap at the bottom.
+.ps-settings__card:has(.ps-settings__langs) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ps-settings__langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.ps-settings__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  border: 2px solid #e7e7f2;
+  border-radius: 12px;
+  background: #fff;
+  color: #4b4b63;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+
+  .flag-icon { border-radius: 3px; }
+
+  &:hover { border-color: rgba($purple, 0.5); }
+
+  &.is-active {
+    border-color: $purple;
+    background: rgba($purple, 0.08);
+    color: #1a1a2e;
   }
 }

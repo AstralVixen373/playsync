@@ -21,7 +21,7 @@
   color: #6b7280;
   background: transparent;
   border: 1.5px solid transparent;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, filter 0.15s;
 
   i { font-size: 0.82rem; }
 
@@ -32,8 +32,16 @@
 
   &.is-active {
     color: white;
-    background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
-    box-shadow: 0 4px 12px rgba($purple, 0.3);
+    background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 6px 16px rgba($purple, 0.4), 0 2px 5px rgba($purple-dark, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+    &:hover {
+      color: white;
+      background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+      filter: brightness(1.05);
+      box-shadow: 0 10px 22px rgba($purple, 0.5), 0 3px 8px rgba($purple-dark, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
   }
 }
 
@@ -176,16 +184,24 @@
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.1s;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.15s, filter 0.15s;
 
   i { font-size: 0.78rem; }
 
   &--primary {
-    background: linear-gradient(135deg, $purple 0%, $purple-mid 100%);
+    background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+    border-color: rgba(255, 255, 255, 0.18);
     color: white;
-    box-shadow: 0 4px 12px rgba($purple, 0.3);
+    box-shadow: 0 6px 16px rgba($purple, 0.4), 0 2px 5px rgba($purple-dark, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 
-    &:hover { color: white; box-shadow: 0 6px 16px rgba($purple, 0.4); transform: translateY(-1px); }
+    &:hover {
+      color: white;
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 10px 22px rgba($purple, 0.5), 0 3px 8px rgba($purple-dark, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    &:active { transform: translateY(0); filter: brightness(0.98); }
   }
 
   &--secondary {

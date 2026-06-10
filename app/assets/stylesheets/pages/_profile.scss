@@ -1,0 +1,401 @@
+// Profile page (devise/registrations/edit) — matches the PlaySync board/cards
+// look used on Posts & My Matches: light lavender panel, white rounded cards,
+// purple accents.
+
+.ps-profile {
+  max-width: 1280px;
+
+  // Reset simple_form's default error wrapper spacing inside the page.
+  #error-notification:empty { display: none; }
+}
+
+// Two-column grid of labelled cards. Cells in the same row stretch to equal
+// height so the cards line up perfectly top and bottom; collapses to one
+// column on narrow screens.
+.ps-profile__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1.5rem 1.75rem;
+}
+
+.ps-profile__group {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+// A section that always spans the full width of the grid.
+.ps-profile__group--full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 880px) {
+  .ps-profile__grid { grid-template-columns: 1fr; }
+}
+
+// Header zone above a card. Whether it's a plain label or a label + action
+// (e.g. "Reset filters"), it keeps the SAME height with its text bottom-aligned,
+// so every card below starts at exactly the same Y across the grid row.
+$ps-profile-head-height: 1.4rem;
+
+// Header row above a card: label on the left, optional action on the right.
+.ps-profile__group-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: $ps-profile-head-height;
+  margin-bottom: 0.6rem;
+
+  .ps-profile__section-label {
+    min-height: 0;
+    margin: 0;
+  }
+}
+
+// Small uppercase label heading each section (AVATAR, USERNAME …)
+.ps-profile__section-label {
+  display: flex;
+  align-items: flex-end;
+  min-height: $ps-profile-head-height;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #6b6b8a;
+  margin: 0 0 0.6rem 0.15rem;
+  font-family: $headers-font;
+}
+
+// Shared white card surface. Grows to fill its grid cell so paired cards in a
+// row end up the same height.
+.ps-profile__card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e7e7f2;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 18px -12px rgba($purple-dark, 0.4);
+}
+
+// ── Avatar card ──────────────────────────────────────────────────────────────
+.ps-profile__avatar-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.ps-profile__avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+}
+
+.ps-profile__avatar-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: $purple-light;
+  color: $purple;
+  font-family: $headers-font;
+  font-weight: 800;
+  font-size: 2.2rem;
+  text-transform: uppercase;
+  box-shadow: 0 2px 10px -4px rgba($purple-dark, 0.45);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.ps-profile__avatar-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: linear-gradient(135deg, lighten($purple, 6%) 0%, $purple-mid 100%);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba($purple, 0.45);
+  }
+}
+
+.ps-profile__avatar-info {
+  min-width: 0;
+
+  h3 {
+    font-family: $headers-font;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #1a1a2e;
+    margin: 0 0 0.2rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #8b8ba7;
+    margin: 0 0 0.9rem;
+  }
+}
+
+.ps-profile__avatar-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+// Visually-hidden native file input (driven by the avatar Stimulus controller)
+.ps-profile__file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+// Secondary "outline" button (e.g. Remove avatar)
+.ps-profile__btn-outline {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  color: #4b4b63;
+  border: 1.5px solid #e0e0ec;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+
+  &:hover {
+    border-color: #cfcfe0;
+    background: #faf9ff;
+    color: #1a1a2e;
+  }
+}
+
+// ── Fields (username + preferences) ───────────────────────────────────────────
+.ps-profile__field {
+  margin-bottom: 1.1rem;
+
+  &:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 0.4rem;
+  }
+}
+
+.ps-profile__input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid #e7e7f2;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.95rem;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &::placeholder { color: #aaa; }
+
+  &:focus {
+    border-color: $purple;
+    box-shadow: 0 0 0 3px rgba($purple, 0.12);
+  }
+}
+
+.ps-profile__input-wrap {
+  position: relative;
+}
+
+// Username card: a single field laid out as a row with a validation check.
+.ps-profile__field-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .ps-profile__field {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  // Borderless inset input — the card itself is the visible boundary.
+  .ps-profile__input {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+
+    &:focus { box-shadow: none; }
+  }
+}
+
+// Green "valid" check
+.ps-profile__check {
+  color: $green;
+  font-size: 1rem;
+  flex-shrink: 0;
+
+  &--inline {
+    position: absolute;
+    top: 50%;
+    right: 0.9rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}
+
+// ── Platform IDs ───────────────────────────────────────────────────────────────
+// Let the platform card become a flex column so its rows can spread to fill the
+// extra height when the card is stretched to match its taller neighbour.
+.ps-profile__card:has(.ps-profile__platforms) {
+  display: flex;
+  flex-direction: column;
+}
+
+.ps-profile__platforms {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ps-profile__platform {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.ps-profile__platform-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: $purple-light;
+  color: $purple;
+
+  .platform-icon { color: $purple; }
+}
+
+.ps-profile__platform-name {
+  flex-shrink: 0;
+  width: 120px;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.ps-profile__platform-input {
+  flex: 1;
+}
+
+@media (max-width: 540px) {
+  .ps-profile__platform {
+    flex-wrap: wrap;
+  }
+  .ps-profile__platform-name { width: auto; }
+  .ps-profile__platform-input { flex-basis: 100%; }
+}
+
+// ── Card hint (intro line inside a card) ───────────────────────────────────────
+.ps-profile__card-hint {
+  font-size: 0.85rem;
+  color: #8b8ba7;
+  margin: 0 0 1.25rem;
+}
+
+.ps-profile__reset {
+  border: none;
+  background: none;
+  padding: 0;
+  color: $purple;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover { color: $purple-mid; text-decoration: underline; }
+}
+
+// Profile game-search autocomplete dropdown (floats over the card)
+#profile-game-results {
+  position: absolute;
+  z-index: 30;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+
+  &:empty { display: none; }
+
+  div {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.85rem;
+
+    &:hover { background: #f3f4f6; }
+  }
+}
+
+.ps-profile__field:has(#profile-game-search) {
+  position: relative;
+}
+
+// ── Submit (sticky action bar at the bottom of the scroll panel) ───────────────
+.ps-profile__actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: flex-start;
+  // Bleed into .ps-main__inner's bottom padding so the bar sits flush with the
+  // panel's bottom edge when scrolled all the way down.
+  margin: 1.75rem 0 -2rem;
+  padding: 1rem 0;
+  background: rgba(225, 228, 252, 0.9); // $brand-panel @ 90%
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top: 1px solid rgba($purple-dark, 0.12);
+}
+
+.ps-profile__submit {
+  padding: 0.7rem 1.5rem;
+  font-size: 0.95rem;
+  box-shadow: 0 6px 16px -6px rgba($purple, 0.5);
+}

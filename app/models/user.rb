@@ -16,6 +16,11 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
+  # Virtual flag set by the profile form's "Remove" avatar button. When "1" and
+  # no new file is being uploaded, the existing avatar is purged on save.
+  attr_accessor :remove_avatar
+  before_save :purge_avatar_if_requested
+
   # Saved filter preferences pre-fill the search and the new-post form.
   # Multi-selects submit a blank entry, so strip blanks before saving.
   before_validation :clean_filter_preferences
@@ -38,11 +43,31 @@ class User < ApplicationRecord
     Game.where(id: preferred_game_ids)
   end
 
+  # The user's hand-entered username/ID for a given platform (e.g. Xbox
+  # Gamertag, PSN ID), or nil when not set.
+  def platform_handle(platform)
+    (platform_handles || {})[platform].presence
+  end
+
   private
+
+  def purge_avatar_if_requested
+    return unless ActiveModel::Type::Boolean.new.cast(remove_avatar)
+    # A freshly uploaded file (attachment_changes) takes precedence over removal.
+    return if attachment_changes.key?("avatar")
+
+    avatar.purge_later if avatar.attached?
+  end
 
   def clean_filter_preferences
     self.preferred_platforms = Array(preferred_platforms).reject(&:blank?)
     self.preferred_post_types = Array(preferred_post_types).reject(&:blank?)
     self.preferred_game_ids = Array(preferred_game_ids).reject(&:blank?).map(&:to_i)
+
+    # Keep only known platforms, trim whitespace, drop blanks.
+    self.platform_handles = (platform_handles || {})
+      .slice(*Post::PLATFORMS)
+      .transform_values { |v| v.to_s.strip }
+      .reject { |_, v| v.blank? }
   end
 end

@@ -16,6 +16,7 @@ es:
 
   settings:
     title: "Ajustes"
+    subtitle: "Gestiona tu cuenta y tus conexiones"
     notices:
       email_updated: "Correo electrónico actualizado con éxito."
       password_updated: "Contraseña actualizada con éxito."
@@ -38,11 +39,17 @@ es:
         warning: "Esta acción es permanente y no se puede deshacer."
         confirm: "¿Estás seguro? Esta acción no se puede deshacer."
         submit: "Eliminar mi cuenta"
-    theme:
-      title: "Tema"
-      description: "Elige entre el modo claro y el modo oscuro."
-      light: "Claro"
-      dark: "Oscuro"
+    connections:
+      title: "Cuentas conectadas"
+      description: "Vincula tus cuentas de Steam y Twitch a tu cuenta de PlaySync."
+      connected_as: "Conectado como"
+      not_connected: "No conectado"
+      view_account: "Ver la cuenta"
+      connect: "Conectar"
+    sign_out:
+      title: "Cerrar sesión"
+      description: "Cierra sesión en tu cuenta de PlaySync."
+      submit: "Cerrar sesión"
     language:
       title: "Idioma"
       description: "Elige tu idioma preferido."
@@ -218,6 +225,21 @@ es:
         min_password: "%{count} caracteres mínimo"
       edit:
         title: "Perfil"
+        subtitle: "Gestiona tu información y preferencias"
+        avatar_section: "Avatar"
+        avatar_hint: "Define tu avatar. JPG, PNG o GIF. 2 MB máx."
+        choose_avatar: "Elegir un archivo"
+        remove_avatar: "Eliminar"
+        username_section: "Nombre de usuario"
+        username_label: "Nombre de usuario"
+        platform_ids: "Identificadores de plataforma"
+        platform_ids_hint: "Indica tus nombres de usuario por plataforma para que tus compañeros puedan añadirte."
+        platform_handles:
+          pc: "Usuario PC (Steam, Battle.net…)"
+          ps5: "PSN ID"
+          xbox: "Gamertag"
+          nintendo_switch: "Código de amigo"
+          mobile: "Usuario"
         filter_preferences: "Preferencias de filtro"
         filter_hint: "Estas rellenan previamente la búsqueda y el formulario de nueva publicación. Deja vacío para no tener preferencia."
         reset_filters: "Restablecer filtros"

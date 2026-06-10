@@ -68,7 +68,29 @@
       "Read(//c/Users/Kapp/.rbenv/shims/**)",
       "Bash(~/.rbenv/bin/rbenv version *)",
       "Read(//c/Users/Kapp/**)",
-      "Bash(bash -lc 'ruby -ryaml -e \"%w[en fr es de].each{|l| YAML.load_file\\(%\\(config/locales/#{l}.yml\\)\\); puts %\\(#{l} OK\\)}\"')"
+      "Bash(bash -lc 'ruby -ryaml -e \"%w[en fr es de].each{|l| YAML.load_file\\(%\\(config/locales/#{l}.yml\\)\\); puts %\\(#{l} OK\\)}\"')",
+      "Bash(cd /home/kapp/code/MonsieurKapp/playsync)",
+      "Bash(ls app/views/settings)",
+      "Bash(ls app/views/devise)",
+      "Bash(ls app/views/users)",
+      "Bash(sed -n '1,120p' config/locales/fr.yml)",
+      "Bash(sed -n '214,245p' config/locales/fr.yml)",
+      "Bash(ls app/assets/stylesheets/)",
+      "Bash(grep -rln \"settings-section\\\\|settings-subsection\\\\|steam_logo\\\\|auth-provider\" app/assets/stylesheets/)",
+      "Bash(wsl -d ubuntu -- bash -lc 'cd /home/kapp/code/MonsieurKapp/playsync && for f in fr en es de; do ruby -ryaml -e \"YAML.load_file\\('\\\\''config/locales/$f.yml'\\\\''\\); puts '\\\\''$f OK'\\\\''\" 2>&1; done')",
+      "Bash(sed -n '1,80p' app/assets/stylesheets/pages/_posts.scss)",
+      "Bash(sed -n '300,380p' app/assets/stylesheets/components/_sidebar.scss)",
+      "Bash(cat app/javascript/controllers/preferences_controller.js)",
+      "Bash(cat app/controllers/users/registrations_controller.rb)",
+      "Bash(sed -n '263,300p' app/assets/stylesheets/components/_sidebar.scss)",
+      "Bash(cat app/assets/config/manifest.js)",
+      "Bash(ls app/assets/builds)",
+      "Bash(ls app/assets/images/flags/)",
+      "Bash(ls app/assets/images/emojis/globe.png)",
+      "Bash(ls app/assets/images/platforms/)",
+      "Bash(sed -n '1,10p' app/models/post.rb)",
+      "Bash(rm -f tmp/e2e_profile.rb)",
+      "Bash(grep -rn \"class:.*btn\\\\|class=\\\\\"btn\\\\|\\\\\"btn\" app/views/matches/)"
     ]
   }
 }
