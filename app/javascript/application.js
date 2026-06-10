@@ -5,6 +5,7 @@ import "controllers"
 import "@popperjs/core"
 import "bootstrap"
 import "./game_search"
+import "./modal"
 
 
 // Auto-dismiss the bottom-right flash popups (and form-error blocks) after 3s.
