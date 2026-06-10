@@ -49,6 +49,12 @@ class PostsController < ApplicationController
       # The creator is the first member of the match (counts as 1/capacity).
       chat = @post.create_chat!
       chat.users << current_user
+      Turbo::StreamsChannel.broadcast_prepend_to(
+        "posts",
+        target: "posts_container",
+        partial: "posts/post",
+        locals: { post: @post, current_user: nil }
+      )
       redirect_to post_path(@post), notice: t("posts.notices.created", locale: :en)
     else
       render :new, status: :unprocessable_entity
@@ -159,13 +165,13 @@ class PostsController < ApplicationController
     broadcast_post_changes(@post)
 
     Turbo::StreamsChannel.broadcast_update_to(
-      @post,
+      target,
       target: "post_footer",
       partial: "posts/kicked_out"
     )
 
     Turbo::StreamsChannel.broadcast_update_to(
-      @post,
+      target,
       target: "chat_container",
       partial: "posts/kicked_out"
     )
@@ -192,17 +198,36 @@ class PostsController < ApplicationController
   # per viewer: the public list is rendered with current_user: nil (everyone
   # sees the generic "Join" card). The acting user is redirected and gets a
   # fresh, personalised page anyway.
-  def broadcast_post_changes(post)
+  #
+  def broadcast_posts
     # Re-render the whole public list: every open post stays (full/expired ones
     # keep their styling), counters stay fresh — without juggling append/remove/
     # ordering.
+    #
+    posts = policy_scope(Post).open.where("? <> ALL(kicked_user_ids)", current_user.id).includes(:user, :game).order(created_at: :desc)
+
+    committed = params[:committed].present?
+    @selected_game_ids   = committed ? clean_filter(params[:game_ids])   : current_user.preferred_game_ids
+    @selected_platforms  = committed ? clean_filter(params[:platforms])  : current_user.preferred_platforms
+    @selected_post_types = committed ? clean_filter(params[:post_types]) : current_user.preferred_post_types
+    @selected_language   = committed ? params[:language].presence        : current_user.preferred_language
+
+    posts = posts.with_games(@selected_game_ids)
+                   .with_platforms(@selected_platforms)
+                   .with_types(@selected_post_types)
+                   .for_language(@selected_language)
+
+
     Turbo::StreamsChannel.broadcast_replace_to(
       "posts",
       target: "posts_list",
       partial: "posts/list",
-      locals: { posts: Post.open.includes(:user).order(created_at: :desc), current_user: nil }
+      locals: { posts: posts, current_user: nil }
     )
+  end
 
+  def broadcast_post_changes(post)
+    broadcast_posts
     # Refresh the slot counter on the post page for everyone watching it.
     Turbo::StreamsChannel.broadcast_replace_to(
       post,
