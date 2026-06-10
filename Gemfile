@@ -74,6 +74,7 @@ end
 
 gem "devise", "~> 5.0"
 gem 'omniauth-steam'
+gem 'omniauth-twitch'
 gem "omniauth-rails_csrf_protection"
 gem "omniauth"
 gem "pundit", "~> 2.5"
