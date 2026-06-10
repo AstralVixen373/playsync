@@ -8,7 +8,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def steam = link_identity
 
-  # def twitch = link_identity
+  def twitch = link_identity
 
   private
 

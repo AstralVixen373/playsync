@@ -84,7 +84,6 @@
 
   <div class="auth-provider-actions">
     <% resource_class.omniauth_providers.each do |provider| %>
-      <% identity = current_user.identities %>
 
       <% if current_user.identities.exists?(provider: "steam") && provider.to_s == "steam" %>
         <p>Compte Steam de <%= current_user.identities[0][:nickname] %></p>
