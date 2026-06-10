@@ -1,6 +1,6 @@
 <div id="posts_list">
   <% if posts.any? %>
-    <div class="ps-cards-grid">
+    <div class="ps-cards-grid" id="posts_container">
       <% posts.each do |post| %>
         <%= render "posts/post", post: post, current_user: current_user %>
       <% end %>

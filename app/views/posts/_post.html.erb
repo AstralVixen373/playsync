@@ -77,20 +77,20 @@
         </span>
       <% end %>
 
-      <% if member || owner %>
+      <% if post.member?(current_user) || post.user == current_user %>
         <%= link_to post_path(id: post.id), class: "ps-action" do %>
-          View <i class="fa-solid fa-arrow-right"></i>
+          VIEW <i class="fa-solid fa-arrow-right"></i>
         <% end %>
-      <% elsif current_user && (expired || full) %>
+      <% elsif expired || full %>
         <%# No join action — the diagonal banner already conveys expired/full. %>
-      <% elsif current_user %>
+      <% else %>
         <%= button_to join_post_path(post), method: :post, class: "ps-action ps-action--join" do %>
           Join <i class="fa-solid fa-arrow-right"></i>
         <% end %>
-      <% else %>
-        <%= link_to post_path(id: post.id), class: "ps-action" do %>
-          View <i class="fa-solid fa-arrow-right"></i>
-        <% end %>
+      <%# else %>
+        <%#= link_to post_path(id: post.id), class: "ps-action" do %>
+          <!-- View <i class="fa-solid fa-arrow-right"></i> -->
+        <%# end %>
       <% end %>
     </div>
   </div>

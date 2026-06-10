@@ -19,7 +19,7 @@ end
 # Creates test posts on the main account with different participant counts so
 # the kick feature can be tested locally without a second browser session.
 
-MAIN_EMAIL = "luciea3011@gmail.com"
+MAIN_EMAIL = "toto@gmail.com"
 me = User.find_by!(email: MAIN_EMAIL)
 
 # Fake participants
