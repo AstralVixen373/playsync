@@ -20,6 +20,17 @@ class User < ApplicationRecord
   # Multi-selects submit a blank entry, so strip blanks before saving.
   before_validation :clean_filter_preferences
 
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
+      if auth.provider.to_s == "steam"
+        user.email = "#{auth.uid}@steam.com" # Steam ne return pas de d'email; donc on le crée nous même via le uid Steam.
+      elsif auth.provider.to_s == "twitch"
+        user.email = "#{auth.uid}@twitch.com" # De même pour twitch.
+      end
+      user.password = Devise.friendly_token[0, 20]
+    end.tap(&:save!)
+  end
+
   # The games behind the saved preferred_game_ids (for displaying chips).
   def preferred_games
     return Game.none if preferred_game_ids.blank?
