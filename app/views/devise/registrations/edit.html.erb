@@ -78,9 +78,13 @@
   <div class="auth-provider-actions">
     <% resource_class.omniauth_providers.each do |provider| %>
 
-      <% if current_user.identities.exists?(provider: "steam") && provider.to_s == "steam" %>
-        <p>Compte Steam de <%= current_user.identities[0][:nickname] %></p>
-        <a target="_blank" class="btn" href="https://steamcommunity.com/profiles/<%= current_user.identities[0][:uid] %>">Voir le compte Steam</a>
+<% steam_identity = current_user.identities.find_by(provider: "steam") %>
+
+<% if steam_identity && provider.to_s == "steam" %>
+<p>Compte Steam de <%= steam_identity.nickname %></p>
+<a target="_blank" class="btn" href="https://steamcommunity.com/id/<%= steam_identity.nickname %>">
+Voir le compte Steam
+</a>
       <% elsif provider.to_s == "steam" %>
         <%= button_to user_steam_omniauth_authorize_path,
               method: :post,
@@ -91,9 +95,13 @@
               <% end %>
       <% end %>
 
-      <% if current_user.identities.exists?(provider: "twitch") && provider.to_s == "twitch" %>
-        <p>Compte Twitch de <%= current_user.identities[1][:nickname] %></p>
-        <a target="_blank" class="btn" href="https://www.twitch.tv/<%= current_user.identities[1][:nickname] %>">Voir le compte Twitch</a>
+<% twitch_identity = current_user.identities.find_by(provider: "twitch") %>
+
+<% if twitch_identity && provider.to_s == "twitch" %>
+<p>Compte Twitch de <%= twitch_identity.nickname %></p>
+<a target="_blank" class="btn" href="https://www.twitch.tv/<%= twitch_identity.nickname %>">
+Voir le compte Twitch
+</a>
       <% elsif provider.to_s == "twitch" %>
         <%= button_to user_twitch_omniauth_authorize_path,
               method: :post,
