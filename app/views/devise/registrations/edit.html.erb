@@ -23,7 +23,7 @@
         <div class="ps-profile__avatar">
           <span class="ps-profile__avatar-img" data-avatar-target="preview">
             <% if resource.avatar.attached? %>
-              <%= image_tag resource.avatar, alt: t("devise.registrations.edit.avatar_section") %>
+              <%= cl_image_tag resource.avatar.key, alt: t("devise.registrations.edit.avatar_section") %>
             <% else %>
               <%= avatar_initial %>
             <% end %>

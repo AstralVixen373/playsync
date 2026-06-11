@@ -89,7 +89,7 @@
             <%= link_to edit_user_registration_path, class: "ps-sidebar__profile #{request.path == edit_user_registration_path ? 'active' : ''}" do %>
               <span class="ps-sidebar__avatar">
                 <% if current_user.avatar.attached? %>
-                  <%= image_tag current_user.avatar, alt: t("nav.profile") %>
+                  <%= cl_image_tag current_user.avatar.key, alt: t("nav.profile") %>
                 <% else %>
                   <%= (current_user.username.presence || current_user.email).first.upcase %>
                 <% end %>
