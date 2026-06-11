@@ -44,18 +44,34 @@
   i { color: $purple; }
 }
 
-// Filter bar — single line, no wrap
+// Filter bar — sits on one line on wide screens, but wraps onto multiple rows
+// instead of overflowing once the controls no longer fit (mobile / narrow
+// panels). `flex-wrap: wrap` is what keeps the filters usable on small screens.
 .ps-filter-bar {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
 
 .ps-filter-game-wrapper {
   position: relative;
   flex-shrink: 0;
+}
+
+// Below this width the pills would be cramped — let each filter take the full
+// row so they stay tappable and the labels never clip.
+@media (max-width: 560px) {
+  .ps-filter-game-wrapper { flex: 1 1 100%; }
+  .ps-filter-pill-input { width: 100%; min-width: 0; }
+
+  // The multiselect wrapper (shared/multiselect) carries an inline
+  // `position: relative` only — width is free for us to stretch here.
+  .ps-filter-bar > [data-multiselect-target],
+  .ps-filter-bar > [data-controller="multiselect"] { flex: 1 1 100%; }
+
+  .ps-filter-reset { align-self: flex-start; }
 }
 
 .ps-filter-pill-input {

@@ -476,3 +476,113 @@ body {
   padding: 1.25rem 1.5rem 2rem;
   flex: 1;
 }
+
+// ─── Responsive shell ───────────────────────────────────────────────────────
+// On desktop the shell is a fixed-width sidebar card beside a full-height,
+// internally-scrolling main panel. That layout has no business on a phone: the
+// 210px sidebar would eat half the width and the panel's `height: 100vh` +
+// internal scroll fights the native page scroll. Below this breakpoint we flip
+// the whole shell to a single vertical column — a compact top bar over a main
+// panel that grows with its content and lets the page scroll naturally.
+@media (max-width: 768px) {
+  .ps-layout {
+    flex-direction: column;
+    padding: 0.6rem;
+    gap: 0.6rem;
+  }
+
+  // Sidebar → horizontal top bar. Logo + profile share the first row; the nav
+  // links wrap onto the row below and split the width evenly.
+  .ps-sidebar {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.75rem;
+    padding: 0.7rem 0.9rem;
+  }
+
+  .ps-sidebar__logo {
+    order: 1;
+    margin-bottom: 0;
+
+    .ps-sidebar__logo-icon { width: 42px; height: 42px; min-width: 42px; border-radius: 12px; }
+    .ps-sidebar__logo-img  { width: 38px; height: 38px; min-width: 38px; }
+  }
+
+  // Profile chip → compact avatar pinned to the far right of the first row.
+  .ps-sidebar__footer {
+    order: 2;
+    margin-left: auto;
+    padding: 0;
+  }
+
+  .ps-sidebar__profile {
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 12px;
+
+    .ps-sidebar__avatar {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 11px;
+      font-size: 1.05rem;
+    }
+
+    // Name + "view profile" hint would crowd the bar — the avatar alone links
+    // to the profile, which is plenty on a phone.
+    .ps-sidebar__profile-text { display: none; }
+  }
+
+  // Nav links → full-width second row, evenly split and centred.
+  .ps-sidebar__nav {
+    order: 3;
+    flex: 1 1 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .ps-sidebar__link {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: max-content;
+    padding: 0.55rem 0.6rem;
+  }
+
+  // Main panel grows with its content; the document scrolls instead of an
+  // inner overflow container. The sticky header then pins to the viewport.
+  .ps-main {
+    height: auto;
+    min-height: 60vh;
+    overflow-y: visible;
+  }
+
+  // Trim the decorative banner + topbar so the header band doesn't dominate
+  // the small viewport before any content shows.
+  .ps-main__head {
+    &[class*="--banner-"] { min-height: 0; }
+  }
+
+  .ps-topbar { padding: 1.1rem 1.1rem 0; }
+  .ps-topbar__title h1 { font-size: 1.45rem; }
+  .ps-main__head-zone { padding: 0.85rem 1.1rem 1rem; }
+  .ps-main__inner { padding: 1rem 1.1rem 1.75rem; }
+}
+
+// Very narrow phones — stack the page title above the sign-out control so
+// neither gets squeezed, and let the nav labels breathe.
+@media (max-width: 420px) {
+  .ps-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .ps-topbar__signout { align-self: flex-end; }
+}
