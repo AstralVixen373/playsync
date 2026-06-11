@@ -81,3 +81,5 @@ gem "pundit", "~> 2.5"
 gem "openid_connect"
 gem "rexml"
 gem "rails-i18n", "~> 8.0"
+gem 'cloudinary'
+gem 'activestorage-cloudinary-service'
