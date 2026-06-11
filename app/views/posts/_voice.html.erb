@@ -1,12 +1,22 @@
+<%# WebRTC voice room. Every data-* attribute, target and action is unchanged —
+    only the presentation is restyled into a premium lavender banner. %>
 <div data-controller="voice"
      data-voice-post-id-value="<%= post.id %>"
      data-voice-user-id-value="<%= current_user.id %>"
-     style="margin-bottom: 1rem; padding: 1rem; background: #f3f0ff; border: 1px solid #e0dcff; border-radius: 4px;">
-  <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-    <strong style="margin-right: 0.25rem;">🎙️ <%= t("posts.voice.title") %></strong>
+     class="ps-room__voice">
+  <span class="ps-room__voice-icon"><i class="fa-solid fa-microphone"></i></span>
+
+  <div class="ps-room__voice-text">
+    <span class="ps-room__voice-title"><%= t("posts.show.vocal") %></span>
+    <span class="ps-room__voice-sub"><%= t("posts.show.join_voice") %></span>
+  </div>
+
+  <div class="ps-room__voice-controls">
     <button type="button" class="btn"
             data-voice-target="joinButton" data-action="voice#join">
-      <%= t("posts.voice.join") %>
+      <i class="fa-microphone">
+        <%= t("posts.voice.join") %>
+      </i>
     </button>
     <button type="button" class="btn btn-secondary"
             data-voice-target="muteButton" data-action="voice#toggleMute"
@@ -18,7 +28,8 @@
             style="display: none;">
       <%= t("posts.voice.leave") %>
     </button>
-    <span data-voice-target="status" style="color: #666; font-size: 0.9rem;"></span>
+    <span data-voice-target="status" class="ps-room__voice-status"></span>
   </div>
+
   <div data-voice-target="audios"></div>
 </div>

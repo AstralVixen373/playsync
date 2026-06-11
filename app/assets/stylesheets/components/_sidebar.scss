@@ -367,6 +367,48 @@ body {
   box-shadow: 0 10px 18px -10px rgba($purple-dark, 0.28);
 }
 
+// Pages with no title and no header zone (e.g. the match room) drop the band
+// chrome entirely — the topbar blends into the panel, leaving just Sign Out.
+.ps-main__head--bare {
+  background: transparent;
+  box-shadow: none;
+}
+
+// Decorative gaming banner faded into the header band. The gradient keeps the
+// left/centre panel-coloured so the title stays legible, and lets the artwork
+// bleed through on the right. One variant per page (different artwork).
+@mixin head-banner($img) {
+  background-image:
+    linear-gradient(100deg,
+      $brand-panel 0%,
+      rgba($brand-panel, 0.94) 30%,
+      rgba($brand-panel, 0.6) 62%,
+      rgba($brand-panel, 0.3) 100%),
+    image-url($img);
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, right center;
+  background-size: cover, cover;
+  // Uniform header-band height across every page (pages with a header zone —
+  // Posts / My Matches filters — already exceed this and keep their own height).
+  min-height: 200px;
+}
+
+.ps-main__head--banner-room    { @include head-banner("header-banner-matches.png"); }
+.ps-main__head--banner-matches { @include head-banner("header-banner.png"); }
+.ps-main__head--banner-posts   { @include head-banner("header-banner-posts.png"); }
+.ps-main__head--banner-settings { @include head-banner("header-banner-settings.png"); }
+.ps-main__head--banner-profile { @include head-banner("header-banner-profile.png"); }
+
+// Posts & Settings artwork carries a little empty margin on its right edge,
+// which reads as a pale strip when right-aligned. Nudge the image past the
+// right edge so that margin is cropped and the artwork sits flush (the gap
+// this opens on the far left is hidden under the solid part of the gradient).
+.ps-main__head--banner-posts,
+.ps-main__head--banner-settings,
+.ps-main__head--banner-profile {
+  background-position: center, right -80px center;
+}
+
 .ps-main__head-zone {
   padding: 1rem 1.5rem 1.25rem;
 
