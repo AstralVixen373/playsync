@@ -10,9 +10,9 @@
 <div id="<%= dom_id(post) %>" class="ps-card <%= 'ps-card--expired' if expired %> <%= 'ps-card--full' if full && !expired %>">
 
   <% if expired %>
-    <div class="ps-card__banner ps-card__banner--expired">EXPIRED</div>
+    <div class="ps-card__banner ps-card__banner--expired"><%= t("posts.post.expired_badge") %></div>
   <% elsif full %>
-    <div class="ps-card__banner ps-card__banner--full">FULL</div>
+    <div class="ps-card__banner ps-card__banner--full"><%= t("posts.slots.full_badge") %></div>
   <% end %>
 
   <%# ZONE 1 — Identity: game cover (IGDB) with a letter placeholder fallback %>
@@ -53,7 +53,7 @@
       <% end %>
       <% if crossplay %>
         <span class="ps-chip ps-chip--crossplay">
-          <i class="fa-solid fa-gamepad"></i>Crossplay
+          <i class="fa-solid fa-gamepad"></i><%= t("posts.post.crossplay") %>
         </span>
       <% end %>
     </div>
@@ -61,7 +61,7 @@
     <%# ZONE 6 — Secondary info: creation time, de-emphasised %>
     <div class="ps-card__time">
       <i class="fa-regular fa-clock"></i>
-      <%= time_ago_in_words(post.created_at) %> ago
+      <%= t("posts.post.posted_ago", time: time_ago_in_words(post.created_at)) %>
     </div>
   </div>
 
@@ -79,13 +79,13 @@
 
       <% if post.member?(current_user) || post.user == current_user %>
         <%= link_to post_path(id: post.id), class: "ps-action" do %>
-          View <i class="fa-solid fa-arrow-right"></i>
+          <%= t("matches.index.view") %> <i class="fa-solid fa-arrow-right"></i>
         <% end %>
       <% elsif expired || full %>
         <%# No join action — the diagonal banner already conveys expired/full. %>
       <% else %>
         <%= button_to join_post_path(post), method: :post, class: "ps-action ps-action--join" do %>
-          Join <i class="fa-solid fa-arrow-right"></i>
+          <%= t("posts.post.join") %> <i class="fa-solid fa-arrow-right"></i>
         <% end %>
       <%# else %>
         <%#= link_to post_path(id: post.id), class: "ps-action" do %>

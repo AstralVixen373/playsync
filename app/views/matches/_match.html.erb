@@ -71,7 +71,7 @@
       <% end %>
       <% if crossplay %>
         <span class="ps-chip ps-chip--crossplay">
-          <i class="fa-solid fa-gamepad"></i>Crossplay
+          <i class="fa-solid fa-gamepad"></i><%= t("posts.post.crossplay") %>
         </span>
       <% end %>
     </div>
@@ -79,7 +79,7 @@
     <%# ZONE 6 — Secondary info: creation time, de-emphasised %>
     <div class="ps-card__time">
       <i class="fa-regular fa-clock"></i>
-      <%= time_ago_in_words(post.created_at) %> ago
+      <%= t("posts.post.posted_ago", time: time_ago_in_words(post.created_at)) %>
     </div>
   </div>
 

@@ -1,21 +1,22 @@
+<% content_for :title, @chat.post.title %>
 <%= turbo_stream_from @chat %>
 
 
 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; height: 90vh;">
   <!-- Sidebar: Post Info -->
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; overflow-y: auto;">
-    <h2 style="margin-bottom: 1rem;">📋 Post Details</h2>
+    <h2 style="margin-bottom: 1rem;">📋 <%= t("chats.show.post_details") %></h2>
 
     <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
       <h3 style="margin-bottom: 0.5rem;"><%= @chat.post.title %></h3>
-      <p><strong>Game:</strong> <%= @chat.post.game %></p>
-      <p><strong>Platform:</strong> <%= platform_list(@chat.post.platforms) %></p>
-      <p><strong>Language:</strong> <%= @chat.post.language %></p>
-      <p><strong>Type:</strong> <%= @chat.post.post_type %></p>
-      <p><strong>Slots:</strong> <%= @chat.post.slot %></p>
+      <p><strong><%= t("matches.show.game") %>:</strong> <%= @chat.post.game %></p>
+      <p><strong><%= t("matches.show.platform") %>:</strong> <%= platform_list(@chat.post.platforms) %></p>
+      <p><strong><%= t("matches.show.language") %>:</strong> <%= @chat.post.language %></p>
+      <p><strong><%= t("matches.show.type") %>:</strong> <%= @chat.post.post_type %></p>
+      <p><strong><%= t("matches.show.slots") %>:</strong> <%= @chat.post.slot %></p>
     </div>
 
-    <h3 style="margin-bottom: 1rem;">👥 Participants</h3>
+    <h3 style="margin-bottom: 1rem;">👥 <%= t("posts.show.participants") %></h3>
     <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px;">
       <% if @chat.users.any? %>
         <% @chat.users.each do |user| %>
@@ -24,14 +25,14 @@
           </div>
         <% end %>
       <% else %>
-        <p style="color: #999;">No participants yet</p>
+        <p style="color: #999;"><%= t("posts.show.no_participants") %></p>
       <% end %>
     </div>
   </div>
 
   <!-- Main: Chat Messages -->
   <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column;">
-    <h2 style="margin-bottom: 1rem;">💬 Chat</h2>
+    <h2 style="margin-bottom: 1rem;">💬 <%= t("posts.show.chat") %></h2>
 
     <!-- Messages Container -->
     <div style="flex: 1; overflow-y: auto; background: #f9f9f9; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid #e0e0e0;" id="messages">
@@ -40,7 +41,7 @@
           <%= render "messages/message", message: message, current_user: current_user %>
         <% end %>
       <% else %>
-        <p style="color: #999; text-align: center;">No messages yet. Start the conversation!</p>
+        <p style="color: #999; text-align: center;"><%= t("chats.show.no_messages") %></p>
       <% end %>
     </div>
 
@@ -48,12 +49,12 @@
     <% if user_signed_in? %>
       <%= form_with model: [@chat, @message], url: chat_messages_path(@chat) do |f| %>
         <div style="display: flex; gap: 0.5rem;">
-          <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 80px; font-family: inherit;" %>
-          <%= f.submit "Send", class: "btn", style: "align-self: flex-end; height: fit-content;" %>
+          <%= f.text_area :content, placeholder: t("posts.show.type_message"), style: "flex: 1; padding: 0.75rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 80px; font-family: inherit;" %>
+          <%= f.submit t("posts.show.send"), class: "btn", style: "align-self: flex-end; height: fit-content;" %>
         </div>
       <% end %>
     <% else %>
-      <p style="color: #999; text-align: center;"><%= link_to "Sign in", new_user_session_path %> to send messages</p>
+      <p style="color: #999; text-align: center;"><%= link_to t("nav.sign_in"), new_user_session_path %> <%= t("chats.show.sign_in_to_chat") %></p>
     <% end %>
   </div>
 </div>
