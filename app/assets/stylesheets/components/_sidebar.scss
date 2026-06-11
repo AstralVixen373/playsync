@@ -347,7 +347,17 @@ body {
   // stay pinned with position: sticky (an overflow:hidden ancestor would break
   // sticky). The sidebar keeps its own full height alongside.
   height: calc(100vh - 2rem);
-  overflow-y: auto;
+  // Always reserve the scrollbar's width so the layout never shifts when the
+  // cards start overflowing. Without this the vertical scrollbar only appears
+  // once there are enough cards, and its ~15px steal the panel's right edge —
+  // shoving the sticky filter header + card grid sideways versus the no-scroll
+  // state (very visible when zoomed in, where the scrollbar is wider).
+  //   • `overflow-y: scroll` keeps the track present in every browser, so the
+  //     content width is constant whether it overflows or not.
+  //   • `scrollbar-gutter: stable` lets modern browsers render that reserved
+  //     space cleanly (no greyed-out track) and covers overlay-scrollbar OSes.
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 // Sticky header band — sits at the top of the scrolling panel and holds the
@@ -485,6 +495,10 @@ body {
 // the whole shell to a single vertical column — a compact top bar over a main
 // panel that grows with its content and lets the page scroll naturally.
 @media (max-width: 768px) {
+  // The shell now scrolls as one document (see .ps-main below), so reserve the
+  // page scrollbar here too — same anti-shift reasoning as .ps-main on desktop.
+  html { overflow-y: scroll; }
+
   .ps-layout {
     flex-direction: column;
     padding: 0.6rem;
