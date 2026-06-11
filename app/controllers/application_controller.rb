@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
 
   LOCALE_MAP = {
     "English" => :en,
-    "French"  => :fr,
+    "French" => :fr,
     "Spanish" => :es,
-    "German"  => :de
+    "German" => :de
   }.freeze
 
   before_action :set_locale
@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     # For additional fields in app/views/devise/registrations/new.html.erb
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :avatar])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[username avatar])
 
     # For additional in app/views/devise/registrations/edit.html.erb
     devise_parameter_sanitizer.permit(:account_update, keys: [:username, :avatar, :remove_avatar, :preferred_language, { preferred_game_ids: [], preferred_platforms: [], preferred_post_types: [], platform_handles: Post::PLATFORMS }])
@@ -40,13 +40,17 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = if user_signed_in? && LOCALE_MAP.key?(current_user.preferred_language)
-      LOCALE_MAP[current_user.preferred_language]
-    else
-      I18n.default_locale
-    end
+                    LOCALE_MAP[current_user.preferred_language]
+                  else
+                    I18n.default_locale
+                  end
   end
 
   def skip_pundit?
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^settings$)/
+  end
+
+  def default_url_options
+    { host: ENV["DOMAIN"] || "localhost:3000" }
   end
 end

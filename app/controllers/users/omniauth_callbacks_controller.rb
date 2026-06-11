@@ -1,9 +1,9 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   skip_before_action :authenticate_user!
   skip_before_action :verify_authenticity_token, only: %i[steam twitch failure]
-  
+
   def failure
-    redirect_to edit_user_registration_path, alert: "Échec de la liaison du compte."
+    redirect_to edit_user_registration_path, alert: "Failed to link accounts."
   end
 
   def steam
@@ -68,7 +68,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     existing = Identity.find_by(provider: auth.provider, uid: auth.uid)
     if existing && existing.user != current_user
       redirect_to edit_user_registration_path,
-                  alert: "Ce compte #{auth.provider.capitalize} est déjà lié à un autre utilisateur."
+                  alert: "This account #{auth.provider.capitalize} is already linked to another user."
       return
     end
 
@@ -82,7 +82,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       image: auth.info.image
     )
 
-    flash[:success] = "Compte #{auth.provider.capitalize} lié."
+    flash[:success] = "Account #{auth.provider.capitalize} successfully linked."
     redirect_to edit_user_registration_path
   end
 end
