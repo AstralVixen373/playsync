@@ -144,6 +144,11 @@ de:
       no_messages: "Noch keine Nachrichten"
       full_chat: "Dieses Match ist voll — der Chat ist nur für Mitglieder reserviert."
       join_to_chat: "Tritt dem Match bei, um auf den Chat zuzugreifen."
+      session_details: "Sitzungsdetails"
+      chat_subtitle: "Koordiniere dich mit deinem Team"
+      vocal: "Vocal"
+      join_voice: "Sprachraum beitreten"
+      no_messages_sub: "Sende die erste Nachricht an dein Team."
       send: "Senden"
       type_message: "Nachricht eingeben..."
     post:

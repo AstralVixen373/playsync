@@ -1,10 +1,10 @@
-<div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #dee2e6;" id="<%= dom_id(user) %>">
-  <p style="margin: 0;"><%= user.username %></p>
-  <%# if @post.user == current_user && user != current_user %>
-    <%= button_to t("posts.show.kick"), kick_post_path(post, user_id: user.id),
-    method: :delete,
-    data: { turbo_confirm: t("posts.show.kick_confirm") },
-    style: "background: #dc3545; color: white; border: none; border-radius: 4px; padding: 0.2rem 0.6rem; font-size: 0.8rem; cursor: pointer;",
-    class: "kick_button_#{user.id} kick_button" %>
-  <%# end %>
+<%# One participant row. The kick button keeps its exact route, method and the
+    .kick_button / .kick_button_<id> classes the page's <style> block toggles. %>
+<div class="ps-room__participant" id="<%= dom_id(user) %>">
+  <%= render "shared/avatar", user: user, size: 40 %>
+  <span class="ps-room__participant-name"><%= user.username.presence || user.email %></span>
+  <%= button_to t("posts.show.kick"), kick_post_path(post, user_id: user.id),
+        method: :delete,
+        data: { turbo_confirm: t("posts.show.kick_confirm") },
+        class: "ps-room__kick kick_button_#{user.id} kick_button" %>
 </div>

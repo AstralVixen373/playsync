@@ -1,6 +1,6 @@
-<%= form_with model: [chat, message], url: chat_messages_path(chat) do |f| %>
-  <div style="display: flex; gap: 0.5rem;">
-    <%= f.text_area :content, placeholder: "Type a message...", style: "flex: 1; padding: 0.5rem; border: 1px solid #e0e0e0; border-radius: 4px; resize: none; height: 60px;" %>
-    <%= f.submit "Send", class: "btn", style: "align-self: flex-end;" %>
-  </div>
+<%# Message composer. Same model, route and submit — restyled only. %>
+<%= form_with model: [chat, message], url: chat_messages_path(chat), class: "ps-chat-form" do |f| %>
+  <%= f.text_area :content, placeholder: t("posts.show.type_message"),
+        class: "ps-chat-form__input", rows: 1 %>
+  <%= f.submit t("posts.show.send"), class: "btn ps-chat-form__send" %>
 <% end %>
