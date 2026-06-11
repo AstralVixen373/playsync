@@ -219,6 +219,11 @@ es:
       new:
         title: "Iniciar sesión"
         submit: "Iniciar sesión"
+    passwords:
+      new:
+        title: "Olvidé mi contraseña"
+      edit:
+        title: "Cambiar contraseña"
     registrations:
       new:
         title: "Registrarse"

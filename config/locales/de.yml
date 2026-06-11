@@ -219,6 +219,11 @@ de:
       new:
         title: "Anmelden"
         submit: "Anmelden"
+    passwords:
+      new:
+        title: "Passwort vergessen"
+      edit:
+        title: "Passwort ändern"
     registrations:
       new:
         title: "Registrieren"

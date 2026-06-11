@@ -219,6 +219,11 @@ fr:
       new:
         title: "Connexion"
         submit: "Se connecter"
+    passwords:
+      new:
+        title: "Mot de passe oublié"
+      edit:
+        title: "Changer le mot de passe"
     registrations:
       new:
         title: "Inscription"

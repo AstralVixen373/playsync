@@ -1,3 +1,4 @@
+<% content_for :title, @post.title %>
 <%= turbo_stream_from @post %>
 <%= turbo_stream_from @chat %>
 <%= turbo_stream_from "user_chat" %>

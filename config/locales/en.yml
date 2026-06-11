@@ -219,6 +219,11 @@ en:
       new:
         title: "Log in"
         submit: "Log in"
+    passwords:
+      new:
+        title: "Forgot password"
+      edit:
+        title: "Change password"
     registrations:
       new:
         title: "Sign up"
