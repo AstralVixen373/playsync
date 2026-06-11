@@ -153,6 +153,11 @@ es:
       no_messages: "Sin mensajes aún"
       full_chat: "Esta partida está completa — el chat está reservado para sus miembros."
       join_to_chat: "Únete a la partida para acceder al chat."
+      session_details: "Detalles de la sesión"
+      chat_subtitle: "Coordínate con tu equipo"
+      vocal: "Vocal"
+      join_voice: "Unirse a la sala de voz"
+      no_messages_sub: "Envía el primer mensaje a tu equipo."
       send: "Enviar"
       type_message: "Escribe un mensaje..."
     post:

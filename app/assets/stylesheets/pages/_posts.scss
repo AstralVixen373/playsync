@@ -15,6 +15,12 @@
 
 .ps-find__search {
   min-width: 0;
+  // Stack the "Find an announcement" / "Filter your matches" label above the
+  // filter bar with breathing room between them (mirrors .ps-find__create).
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
 }
 
 .ps-find__create {
