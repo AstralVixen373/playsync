@@ -365,6 +365,11 @@ body {
 .ps-main__head {
   position: sticky;
   top: 0;
+  // .ps-main is a fixed-height flex column, so without this the header is a
+  // shrinkable flex item: on a short viewport (e.g. 250% zoom) flexbox squashes
+  // it down to the banner's min-height (200px) and the filter zone overflows
+  // onto the first card. Never shrink — always take the full content height.
+  flex-shrink: 0;
   // Above the sidebar (z-index 100) so the create-announcement modal — which
   // lives inside this band on /posts — can overlay the whole screen. The band
   // never overlaps the sidebar horizontally, so the high z-index is harmless.
