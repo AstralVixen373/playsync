@@ -52,10 +52,10 @@
         <% if @post.user == current_user %>
           <span style="align-self: center; color: #666;"><%= t("posts.show.you_created") %></span>
           <% if @post.open? && policy(@post).finish? %>
-            <%= button_to "Mark as finished", finish_post_path(@post), method: :patch, class: "btn btn-secondary", data: { turbo_confirm: "Mark this match as finished?" } %>
+          <button id="button" class="btn btn-secondary">Mark as finished</button>
           <% end %>
         <% elsif @is_member %>
-          <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: t("posts.show.leave_confirm") } %>
+          <button id="button" class="btn btn-secondary">Leave match</button>
         <% elsif @post.kicked?(current_user) %>
           <%= render "posts/kicked_out" %>
         <% elsif @post.full? %>
@@ -68,7 +68,7 @@
           <%= link_to t("posts.show.edit"), edit_post_path(id: @post.id), class: "btn btn-secondary" %>
         <% end %>
         <% if policy(@post).destroy? %>
-          <%= link_to t("posts.show.delete"), post_path(@post), data: { turbo_method: :delete, turbo_confirm: t("posts.show.delete_confirm") }, class: "btn btn-danger" %>
+          <button id="button" class="btn btn-danger">Delete</button>
         <% end %>
       </div>
     <% end %>
@@ -106,3 +106,28 @@
     <% end %>
   </div>
 </div>
+
+<dialog id="confirm" class="p-4 border border-rounded modals">
+  <form method="dialog" id="text"></form>
+</dialog>
+
+<template id="finishing">
+  <div class="d-flex gap-4 justify-content-center">
+    <%= button_to "Saves changes", finish_post_path(@post), method: :patch, class: "btn btn-secondary" %>
+    <button class="btn btn-secondary">Cancel changes</button>
+  </div>
+</template>
+
+<template id="leaving">
+  <div class="d-flex gap-4 justify-content-center">
+    <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary" %>
+    <button class="btn btn-secondary">Cancel changes</button>
+  </div>
+</template>
+
+<template id="deleting">
+  <div class="d-flex gap-4 justify-content-center">
+    <%= link_to t("posts.show.delete"), post_path(@post), class: "btn btn-danger" %>
+    <button class="btn btn-secondary">Cancel changes</button>
+  </div>
+</template>
