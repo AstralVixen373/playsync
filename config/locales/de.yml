@@ -18,6 +18,10 @@ de:
   settings:
     title: "Einstellungen"
     subtitle: "Verwalte dein Konto und deine Verbindungen"
+    index:
+      subtitle: "Verwalte deine Kontoeinstellungen"
+      account_description: "Ändere deinen Benutzernamen, deine E-Mail und dein Passwort."
+      edit_profile: "Profil bearbeiten"
     notices:
       email_updated: "E-Mail erfolgreich aktualisiert."
       password_updated: "Passwort erfolgreich aktualisiert."
@@ -88,14 +92,15 @@ de:
       kick_banned: "Du wurdest aus diesem Match entfernt und kannst nicht erneut beitreten."
     index:
       title: "Mitspieler finden"
-      create: "Beitrag erstellen"
-      games: "Spiele"
-      search_game: "Spiel suchen..."
-      platform: "Plattform"
-      type: "Typ"
-      language: "Sprache"
-      all: "Alle"
+      subtitle: "Finde Spieler, um deine Session zu teilen"
+      create_label: "Hast du etwas zum Spielen?"
+      create_announcement: "Ankündigung erstellen"
+      find_announcement: "Eine Ankündigung finden"
       reset: "Zurücksetzen"
+      search_games: "Spiele"
+      all_platforms: "Alle Plattformen"
+      all_types: "Alle Typen"
+      filter_language: "Sprache"
     list:
       empty: "Derzeit keine Beiträge verfügbar."
       create_one: "Erstelle einen!"
@@ -103,6 +108,7 @@ de:
       title: "Neuer Beitrag"
     edit:
       title: "Beitrag bearbeiten"
+      label: "Deine Ankündigung bearbeiten"
     form:
       errors:
         one: "1 Fehler hat das Speichern dieses Beitrags verhindert"
@@ -125,11 +131,14 @@ de:
       platform: "Plattform"
       language: "Sprache"
       type: "Typ"
-      slots: "Plätze"
       created: "Erstellt"
+      open: "Offen"
+      finished: "Beendet"
       participants: "Teilnehmer"
       no_participants: "Noch keine Teilnehmer"
       you_created: "Du hast dieses Match erstellt."
+      mark_finished: "Als beendet markieren"
+      mark_finished_confirm: "Dieses Match als beendet markieren?"
       kick: "Entfernen"
       kick_confirm: "Diesen Spieler aus dem Match entfernen?"
       kicked_out: "Du wurdest aus diesem Match entfernt."
@@ -147,39 +156,23 @@ de:
       send: "Senden"
       type_message: "Nachricht eingeben..."
     post:
-      posted_by: "Gepostet von"
       posted_ago: "Vor %{time} gepostet"
-      you: "Du"
-      open: "Öffnen"
       join: "Beitreten"
-      edit: "Bearbeiten"
-      delete: "Löschen"
-      delete_confirm: "Bist du sicher?"
+      expired_badge: "ABGELAUFEN"
+      crossplay: "Crossplay"
     slots:
-      full: "0 Plätze verfügbar"
       full_badge: "VOLL"
-      available:
-        one: "%{count} Platz verfügbar"
-        other: "%{count} Plätze verfügbar"
+      players: "Spieler"
+    voice:
+      title: "Sprachchat"
+      join: "Sprachchat beitreten"
+      mute: "Mikrofon stummschalten"
+      leave: "Sprachchat verlassen"
 
   matches:
     index:
       title: "Meine Matches"
-      choose_game: "Wähle dein Spiel"
-      search_game: "Spiel suchen..."
-      platform: "Plattform"
-      type: "Typ"
-      language: "Sprache"
-      all: "Alle"
-      reset: "Zurücksetzen"
-      posted_by: "Gepostet von"
-      you: "Du"
-      game: "Spiel"
-      platform_label: "Plattform"
-      language_label: "Sprache"
-      type_label: "Typ"
       view: "Anzeigen"
-      favourites_only: "Nur Favoriten"
       favourite: "Zu Favoriten hinzufügen"
       unfavourite: "Aus Favoriten entfernen"
       subtitle: "Deine Sessions und Matches"
@@ -214,11 +207,41 @@ de:
       chat: "Chat"
       no_messages: "Noch keine Nachrichten."
 
+  chats:
+    show:
+      post_details: "Post-Details"
+      no_messages: "Noch keine Nachrichten. Starte das Gespräch!"
+      sign_in_to_chat: "um Nachrichten zu senden"
+
   devise:
     sessions:
       new:
         title: "Anmelden"
         submit: "Anmelden"
+    passwords:
+      new:
+        title: "Passwort vergessen?"
+        submit: "Anweisungen zum Zurücksetzen senden"
+      edit:
+        title: "Passwort ändern"
+        new_password: "Neues Passwort"
+        confirm_password: "Neues Passwort bestätigen"
+        submit: "Mein Passwort ändern"
+    confirmations:
+      new:
+        title: "Bestätigungsanweisungen erneut senden"
+        submit: "Bestätigungsanweisungen erneut senden"
+    unlocks:
+      new:
+        title: "Entsperrungsanweisungen erneut senden"
+        submit: "Entsperrungsanweisungen erneut senden"
+    shared:
+      links:
+        log_in: "Anmelden"
+        sign_up: "Registrieren"
+        forgot_password: "Passwort vergessen?"
+        resend_confirmation: "Keine Bestätigungsanweisungen erhalten?"
+        resend_unlock: "Keine Entsperrungsanweisungen erhalten?"
     registrations:
       new:
         title: "Registrieren"

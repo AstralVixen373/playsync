@@ -274,6 +274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_10_120000) do
     t.string "reset_password_token"
     t.string "steamid"
     t.string "steamname"
+    t.string "theme", default: "light", null: false
     t.string "twitchid"
     t.string "twitchname"
     t.string "uid"

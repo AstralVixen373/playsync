@@ -1,20 +1,21 @@
+<% content_for :title, t("settings.title") %>
 <% content_for :page_title do %>
-  <h1>Settings</h1>
-  <p>Manage your account preferences</p>
+  <h1><%= t("settings.title") %></h1>
+  <p><%= t("settings.index.subtitle") %></p>
 <% end %>
 
 <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 560px;">
 
   <div style="background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
-    <h3 style="font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.25rem;">Account</h3>
-    <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 1rem;">Update your username, email and password.</p>
-    <%= link_to "Edit profile", edit_user_registration_path, class: "btn btn-secondary", style: "font-size: 0.875rem;" %>
+    <h3 style="font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.25rem;"><%= t("settings.account.title") %></h3>
+    <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 1rem;"><%= t("settings.index.account_description") %></p>
+    <%= link_to t("settings.index.edit_profile"), edit_user_registration_path, class: "btn btn-secondary", style: "font-size: 0.875rem;" %>
   </div>
 
   <div style="background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
-    <h3 style="font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.25rem;">Sign out</h3>
-    <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 1rem;">Sign out of your PlaySync account.</p>
-    <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-danger", style: "font-size: 0.875rem;" %>
+    <h3 style="font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.25rem;"><%= t("settings.sign_out.title") %></h3>
+    <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 1rem;"><%= t("settings.sign_out.description") %></p>
+    <%= link_to t("settings.sign_out.submit"), destroy_user_session_path, data: { turbo_method: :delete }, class: "btn btn-danger", style: "font-size: 0.875rem;" %>
   </div>
 
 </div>
