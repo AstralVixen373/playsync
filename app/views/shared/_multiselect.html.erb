@@ -1,4 +1,4 @@
-<%# locals: (name:, options:, selected: [], placeholder: "All", include_hidden: false, single: false) %>
+<%# locals: (name:, options:, selected: [], placeholder: "All", include_hidden: false, single: false, labels: {}) %>
 <div data-controller="multiselect"
      data-multiselect-placeholder-value="<%= placeholder %>"
      data-multiselect-single-value="<%= single %>"
@@ -21,7 +21,7 @@
                data-action="multiselect#update"
                style="accent-color: #8C97DF; width: 15px; height: 15px; cursor: pointer;">
         <%= option_icon(opt) %>
-        <%= opt %>
+        <%= labels[opt].presence || opt %>
       </label>
     <% end %>
   </div>

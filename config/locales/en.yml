@@ -18,6 +18,10 @@ en:
   settings:
     title: "Settings"
     subtitle: "Manage your account and connections"
+    index:
+      subtitle: "Manage your account preferences"
+      account_description: "Update your username, email and password."
+      edit_profile: "Edit profile"
     notices:
       email_updated: "Email updated successfully."
       password_updated: "Password updated successfully."
@@ -88,14 +92,15 @@ en:
       kick_banned: "You have been removed from this match and cannot rejoin."
     index:
       title: "Find Teammates"
-      create: "Create Post"
-      games: "Games"
-      search_game: "Search a game..."
-      platform: "Platform"
-      type: "Type"
-      language: "Language"
-      all: "All"
+      subtitle: "Find players to share your session"
+      create_label: "Got something to play?"
+      create_announcement: "Create announcement"
+      find_announcement: "Find an announcement"
       reset: "Reset"
+      search_games: "Games"
+      all_platforms: "All Platforms"
+      all_types: "All Types"
+      filter_language: "Language"
     list:
       empty: "No posts available right now."
       create_one: "Create one!"
@@ -103,6 +108,7 @@ en:
       title: "Create New Post"
     edit:
       title: "Edit Post"
+      label: "Editing your announcement"
     form:
       errors:
         one: "1 error prevented this post from being saved"
@@ -125,11 +131,14 @@ en:
       platform: "Platform"
       language: "Language"
       type: "Type"
-      slots: "Slots"
       created: "Created"
+      open: "Open"
+      finished: "Finished"
       participants: "Participants"
       no_participants: "No participants yet"
       you_created: "You created this match."
+      mark_finished: "Mark as finished"
+      mark_finished_confirm: "Mark this match as finished?"
       kick: "Kick"
       kick_confirm: "Remove this player from the match?"
       kicked_out: "You have been removed from this match."
@@ -147,39 +156,23 @@ en:
       send: "Send"
       type_message: "Type a message..."
     post:
-      posted_by: "Posted by"
       posted_ago: "Posted %{time} ago"
-      you: "You"
-      open: "Open"
       join: "Join"
-      edit: "Edit"
-      delete: "Delete"
-      delete_confirm: "Are you sure?"
+      expired_badge: "EXPIRED"
+      crossplay: "Crossplay"
     slots:
-      full: "0 places available"
       full_badge: "FULL"
-      available:
-        one: "%{count} place available"
-        other: "%{count} places available"
+      players: "players"
+    voice:
+      title: "Voice chat"
+      join: "Join voice chat"
+      mute: "Mute"
+      leave: "Leave voice chat"
 
   matches:
     index:
       title: "My Matches"
-      choose_game: "Choose your game"
-      search_game: "Search a game..."
-      platform: "Platform"
-      type: "Type"
-      language: "Language"
-      all: "All"
-      reset: "Reset"
-      posted_by: "Posted by"
-      you: "You"
-      game: "Game"
-      platform_label: "Platform"
-      language_label: "Language"
-      type_label: "Type"
       view: "View"
-      favourites_only: "Favourites only"
       favourite: "Add to favourites"
       unfavourite: "Remove from favourites"
       subtitle: "Your sessions and matches"
@@ -214,6 +207,12 @@ en:
       chat: "Chat"
       no_messages: "No messages yet."
 
+  chats:
+    show:
+      post_details: "Post Details"
+      no_messages: "No messages yet. Start the conversation!"
+      sign_in_to_chat: "to send messages"
+
   devise:
     sessions:
       new:
@@ -221,9 +220,28 @@ en:
         submit: "Log in"
     passwords:
       new:
-        title: "Forgot password"
+        title: "Forgot your password?"
+        submit: "Send me reset instructions"
       edit:
         title: "Change password"
+        new_password: "New password"
+        confirm_password: "Confirm your new password"
+        submit: "Change my password"
+    confirmations:
+      new:
+        title: "Resend confirmation instructions"
+        submit: "Resend confirmation instructions"
+    unlocks:
+      new:
+        title: "Resend unlock instructions"
+        submit: "Resend unlock instructions"
+    shared:
+      links:
+        log_in: "Log in"
+        sign_up: "Sign up"
+        forgot_password: "Forgot your password?"
+        resend_confirmation: "Didn't receive confirmation instructions?"
+        resend_unlock: "Didn't receive unlock instructions?"
     registrations:
       new:
         title: "Sign up"

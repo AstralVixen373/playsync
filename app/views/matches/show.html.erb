@@ -7,9 +7,9 @@
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
       <h1 style="margin: 0;"><%= @post.title %></h1>
       <% if @post.open? %>
-        <span style="background: #d4edda; color: #155724; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">Open</span>
+        <span style="background: #d4edda; color: #155724; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;"><%= t("posts.show.open") %></span>
       <% else %>
-        <span style="background: #e2e3e5; color: #383d41; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">Finished</span>
+        <span style="background: #e2e3e5; color: #383d41; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;"><%= t("posts.show.finished") %></span>
       <% end %>
     </div>
 

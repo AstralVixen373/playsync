@@ -1,7 +1,7 @@
 <% content_for :title, t("posts.index.title") %>
 <% content_for :page_title do %>
   <h1><%= t("posts.index.title") %></h1>
-  <p>Find players to share your session</p>
+  <p><%= t("posts.index.subtitle") %></p>
 <% end %>
 
 <% content_for :page_header do %>
@@ -11,15 +11,15 @@
   <%# The CTA opens the creation form as a modal over the (blurred) board. The
   <%# href stays a real link so it still works without JS (lands on /posts/new). %>
   <section class="ps-find__create">
-    <span class="ps-find__label"><i class="fa-solid fa-bolt"></i> Got something to play?</span>
+    <span class="ps-find__label"><i class="fa-solid fa-bolt"></i> <%= t("posts.index.create_label") %></span>
     <%= link_to new_post_path, class: "ps-topbar__cta", data: { action: "modal#open" } do %>
-      <i class="fa-solid fa-bolt"></i> Create announcement
+      <i class="fa-solid fa-bolt"></i> <%= t("posts.index.create_announcement") %>
     <% end %>
   </section>
 
   <%# ── Search zone: "I'm looking for an announcement" ───────────────────── %>
   <section class="ps-find__search">
-    <span class="ps-find__label"><i class="fa-solid fa-magnifying-glass"></i> Find an announcement</span>
+    <span class="ps-find__label"><i class="fa-solid fa-magnifying-glass"></i> <%= t("posts.index.find_announcement") %></span>
 
     <%= form_with url: posts_path, method: :get,
                   data: { controller: "form", action: "change->form#submit" } do |f| %>
@@ -29,18 +29,18 @@
 
         <div class="ps-filter-game-wrapper">
           <input type="text" id="filter-game-search"
-                 placeholder="🎮 Games"
+                 placeholder="🎮 <%= t("posts.index.search_games") %>"
                  autocomplete="off"
                  class="ps-filter-pill-input">
           <div id="filter-game-results"></div>
         </div>
 
-        <%= render "shared/multiselect", name: "platforms[]", options: Post::PLATFORMS,  selected: @selected_platforms,  placeholder: "🖥️ All Platforms" %>
-        <%= render "shared/multiselect", name: "post_types[]", options: Post::TYPES,     selected: @selected_post_types, placeholder: "👥 All Types" %>
+        <%= render "shared/multiselect", name: "platforms[]", options: Post::PLATFORMS,  selected: @selected_platforms,  placeholder: "🖥️ #{t("posts.index.all_platforms")}" %>
+        <%= render "shared/multiselect", name: "post_types[]", options: Post::TYPES,     selected: @selected_post_types, placeholder: "👥 #{t("posts.index.all_types")}" %>
 
-        <%= render "shared/multiselect", name: "language", options: Post::LANGUAGES, selected: @selected_language, placeholder: "🌐 Language", single: true %>
+        <%= render "shared/multiselect", name: "language", options: Post::LANGUAGES, selected: @selected_language, placeholder: "🌐 #{t("posts.index.filter_language")}", single: true, labels: Post::LANGUAGES.index_with { |l| t("post_languages.#{l}") } %>
 
-        <%= link_to "Reset", posts_path, class: "ps-filter-reset" %>
+        <%= link_to t("posts.index.reset"), posts_path, class: "ps-filter-reset" %>
 
       </div>
 
@@ -65,7 +65,7 @@
     <div class="ps-modal__card" role="dialog" aria-modal="true" aria-labelledby="ps-modal-title">
       <header class="ps-modal__header">
         <div>
-          <span class="ps-find__label"><i class="fa-solid fa-bolt"></i> Got something to play?</span>
+          <span class="ps-find__label"><i class="fa-solid fa-bolt"></i> <%= t("posts.index.create_label") %></span>
           <h2 class="ps-modal__title" id="ps-modal-title"><%= t("posts.new.title") %></h2>
         </div>
         <button type="button" class="ps-modal__close" data-action="modal#close" aria-label="Close">

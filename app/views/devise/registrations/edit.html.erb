@@ -23,7 +23,7 @@
         <div class="ps-profile__avatar">
           <span class="ps-profile__avatar-img" data-avatar-target="preview">
             <% if resource.avatar.attached? %>
-              <%= image_tag resource.avatar, alt: "Avatar" %>
+              <%= image_tag resource.avatar, alt: t("devise.registrations.edit.avatar_section") %>
             <% else %>
               <%= avatar_initial %>
             <% end %>
@@ -143,7 +143,8 @@
                   options: Post::LANGUAGES,
                   selected: resource.preferred_language,
                   placeholder: t("devise.registrations.edit.no_preference"),
-                  single: true %>
+                  single: true,
+                  labels: Post::LANGUAGES.index_with { |l| t("post_languages.#{l}") } %>
             <% if resource.preferred_language.present? %>
               <i class="fa-solid fa-check ps-profile__check ps-profile__check--inline" aria-hidden="true"></i>
             <% end %>

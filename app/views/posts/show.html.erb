@@ -21,9 +21,9 @@
     <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
       <h1 style="margin: 0;"><%= @post.title %></h1>
       <% if @post.open? %>
-        <span style="background: #d4edda; color: #155724; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">Open</span>
+        <span style="background: #d4edda; color: #155724; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;"><%= t("posts.show.open") %></span>
       <% else %>
-        <span style="background: #e2e3e5; color: #383d41; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">Finished</span>
+        <span style="background: #e2e3e5; color: #383d41; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;"><%= t("posts.show.finished") %></span>
       <% end %>
     </div>
 
@@ -53,7 +53,7 @@
         <% if @post.user == current_user %>
           <span style="align-self: center; color: #666;"><%= t("posts.show.you_created") %></span>
           <% if @post.open? && policy(@post).finish? %>
-            <%= button_to "Mark as finished", finish_post_path(@post), method: :patch, class: "btn btn-secondary", data: { turbo_confirm: "Mark this match as finished?" } %>
+            <%= button_to t("posts.show.mark_finished"), finish_post_path(@post), method: :patch, class: "btn btn-secondary", data: { turbo_confirm: t("posts.show.mark_finished_confirm") } %>
           <% end %>
         <% elsif @is_member %>
           <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary", data: { turbo_confirm: t("posts.show.leave_confirm") } %>

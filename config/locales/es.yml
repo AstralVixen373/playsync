@@ -18,6 +18,10 @@ es:
   settings:
     title: "Ajustes"
     subtitle: "Gestiona tu cuenta y tus conexiones"
+    index:
+      subtitle: "Administra tus preferencias de cuenta"
+      account_description: "Actualiza tu nombre de usuario, correo y contraseña."
+      edit_profile: "Editar perfil"
     notices:
       email_updated: "Correo electrónico actualizado con éxito."
       password_updated: "Contraseña actualizada con éxito."
@@ -88,14 +92,15 @@ es:
       kick_banned: "Has sido eliminado de esta partida y no puedes volver a unirte."
     index:
       title: "Encontrar compañeros"
-      create: "Crear publicación"
-      games: "Juegos"
-      search_game: "Buscar un juego..."
-      platform: "Plataforma"
-      type: "Tipo"
-      language: "Idioma"
-      all: "Todos"
+      subtitle: "Encuentra jugadores para compartir tu sesión"
+      create_label: "¿Tienes algo para jugar?"
+      create_announcement: "Crear anuncio"
+      find_announcement: "Encontrar un anuncio"
       reset: "Restablecer"
+      search_games: "Juegos"
+      all_platforms: "Todas las plataformas"
+      all_types: "Todos los tipos"
+      filter_language: "Idioma"
     list:
       empty: "No hay publicaciones disponibles ahora mismo."
       create_one: "¡Crea una!"
@@ -103,6 +108,7 @@ es:
       title: "Nueva publicación"
     edit:
       title: "Editar publicación"
+      label: "Editando tu anuncio"
     form:
       errors:
         one: "1 error impidió guardar esta publicación"
@@ -125,11 +131,14 @@ es:
       platform: "Plataforma"
       language: "Idioma"
       type: "Tipo"
-      slots: "Plazas"
       created: "Creado"
+      open: "Abierto"
+      finished: "Finalizado"
       participants: "Participantes"
       no_participants: "Sin participantes aún"
       you_created: "Tú creaste esta partida."
+      mark_finished: "Marcar como finalizado"
+      mark_finished_confirm: "¿Marcar esta partida como finalizada?"
       kick: "Expulsar"
       kick_confirm: "¿Eliminar a este jugador de la partida?"
       kicked_out: "Has sido eliminado de esta partida."
@@ -147,39 +156,23 @@ es:
       send: "Enviar"
       type_message: "Escribe un mensaje..."
     post:
-      posted_by: "Publicado por"
       posted_ago: "Publicado hace %{time}"
-      you: "Tú"
-      open: "Abrir"
       join: "Unirse"
-      edit: "Editar"
-      delete: "Eliminar"
-      delete_confirm: "¿Estás seguro?"
+      expired_badge: "EXPIRADO"
+      crossplay: "Crossplay"
     slots:
-      full: "0 plazas disponibles"
       full_badge: "LLENO"
-      available:
-        one: "%{count} plaza disponible"
-        other: "%{count} plazas disponibles"
+      players: "jugadores"
+    voice:
+      title: "Chat de voz"
+      join: "Unirse al chat de voz"
+      mute: "Silenciar micrófono"
+      leave: "Salir del chat de voz"
 
   matches:
     index:
       title: "Mis partidas"
-      choose_game: "Elige tu juego"
-      search_game: "Buscar un juego..."
-      platform: "Plataforma"
-      type: "Tipo"
-      language: "Idioma"
-      all: "Todos"
-      reset: "Restablecer"
-      posted_by: "Publicado por"
-      you: "Tú"
-      game: "Juego"
-      platform_label: "Plataforma"
-      language_label: "Idioma"
-      type_label: "Tipo"
       view: "Ver"
-      favourites_only: "Solo favoritos"
       favourite: "Añadir a favoritos"
       unfavourite: "Quitar de favoritos"
       subtitle: "Tus sesiones y partidas"
@@ -214,6 +207,12 @@ es:
       chat: "Chat"
       no_messages: "Sin mensajes aún."
 
+  chats:
+    show:
+      post_details: "Detalles del post"
+      no_messages: "Sin mensajes aún. ¡Empieza la conversación!"
+      sign_in_to_chat: "para enviar mensajes"
+
   devise:
     sessions:
       new:
@@ -221,9 +220,28 @@ es:
         submit: "Iniciar sesión"
     passwords:
       new:
-        title: "Olvidé mi contraseña"
+        title: "¿Olvidaste tu contraseña?"
+        submit: "Enviar instrucciones de restablecimiento"
       edit:
         title: "Cambiar contraseña"
+        new_password: "Nueva contraseña"
+        confirm_password: "Confirmar nueva contraseña"
+        submit: "Cambiar mi contraseña"
+    confirmations:
+      new:
+        title: "Reenviar instrucciones de confirmación"
+        submit: "Reenviar instrucciones de confirmación"
+    unlocks:
+      new:
+        title: "Reenviar instrucciones de desbloqueo"
+        submit: "Reenviar instrucciones de desbloqueo"
+    shared:
+      links:
+        log_in: "Iniciar sesión"
+        sign_up: "Registrarse"
+        forgot_password: "¿Olvidaste tu contraseña?"
+        resend_confirmation: "¿No recibiste las instrucciones de confirmación?"
+        resend_unlock: "¿No recibiste las instrucciones de desbloqueo?"
     registrations:
       new:
         title: "Registrarse"
