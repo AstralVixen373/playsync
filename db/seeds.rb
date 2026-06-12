@@ -19,8 +19,6 @@ end
 # Creates open posts for the live demo. No fake users — real team members
 # will join the chats during the demo.
 
-Post.destroy_all
-
 MAIN_EMAIL      = "luciea3011@gmail.com"
 TEAMMATE1_EMAIL = "test@example.com"
 TEAMMATE2_EMAIL = "cyril.faccin@outlook.fr"
