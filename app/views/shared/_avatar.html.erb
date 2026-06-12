@@ -13,7 +13,7 @@
   label = (user.username.presence || user.email).to_s
 %>
 <% if user.avatar.attached? %>
-  <%= image_tag user.avatar, alt: label, loading: "lazy", class: "ps-avatar",
+  <%= cl_image_tag user.avatar.key, alt: label, loading: "lazy", class: "ps-avatar",
         style: "width:#{size}px;height:#{size}px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #{ring};" %>
 <% else %>
   <span class="ps-avatar ps-avatar--fallback"
