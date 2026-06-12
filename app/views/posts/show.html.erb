@@ -107,27 +107,25 @@
   </div>
 </div>
 
-<dialog id="confirm" class="p-4 border border-rounded modals">
-  <form method="dialog" id="text"></form>
+<dialog id="confirm" class="p-4 d-flex flex-column justify-content-center align-items-center">
+  <form class="border border-rounded modals" method="dialog">
+    <img src="app/assets/images/playsync-logo.png" alt="PlaySync logo">
+    <h1>PlaySync indicates :</h1>
+    <div class="d-flex flex-column gap-4 align-items-center" id="text"></div>
+  </form>
 </dialog>
 
 <template id="finishing">
-  <div class="d-flex gap-4 justify-content-center">
-    <%= button_to "Saves changes", finish_post_path(@post), method: :patch, class: "btn btn-secondary" %>
-    <button class="btn btn-secondary">Cancel changes</button>
-  </div>
+  <%= button_to "Saves changes", finish_post_path(@post), method: :patch, class: "btn btn-secondary" %>
+  <button class="btn btn-secondary">Cancel changes</button>
 </template>
 
 <template id="leaving">
-  <div class="d-flex gap-4 justify-content-center">
-    <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary" %>
-    <button class="btn btn-secondary">Cancel changes</button>
-  </div>
+  <%= button_to t("posts.show.leave_match"), leave_post_path(@post), method: :delete, class: "btn btn-secondary" %>
+  <button class="btn btn-secondary">Cancel changes</button>
 </template>
 
 <template id="deleting">
-  <div class="d-flex gap-4 justify-content-center">
-    <%= link_to t("posts.show.delete"), post_path(@post), class: "btn btn-danger" %>
-    <button class="btn btn-secondary">Cancel changes</button>
-  </div>
+  <%= link_to t("posts.show.delete"), post_path(@post), class: "btn btn-danger" %>
+  <button class="btn btn-secondary">Cancel changes</button>
 </template>
