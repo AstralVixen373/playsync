@@ -45,16 +45,16 @@ siege      = Game.find_by!(name: "Rainbow Six Siege")
 fall_guys  = Game.find_by!(name: "Fall Guys")
 
 posts_data = [
-  { user: me,        title: "Diamond grind — LFG for ranked tonight",         game: apex,      slot: 3, language: "English", platforms: ["PC"], post_type: "Competitive" },
-  { user: me,        title: "Cozy survival base, all welcome",                game: minecraft,  slot: 4, language: "English", platforms: ["PC"], post_type: "Chill"       },
+  { user: me,        title: "Diamond grind — LFG for ranked tonight",         game: apex,      slot: 2, language: "French", platforms: ["PC"], post_type: "Competitive" },
+  { user: me,        title: "Cozy survival base, all welcome",                game: minecraft,  slot: 4, language: "English", platforms: ["PS5"], post_type: "Chill"       },
   { user: me,        title: "Premier league — need 2 steady riflers",         game: cs2,        slot: 2, language: "English", platforms: ["PC"], post_type: "Competitive" },
-  { user: teammate1, title: "Ranked climb — gold+ only, bonne ambiance",      game: lol,        slot: 2, language: "French",  platforms: ["PC"], post_type: "Competitive" },
-  { user: teammate1, title: "Soirée détente Stardew, ferme coopérative",      game: stardew,    slot: 3, language: "French",  platforms: ["PC"], post_type: "Chill"       },
+  { user: teammate1, title: "Ranked climb — gold+ only, bonne ambiance",      game: lol,        slot: 2, language: "French",  platforms: ["Xbox"], post_type: "Competitive" },
+  { user: teammate1, title: "Soirée détente Stardew, ferme coopérative",      game: stardew,    slot: 3, language: "French",  platforms: ["Nintendo Switch"], post_type: "Chill"       },
   { user: teammate1, title: "Chill Among Us lobby, 6–10 players, voice chat", game: among_us,   slot: 9, language: "English", platforms: ["PC"], post_type: "Fun"         },
-  { user: teammate2, title: "Valorant ranked, Plat+, chill teammates",        game: valorant,   slot: 4, language: "English", platforms: ["PC"], post_type: "Competitive" },
-  { user: teammate2, title: "Ranked 3v3, climbing to Diamond this season",    game: rocket,     slot: 2, language: "English", platforms: ["PC"], post_type: "Competitive" },
+  { user: teammate2, title: "Valorant ranked, Plat+, chill teammates",        game: valorant,   slot: 4, language: "English", platforms: ["Xbox"], post_type: "Competitive" },
+  { user: teammate2, title: "Ranked 3v3, climbing to Diamond this season",    game: rocket,     slot: 2, language: "English", platforms: ["PC", "PS5"], post_type: "Competitive" },
   { user: teammate2, title: "Survivor squad, we don't die alone",             game: dbd,        slot: 3, language: "English", platforms: ["PC"], post_type: "Fun"         },
-  { user: teammate3, title: "Hochrangig Ranked — suche 2 erfahrene Spieler",  game: siege,      slot: 2, language: "German",  platforms: ["PC"], post_type: "Competitive" },
+  { user: teammate3, title: "Hochrangig Ranked — suche 2 erfahrene Spieler",  game: siege,      slot: 2, language: "German",  platforms: ["PC", "PS5"], post_type: "Competitive" },
   { user: teammate3, title: "Sea of Thieves — tall tales and treasure hunts", game: sea,        slot: 3, language: "English", platforms: ["PC"], post_type: "Chill"       },
   { user: teammate3, title: "Fall Guys squad, sin presión y a divertirse",    game: fall_guys,  slot: 3, language: "Spanish", platforms: ["PC"], post_type: "Chill"       },
 ]
